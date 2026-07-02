@@ -9,138 +9,58 @@
 import UIKit
 import SDWebImage
 
-class NotificationAlertListVC: BaseViewController {
+class CustomNotificationAlertVC: BaseViewController {
 
-    var isEditable = true
     private var qrItem: QRDataModel?
     @IBOutlet weak var ownerName: UILabel!
     @IBOutlet weak var ownerAge: UILabel!
     @IBOutlet weak var ownerGender: UILabel!
     @IBOutlet weak var ownerLocation: UILabel!
     @IBOutlet weak var userProfileImage: UIImageView!
+    @IBOutlet weak var pickImageViewBtn: UIView!
+    
+    @IBOutlet weak var imageCollectionView: UICollectionView!
     
     @IBOutlet weak var sendAlertBtn: UIButton!
-    private var countdownTimer: Timer?
-    private var remainingSeconds = 30
-    private var isOtherAlerDisabled:Bool = false
     
-    @IBOutlet weak var parkingViewBtn: UIView!
-    @IBOutlet weak var congestedParkingViewBtn: UIView!
-    @IBOutlet weak var roadBlockAlertViewBtn: UIView!
-    @IBOutlet weak var blockedVehicleAlertViewBtn: UIView!
-    @IBOutlet weak var carLightsWindowsLeftOpenViewBtn: UIView!
-    @IBOutlet weak var carHornOrAlarmGoingOffViewBtn: UIView!
-    @IBOutlet weak var unknownIssueAlertViewBtn: UIView!
-    @IBOutlet weak var accidentAlertViewBtn: UIView!
-    @IBOutlet weak var requestForDocumentAccessViewBtn: UIView!
+    @IBOutlet weak var messageField: UITextView!
     
-    private var selectedAlertViewBtn: UIView?
+    var selectedImageList: [SavedImageData] = []
     
+    private var chatRoomId: String? = "empty"
+    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
 
         enableKeyboardDismissOnTap()
+        
+        LocationManager.shared.requestLocationPermission()
+        LocationManager.shared.startUpdatingLocation()
+        
+        createChatRoom(receiver_id: qrItem?.assigned_to)
+        
         setUI()
 
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-//        getEmergencyContactList()
-    }
     
     @IBAction func sendAlertBtnClicked(_ sender: Any) {
-        guard let selectedView = selectedAlertViewBtn else {
-                showToast(message: "Please select an alert")
-                return
-            }
-
-        var notificationIssueType = ""
-        var notificationIssueMessage = ""
-
-        switch selectedView {
-
-        case parkingViewBtn:
-            notificationIssueType = "no_parking"
-            notificationIssueMessage = "Your car is parking in no parking zone."
-
-        case congestedParkingViewBtn:
-            notificationIssueType = "congested_parking"
-            notificationIssueMessage = """
-            Your vehicle has been identified as causing parking congestion in the area.
-            Kindly move your vehicle to a suitable parking space to avoid inconvenience to others.
-            """
-
-        case roadBlockAlertViewBtn:
-            notificationIssueType = "road_block_alert"
-            notificationIssueMessage = """
-            Your vehicle has been identified as obstructing traffic flow and causing a road block.
-            Please move your vehicle immediately to clear the way and ensure smooth movement for others.
-            """
-
-        case blockedVehicleAlertViewBtn:
-            notificationIssueType = "blocked_vehicle_alert"
-            notificationIssueMessage = """
-            Your vehicle is blocking another parked vehicle.
-            Please move your vehicle promptly to allow the other driver to exit smoothly.
-            """
-
-        case carLightsWindowsLeftOpenViewBtn:
-            notificationIssueType = "car_lights_windows_left_open"
-            notificationIssueMessage = "⚠️ Your car lights or windows are open. Please check your vehicle immediately for safety."
-
-        case carHornOrAlarmGoingOffViewBtn:
-            notificationIssueType = "car_horn_alarm_going_on"
-            notificationIssueMessage = "Your car alarm or horn is going off. Please check your vehicle immediately."
-
-        case unknownIssueAlertViewBtn:
-            notificationIssueType = "unknown_issue_alert"
-            notificationIssueMessage = "🚗 An unknown issue has been detected with your vehicle. Please inspect it for safety."
-
-        case accidentAlertViewBtn:
-            notificationIssueType = "accident_alert"
-            notificationIssueMessage = "⚠️ Your vehicle may have been involved in an accident. Please check immediately."
-
-            // Navigate if needed
-            NavigationManager.pushScreen(
-                from: self,
-                storyboardName: "Main",
-                viewControllerID: "ChatNotificationInfoRequestVC",
-                data: [
-                    "notificationIssueType": notificationIssueType,
-                    "notificationIssueMessage": notificationIssueMessage
-                ]
-            )
+        
+        if selectedImageList.isEmpty {
+            showToast(message: "Please select atleast one image")
             return
-
-        case requestForDocumentAccessViewBtn:
-            notificationIssueType = "doc_access"
-            notificationIssueMessage = "⚠️ You've received a request for document access. Please review and approve if appropriate."
-
-        default:
-            showToast(message: "Invalid alert selected")
+        } else if selectedImageList.count > 3{
+            showToast(message: "You can select maximum 3 images")
             return
         }
         
-        disableOtherViews()
-        startCountdown(
-            issueType: notificationIssueType,
-            issueMessage: notificationIssueMessage
-        )
-
-        print("Issue Type: \(notificationIssueType)")
-        print("Issue Message: \(notificationIssueMessage)")
-
-//        sendNotification(
-//            issueType: notificationIssueType,
-//            issueMessage: notificationIssueMessage
-//        )
+        sendNotification(receiver_id: qrItem?.assigned_to, notification_type: qrItem?.notificationType, issue_type: qrItem?.issueType, issueMessage: messageField.text ?? qrItem?.issueMessage, notification_title: qrItem?.notificationTitle, vehicle_id: qrItem?.vehicle_id)
     }
     
     private func setUI() {
 
-        title = "Scan QR Code"
+        title = "Notification"
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationItem.largeTitleDisplayMode = .never
         
@@ -153,7 +73,6 @@ class NotificationAlertListVC: BaseViewController {
         if let data = receivedData as? [String: Any] {
 
             self.qrItem = data["qrItem"] as? QRDataModel ?? nil
-            getOwnerDetails(ownerId: qrItem?.assigned_to)
             
             
         }
@@ -165,186 +84,131 @@ class NotificationAlertListVC: BaseViewController {
             userProfileImage.clipsToBounds = true
             userProfileImage.contentMode = .scaleAspectFill
         
-        
-        onAlertViewClicked(selectedView: nil)
-        
-        alertViews.forEach {
-            addTapGesture(to: $0)
-        }
-        
-        enableSendButton()
-        
-    }
-    
-    private func disableOtherViews() {
-        
-        self.isOtherAlerDisabled = true
+        messageField.layer.cornerRadius = 16
+            messageField.layer.borderWidth = 1.5
+            messageField.layer.borderColor =
+                (UIColor(named: "iconColor") ?? .systemBlue).cgColor
 
-        for view in alertViews {
-
-            if view != selectedAlertViewBtn {
-                setCardSelected(
-                    isSelected: false,
-                    clickedView: view
-                )
-            }
-        }
-        
-        disableSendButton()
-        
-    }
-    
-    private func disableSendButton() {
-
-        if #available(iOS 15.0, *) {
-
-            var config = sendAlertBtn.configuration
-            config?.baseBackgroundColor = UIColor(named: "textDescription")
-            config?.baseForegroundColor = .white
-            sendAlertBtn.configuration = config
-        } else {
-
-            sendAlertBtn.backgroundColor = UIColor(named: "textDescription")
-            sendAlertBtn.setTitleColor(.white, for: .normal)
-        }
-
-        sendAlertBtn.isEnabled = false
-    }
-    
-    private func enableSendButton() {
-
-        if #available(iOS 15.0, *) {
-
-            var config = sendAlertBtn.configuration
-            config?.baseBackgroundColor = UIColor(named: "iconColor")
-            config?.baseForegroundColor = .white
-            sendAlertBtn.configuration = config
-        } else {
-
-            sendAlertBtn.backgroundColor = UIColor(named: "iconColor")
-            sendAlertBtn.setTitleColor(.white, for: .normal)
-        }
-
-        sendAlertBtn.isEnabled = true
-    }
-    
-    private func startCountdown(
-        issueType: String,
-        issueMessage: String
-    ) {
-
-        remainingSeconds = 30
-
-        sendAlertBtn.setTitle("Send Notification (\(remainingSeconds))", for: .normal)
-
-        countdownTimer?.invalidate()
-
-        countdownTimer = Timer.scheduledTimer(
-            withTimeInterval: 1,
-            repeats: true
-        ) { [weak self] timer in
-
-            guard let self = self else { return }
-
-            self.remainingSeconds -= 1
-
-            self.sendAlertBtn.setTitle(
-                "Send Notification (\(self.remainingSeconds))",
-                for: .normal
+            messageField.textContainerInset = UIEdgeInsets(
+                top: 12,
+                left: 12,
+                bottom: 12,
+                right: 12
             )
 
-            if self.remainingSeconds <= 0 {
+            messageField.font = UIFont.systemFont(ofSize: 16)
+        
+        
+        self.ownerName.text = self.qrItem?.nick_name
+        self.ownerGender.text = self.qrItem?.gender
+        self.ownerLocation.text = self.qrItem?.address
+        self.ownerAge.text = "\(self.qrItem?.age ?? "") year old"
+        
+        self.userProfileImage.sd_setImage(
+            with: URL(string: self.qrItem?.public_pic ?? ""),
+            placeholderImage: UIImage(named: "defaultProfileIcon")
+        )
+        
+        CommonFunctions.addDashedBorder(to: pickImageViewBtn)
+        
+        // set updateBasicDetailsBtn
+        pickImageViewBtn.isUserInteractionEnabled = true
 
-                timer.invalidate()
+            let pickImageViewBtnTap = UITapGestureRecognizer(
+                target: self,
+                action: #selector(pickImageViewBtnClick)
+            )
 
-                self.sendAlertBtn.setTitle(
-                    "Send Notification",
-                    for: .normal
-                )
+        pickImageViewBtn.addGestureRecognizer(pickImageViewBtnTap)
+        
+        imageCollectionView.delegate = self
+        imageCollectionView.dataSource = self
+       
+    }
+    
+    @objc private func pickImageViewBtnClick() {
+        ImagePickerHelper.shared.openCameraDirectly(from: self) { image in
+
+            guard let image = image else { return }
+            
+            LoadingManager.shared.show(on: self.view)
+            
+            NetworkManager.shared.uploadSingleImage(
+                image: image, folderName: "vehicle-alert-image"
+            ) { [weak self] success, message, response in
                 
-                enableSendButton()
+                guard let self = self else { return }
                 
-                NavigationManager.pushScreen(
-                    from: self,
-                    viewControllerID: "ScanVC",
-                    closeCurrentScreen: true
-                )
-
-                // move to next page
-                if var viewControllers = navigationController?.viewControllers {
-
-                    // Remove current VC (NotificationAlertListVC)
-                    viewControllers.removeLast()
-
-                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                    let scanVC = storyboard.instantiateViewController(withIdentifier: "ScanVC")
-
-                    viewControllers.append(scanVC)
-
-                    navigationController?.setViewControllers(
-                        viewControllers,
-                        animated: true
-                    )
+                DispatchQueue.main.async {
+                    
+                    LoadingManager.shared.hide()
+                                        
+                    if success {
+                        
+                        if let data = response?["data"] as? [String: Any] {
+                            
+                            var savedImage = SavedImageData()
+                            
+                            savedImage.image_url = data["image_url"] as? String ?? ""
+                            savedImage.public_id = data["public_id"] as? String ?? ""
+                            savedImage.folder = data["folder"] as? String ?? ""
+                            savedImage.imageFile = image
+                            
+                            self.selectedImageList.append(savedImage)
+                            self.imageCollectionView.reloadData()
+                        }
+                        
+                    } else {
+                        self.showToast(message: "Unable to complete the task. Please try again.")
+                    }
                 }
             }
+            
         }
     }
-    
-    private func addTapGesture(to view: UIView) {
-        view.isUserInteractionEnabled = true
-        let tap = UITapGestureRecognizer(target: self, action: #selector(alertViewTapped(_:)))
-        view.addGestureRecognizer(tap)
-    }
-    
-    @objc private func alertViewTapped(_ sender: UITapGestureRecognizer) {
 
-        guard let clickedView = sender.view else {
-            return
+    
+    func sendNotification(receiver_id: String?, notification_type: String?, issue_type: String?, issueMessage: String?, notification_title: String?, vehicle_id: String?) {
+        
+        var incidentProof: [String] = []
+
+        for item in selectedImageList {
+
+            if let imageURL = item.image_url,
+               !imageURL.isEmpty {
+
+                incidentProof.append(imageURL)
+            }
         }
-
-        onAlertViewClicked(selectedView: clickedView)
-    }
-    
-    
-    @objc private func onAddEmergencyContactBtnClick() {
-        NavigationManager.pushScreen(
-            from: self,
-            storyboardName: "Main",
-            viewControllerID: "UpdateEmergencyContactsVC"
-        )
-        
-    }
-
-    func editContact(_ contact: EmergencyContactModel) {
-        // shared data
-        let sharedData: [String: Any] = [
-            "hit_type": "update",
-            "contactDetails": contact
-        ]
-
-        // Navigate to edit screen here
-        
-        NavigationManager.pushScreen(
-            from: self,
-            storyboardName: "Main",
-            viewControllerID: "UpdateEmergencyContactsVC",
-            data: sharedData
-        )
-    }
-
-    
-    
-    func getOwnerDetails(ownerId: String? = "") {
 
         LoadingManager.shared.show(on: view)
 
-        let params: [String: Any] = [
-            "user_id": ownerId ?? "",
-            "details_type": "public_details"
+
+        var params: [String: Any] = [
+            "sender_id": PreferenceManager.shared.getUserId(),
+            "receiver_id": receiver_id ?? "",
+            "notification_type": notification_type ?? "",
+            "issue_type": issue_type ?? "",
+            "notification_title": notification_title ?? "",
+            "message": issueMessage ?? "",
+            "vehicle_id": vehicle_id ?? "",
+            "seen_status": false,
+            "incident_proof": incidentProof
         ]
+        
+        if chatRoomId == "empty" {
+            params["chat_room_id"] = chatRoomId
+        }
+        
+        if let latitude = LocationManager.shared.latitude,
+           let longitude = LocationManager.shared.longitude {
+
+            params["latitude"] = latitude
+            params["longitude"] = longitude
+        }
 
         NetworkManager.shared.callAPI(
-            url: APIEndpoints.GET_USER_DETAILS,
+            url: APIEndpoints.SEND_NOTIFICATION,
             method: "POST",
             parameters: params
         ) { response, status, message in
@@ -353,98 +217,147 @@ class NotificationAlertListVC: BaseViewController {
 
             if status {
 
-                if let data = response?["data"] as? [String: Any] {
-                    
-                                    let public_pic = data["public_pic"] as? String ?? ""
-                    
-                    self.ownerName.text = data["nick_name"] as? String ?? ""
-                    self.ownerGender.text = data["gender"] as? String ?? ""
-                    self.ownerLocation.text = data["address"] as? String ?? ""
-                    
-                    let age = TimeUtils.getDatePart(
-                        from: data["age"] as? String ?? "",
-                        type: "age"
-                    )
+                NavigationManager.pushScreen(
+                    from: self,
+                    viewControllerID: "OwnerProfileVC",
+                    closeCurrentScreen: true,
+                    data: [
+                        "qrItem": self.qrItem
+                        ]
+                )
+            }
+        }
+    }
+    
+    func createChatRoom(receiver_id: String?) {
+        
+        var members: [String] = []
+        members.append(receiver_id ?? "")
 
-                    self.ownerAge.text = "\(age) year old"
+
+        LoadingManager.shared.show(on: view)
+
+
+        let params: [String: Any] = [
+            "createdBy": PreferenceManager.shared.getUserId(),
+            "members": members,
+            "type": "direct"
+        ]
+        
+        
+        NetworkManager.shared.callAPI(
+            url: APIEndpoints.CREATE_CHAT_ROOM,
+            method: "POST",
+            parameters: params
+        ) { response, status, message in
+
+            LoadingManager.shared.hide()
+
+            if status {
+
+                if let data = response?["room"] as? [String: Any] {
+                                    
+                    self.chatRoomId = data["_id"] as? String ?? ""
                     
-                    self.userProfileImage.sd_setImage(
-                        with: URL(string: public_pic),
-                        placeholderImage: UIImage(named: "defaultProfileIcon")
-                    )
+                    print("✅ chatRoomId: \(self.chatRoomId ?? "")")
                     
                 }
             }
         }
     }
     
-    private var alertViews: [UIView] {
-        [
-            parkingViewBtn,
-            congestedParkingViewBtn,
-            roadBlockAlertViewBtn,
-            blockedVehicleAlertViewBtn,
-            carLightsWindowsLeftOpenViewBtn,
-            carHornOrAlarmGoingOffViewBtn,
-            unknownIssueAlertViewBtn,
-            accidentAlertViewBtn,
-            requestForDocumentAccessViewBtn
+    
+    @objc func removeImage(_ sender: UITapGestureRecognizer) {
+
+        guard let index = sender.view?.tag else {
+            return
+        }
+        
+        LoadingManager.shared.show(on: view)
+        
+        let params: [String: Any] = [
+            "public_id": selectedImageList[index].public_id ?? ""
         ]
+
+        NetworkManager.shared.callAPI(
+            url: APIEndpoints.DELETE_SINGLE_FILE,
+            method: "POST",
+            parameters: params
+        ) { response, status, message in
+
+            LoadingManager.shared.hide()
+
+            if status {
+                self.selectedImageList.remove(at: index)
+                self.imageCollectionView.reloadData()
+            }
+        }
     }
 
-    private func onAlertViewClicked(selectedView: UIView?) {
+}
 
-        alertViews.forEach {
-            setCardSelected(isSelected: false, clickedView: $0)
-        }
 
-        if let selectedView = selectedView {
-            self.selectedAlertViewBtn = selectedView
-            setCardSelected(isSelected: true, clickedView: selectedView)
-        } else {
-            self.selectedAlertViewBtn = nil
-        }
+extension CustomNotificationAlertVC:
+UICollectionViewDelegate,
+UICollectionViewDataSource,
+UICollectionViewDelegateFlowLayout {
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int
+    ) -> Int {
+
+        return selectedImageList.count
     }
-    
-    
-    private func setCardSelected(
-        isSelected: Bool,
-        clickedView: UIView
-    ) {
 
-        clickedView.layer.cornerRadius = 16
-        clickedView.layer.masksToBounds = true
-        clickedView.layer.borderWidth = 3
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
 
-        if isSelected {
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: "NotificationImageCell",
+            for: indexPath
+        ) as! NotificationImageCell
 
-            // Selected view can never be disabled
-            clickedView.backgroundColor = .white
-            clickedView.layer.borderColor = (
-                UIColor(named: "iconColor") ?? .systemBlue
-            ).cgColor
+        let item = selectedImageList[indexPath.row]
 
-            clickedView.isUserInteractionEnabled = true
+//        cell.fieldProfileIcon.layer.cornerRadius = 16
+//        cell.fieldProfileIcon.clipsToBounds = true
+        
+        CommonFunctions.addDashedBorder(to: cell.cardView)
 
-        } else if self.isOtherAlerDisabled {
+        cell.closeIcon.isUserInteractionEnabled = true
+        cell.closeIcon.tag = indexPath.row
 
-            // Disabled view
-            clickedView.backgroundColor = UIColor(named: "textDescription")
-            clickedView.layer.borderColor = (
-                UIColor(named: "textDescription") ?? .lightGray
-            ).cgColor
+        let tap = UITapGestureRecognizer(  
+            target: self,
+            action: #selector(removeImage(_:))
+        )
 
-            clickedView.isUserInteractionEnabled = false
+        cell.closeIcon.addGestureRecognizer(tap)
+
+        // Prefer local image
+        if let image = item.imageFile {
+
+            cell.fieldProfileIcon.image = image
 
         } else {
-
-            // Normal view
-            clickedView.backgroundColor = .white
-            clickedView.layer.borderColor = (
-                UIColor(named: "textDescription") ?? .lightGray
-            ).cgColor
-
-            clickedView.isUserInteractionEnabled = true
+            cell.fieldProfileIcon.sd_setImage(
+                with: URL(string: item.image_url ?? ""),
+                placeholderImage: UIImage(named: "emptyImage")
+            )
         }
+
+        return cell
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+
+        return CGSize(width: 90, height: 90)
     }
 }

@@ -49,8 +49,13 @@ class ProfileUpdateMenuVC: BaseViewController {
 
         setUI()
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         loadUserProfile()
     }
+    
     
     private func setUI() {
         // set updateBasicDetailsBtn

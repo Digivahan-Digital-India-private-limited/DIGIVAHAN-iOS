@@ -6,8 +6,11 @@
 //
 
 import UIKit
+import OneSignalFramework
 
 class VerificationScreenVC: BaseViewController {
+    
+    @IBOutlet weak var mainScrollView: UIScrollView!
     
     @IBOutlet weak var phoneNumberField: CustomInputFieldView!
     @IBOutlet weak var otpView: OTPView!
@@ -32,6 +35,9 @@ class VerificationScreenVC: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        enableKeyboardDismissOnTap()
+        enableKeyboardAvoiding(scrollView: mainScrollView)
         
         phoneNumberField.setUpField(title: "Phone Number", placeholder: "Enter your number", leftIcon: UIImage(named: "callIcon"), keyboardType: .numberPad, inputType: .phone)
         
@@ -58,15 +64,6 @@ class VerificationScreenVC: BaseViewController {
             self.last_name = data["last_name"] as? String ?? ""
             self.email = data["email"] as? String ?? ""
             self.password = data["password"] as? String ?? ""
-            
-            print("========== RECEIVED DATA ==========")
-            print("Phone: \(self.phone)")
-            print("Verification Type: \(self.verificationType)")
-            print("First Name: \(self.first_name)")
-            print("Last Name: \(self.last_name)")
-            print("Email: \(self.email)")
-            print("Password: \(self.password)")
-            print("===================================")
             
             phoneNumberField.setText(phone)
            
@@ -240,6 +237,9 @@ class VerificationScreenVC: BaseViewController {
                     let token = userJson["token"] as? String ?? ""
                     
                     let userId = JWTUtils.getUserIdFromToken(token)
+                    
+                    OneSignal.login(userId)
+                    
                     // Save Token
                     PreferenceManager.shared.setAuthToken(token)
                     
@@ -263,8 +263,7 @@ class VerificationScreenVC: BaseViewController {
                         PreferenceManager.shared.setBool(value: isNotificationOn, key: PreferenceManager.Keys.notificationSound)
                         
                         if !userId.isEmpty  {
-                            // Save Token
-                            PreferenceManager.shared.setUserId(token)
+                            PreferenceManager.shared.setUserId(userId)
                             
                             let userData = CommonFunctions.parseUserFromJson(userJson)
                             
@@ -276,11 +275,12 @@ class VerificationScreenVC: BaseViewController {
                             PreferenceManager.shared.setLoggedIn(true)
                             
                             // Move Next Screen
-                            NavigationManager.moveToScreen(
+                            NavigationManager.moveToNavigationController(
                                 from: self,
-                                viewControllerID: "MainPage"
+                                storyboardName: "Main",
+                                navigationControllerID: "MainNavigationController"
                             )
-                        }   
+                        }
                     }
                 }
                 
@@ -376,7 +376,7 @@ class VerificationScreenVC: BaseViewController {
 
             resendTimer?.invalidate()
             resendTimer = nil
-
+  
             resendOtpBtn.text = "Resend OTP"
             resendOtpBtn.textColor = UIColor(named: "iconColor")
             resendOtpBtn.isUserInteractionEnabled = true

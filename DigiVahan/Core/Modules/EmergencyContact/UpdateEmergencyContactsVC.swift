@@ -13,6 +13,9 @@ class UpdateEmergencyContactsVC: BaseViewController {
     
     @IBOutlet weak var userProfileImage: UIImageView!
     
+    @IBOutlet weak var mainScrollView: UIScrollView!
+    
+    
     @IBOutlet weak var firstName: CustomInputFieldView!
     @IBOutlet weak var lastName: CustomInputFieldView!
     @IBOutlet weak var relationField: CustomInputFieldView!
@@ -44,6 +47,8 @@ class UpdateEmergencyContactsVC: BaseViewController {
         super.viewDidLoad()
         
         enableKeyboardDismissOnTap()
+        enableKeyboardAvoiding(scrollView: mainScrollView)
+        
         sutUI()
     }
     

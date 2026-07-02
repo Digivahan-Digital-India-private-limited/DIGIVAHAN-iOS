@@ -6,31 +6,78 @@
 //
 
 import UIKit
+import OneSignalFramework
 
 @main
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate,
+                   OSNotificationLifecycleListener,
+                   OSNotificationClickListener {
 
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
+    ) -> Bool {
 
+        OneSignal.Debug.setLogLevel(.LL_VERBOSE)
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        OneSignal.initialize(
+            "6841c599-0740-4059-aa80-b4a2396ff67e",
+            withLaunchOptions: launchOptions
+        )
+
+        OneSignal.Notifications.requestPermission(
+            { accepted in
+                print("Permission accepted:", accepted)
+            },
+            fallbackToSettings: true
+        )
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+
+            print("✅ OneSignal initialized")
+
+            print("Subscription ID:",
+                  OneSignal.User.pushSubscription.id ?? "nil")
+
+            print("Push Token:",
+                  OneSignal.User.pushSubscription.token ?? "nil")
+        }
+
         return true
     }
 
-    // MARK: UISceneSession Lifecycle
+    func onWillDisplay(
+        event: OSNotificationWillDisplayEvent
+    ) {
 
-    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-        // Called when a new scene session is being created.
-        // Use this method to select a configuration to create the new scene with.
-        return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+        print("Notification received")
+        print(event.notification.additionalData ?? [:])
+
+        event.notification.display()
     }
 
-    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
-        // Called when the user discards a scene session.
-        // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
-        // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
+    func onClick(
+        event: OSNotificationClickEvent
+    ) {
+
+        let data = event.notification.additionalData
+
+        let notificationType =
+            data?["notification_type"] as? String ?? ""
+
+        let chatRoomId =
+            data?["chat_room_id"] as? String ?? ""
+
+        let senderId =
+            data?["sender_id"] as? String ?? ""
+
+        let vehicleId =
+            data?["vehicle_id"] as? String ?? ""
+
+        print("Notification clicked")
+        print(notificationType)
+        print(chatRoomId)
+        print(senderId)
+        print(vehicleId)
     }
-
-
 }
-

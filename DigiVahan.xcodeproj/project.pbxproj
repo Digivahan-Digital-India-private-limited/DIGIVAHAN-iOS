@@ -6,8 +6,30 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		5405E23C2FD4C72300F4FC27 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 5405E23B2FD4C72300F4FC27 /* Alamofire */; };
+		54B811F12FD085A1009FCF92 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54B811F02FD085A1009FCF92 /* WebKit.framework */; };
+		54B812672FD0A1E2009FCF92 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 54B812662FD0A1E2009FCF92 /* SDWebImage */; };
+		54B812692FD0A1E2009FCF92 /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 54B812682FD0A1E2009FCF92 /* SDWebImageMapKit */; };
+		54B862172FEB1EE5000D0626 /* OneSignalFramework in Frameworks */ = {isa = PBXBuildFile; productRef = 54B862162FEB1EE5000D0626 /* OneSignalFramework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5405E2402FD4D7A500F4FC27 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		54AE27212FB237770066C752 /* DigiVahan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DigiVahan.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		54B811F02FD085A1009FCF92 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -26,6 +48,9 @@
 			exceptions = (
 				54AE27332FB237780066C752 /* Exceptions for "DigiVahan" folder in "DigiVahan" target */,
 			);
+			explicitFolders = (
+				"Resources/Notification Sound",
+			);
 			path = DigiVahan;
 			sourceTree = "<group>";
 		};
@@ -36,6 +61,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				54B812672FD0A1E2009FCF92 /* SDWebImage in Frameworks */,
+				5405E23C2FD4C72300F4FC27 /* Alamofire in Frameworks */,
+				54B812692FD0A1E2009FCF92 /* SDWebImageMapKit in Frameworks */,
+				54B811F12FD085A1009FCF92 /* WebKit.framework in Frameworks */,
+				54B862172FEB1EE5000D0626 /* OneSignalFramework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -46,6 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				54AE27232FB237770066C752 /* DigiVahan */,
+				54B811EF2FD085A1009FCF92 /* Frameworks */,
 				54AE27222FB237770066C752 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -58,6 +89,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		54B811EF2FD085A1009FCF92 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				54B811F02FD085A1009FCF92 /* WebKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -68,6 +107,7 @@
 				54AE271D2FB237770066C752 /* Sources */,
 				54AE271E2FB237770066C752 /* Frameworks */,
 				54AE271F2FB237770066C752 /* Resources */,
+				5405E2402FD4D7A500F4FC27 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -78,6 +118,10 @@
 			);
 			name = DigiVahan;
 			packageProductDependencies = (
+				54B812662FD0A1E2009FCF92 /* SDWebImage */,
+				54B812682FD0A1E2009FCF92 /* SDWebImageMapKit */,
+				5405E23B2FD4C72300F4FC27 /* Alamofire */,
+				54B862162FEB1EE5000D0626 /* OneSignalFramework */,
 			);
 			productName = DigiVahan;
 			productReference = 54AE27212FB237770066C752 /* DigiVahan.app */;
@@ -107,6 +151,11 @@
 			);
 			mainGroup = 54AE27182FB237770066C752;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				54B812652FD0A1E2009FCF92 /* XCRemoteSwiftPackageReference "SDWebImage" */,
+				5405E23A2FD4C72300F4FC27 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				54B862152FEB1EE5000D0626 /* XCRemoteSwiftPackageReference "OneSignal-iOS-SDK" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 54AE27222FB237770066C752 /* Products */;
 			projectDirPath = "";
@@ -145,13 +194,15 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LM36DR2A6H;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DigiVahan/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -160,12 +211,16 @@
 				PRODUCT_BUNDLE_IDENTIFIER = app.DigiVahan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -176,13 +231,15 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LM36DR2A6H;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DigiVahan/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -191,12 +248,16 @@
 				PRODUCT_BUNDLE_IDENTIFIER = app.DigiVahan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -341,6 +402,56 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5405E23A2FD4C72300F4FC27 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.12.0;
+			};
+		};
+		54B812652FD0A1E2009FCF92 /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.21.7;
+			};
+		};
+		54B862152FEB1EE5000D0626 /* XCRemoteSwiftPackageReference "OneSignal-iOS-SDK" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/OneSignal/OneSignal-iOS-SDK";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.5.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5405E23B2FD4C72300F4FC27 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5405E23A2FD4C72300F4FC27 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		54B812662FD0A1E2009FCF92 /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 54B812652FD0A1E2009FCF92 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+		54B812682FD0A1E2009FCF92 /* SDWebImageMapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 54B812652FD0A1E2009FCF92 /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImageMapKit;
+		};
+		54B862162FEB1EE5000D0626 /* OneSignalFramework */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 54B862152FEB1EE5000D0626 /* XCRemoteSwiftPackageReference "OneSignal-iOS-SDK" */;
+			productName = OneSignalFramework;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 54AE27192FB237770066C752 /* Project object */;
 }

@@ -9,20 +9,42 @@
 import UIKit
 import SDWebImage
 
-class EmergencyContactsListVC: BaseViewController {
+class NotificationAlertListVC: BaseViewController {
 
-    @IBOutlet weak var listView: UIView!
-    @IBOutlet weak var emptyView: UIView!
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var addEmergencyContactBtn: UIImageView!
-    
-    var contacts: [EmergencyContactModel] = []
     var isEditable = true
-
+    private var qrItem: QRDataModel?
+    @IBOutlet weak var ownerName: UILabel!
+    @IBOutlet weak var ownerAge: UILabel!
+    @IBOutlet weak var ownerGender: UILabel!
+    @IBOutlet weak var ownerLocation: UILabel!
+    @IBOutlet weak var userProfileImage: UIImageView!
+    
+    @IBOutlet weak var sendAlertBtn: UIButton!
+    private var countdownTimer: Timer?
+    private var remainingSeconds = 30
+    private var isOtherAlerDisabled:Bool = false
+    
+    @IBOutlet weak var parkingViewBtn: UIView!
+    @IBOutlet weak var congestedParkingViewBtn: UIView!
+    @IBOutlet weak var roadBlockAlertViewBtn: UIView!
+    @IBOutlet weak var blockedVehicleAlertViewBtn: UIView!
+    @IBOutlet weak var carLightsWindowsLeftOpenViewBtn: UIView!
+    @IBOutlet weak var carHornOrAlarmGoingOffViewBtn: UIView!
+    @IBOutlet weak var unknownIssueAlertViewBtn: UIView!
+    @IBOutlet weak var accidentAlertViewBtn: UIView!
+    @IBOutlet weak var requestForDocumentAccessViewBtn: UIView!
+    
+    private var selectedAlertViewBtn: UIView?
+    
+    private var notification_type: String = "vehicle"
+    private var notificationTitle: String = "No parking"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        enableKeyboardDismissOnTap()
+        
+        LocationManager.shared.requestLocationPermission()
+        LocationManager.shared.startUpdatingLocation()
+        
         setUI()
 
     }
@@ -30,9 +52,89 @@ class EmergencyContactsListVC: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        getEmergencyContactList()
+//        getEmergencyContactList()
     }
+    
+    @IBAction func sendAlertBtnClicked(_ sender: Any) {
+        guard let selectedView = selectedAlertViewBtn else {
+                showToast(message: "Please select an alert")
+                return
+            }
 
+        var notificationIssueType = ""
+        var notificationIssueMessage = ""
+        var isVaultAccess = false
+
+        switch selectedView {
+
+        case parkingViewBtn:
+            notificationIssueType = "no_parking"
+            notificationIssueMessage = "Your car is parking in no parking zone."
+
+        case congestedParkingViewBtn:
+            notificationIssueType = "congested_parking"
+            notificationIssueMessage = """
+            Your vehicle has been identified as causing parking congestion in the area.
+            Kindly move your vehicle to a suitable parking space to avoid inconvenience to others.
+            """
+
+        case roadBlockAlertViewBtn:
+            notificationIssueType = "road_block_alert"
+            notificationIssueMessage = """
+            Your vehicle has been identified as obstructing traffic flow and causing a road block.
+            Please move your vehicle immediately to clear the way and ensure smooth movement for others.
+            """
+
+        case blockedVehicleAlertViewBtn:
+            notificationIssueType = "blocked_vehicle_alert"
+            notificationIssueMessage = """
+            Your vehicle is blocking another parked vehicle.
+            Please move your vehicle promptly to allow the other driver to exit smoothly.
+            """
+
+        case carLightsWindowsLeftOpenViewBtn:
+            notificationIssueType = "car_lights_windows_left_open"
+            notificationIssueMessage = "⚠️ Your car lights or windows are open. Please check your vehicle immediately for safety."
+
+        case carHornOrAlarmGoingOffViewBtn:
+            notificationIssueType = "car_horn_alarm_going_on"
+            notificationIssueMessage = "Your car alarm or horn is going off. Please check your vehicle immediately."
+
+        case unknownIssueAlertViewBtn:
+            notificationIssueType = "unknown_issue_alert"
+            notificationIssueMessage = "🚗 An unknown issue has been detected with your vehicle. Please inspect it for safety."
+
+        case accidentAlertViewBtn:
+            notificationIssueType = "accident_alert"
+            notificationIssueMessage = "⚠️ Your vehicle may have been involved in an accident. Please check immediately."
+
+//            // Navigate if needed
+//            NavigationManager.pushScreen(
+//                from: self,
+//                storyboardName: "Main",
+//                viewControllerID: "ChatNotificationInfoRequestVC",
+//                data: [
+//                    "notificationIssueType": notificationIssueType,
+//                    "notificationIssueMessage": notificationIssueMessage
+//                ]
+//            )
+//            return
+
+        case requestForDocumentAccessViewBtn:
+            isVaultAccess = true
+            notificationIssueType = "doc_access"
+            notificationIssueMessage = "⚠️ You've received a request for document access. Please review and approve if appropriate."
+
+        default:
+            showToast(message: "Invalid alert selected")
+            return
+        }
+        
+        disableOtherViews()
+        
+        sendNotification(receiver_id: qrItem?.assigned_to, notification_type: notification_type, issue_type: notificationIssueType, issueMessage: notificationIssueMessage, notification_title: notificationTitle, vehicle_id: qrItem?.vehicle_id, isVaultAccess: isVaultAccess)
+    }
+    
     private func setUI() {
 
         title = "Scan QR Code"
@@ -43,121 +145,205 @@ class EmergencyContactsListVC: BaseViewController {
                 .font: UIFont(name: "Hind-Medium", size: 20)!,
                 .foregroundColor: UIColor.black
             ]
-
-        tableView.delegate = self
-        tableView.dataSource = self
-
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 90
-
-        tableView.separatorStyle = .none
         
-        contacts = []
         
-        // set emergencyContactLayoutBtn
-        addEmergencyContactBtn.isUserInteractionEnabled = true
+        if let data = receivedData as? [String: Any] {
 
-            let addEmergencyContactBtnTap = UITapGestureRecognizer(
-                target: self,
-                action: #selector(onAddEmergencyContactBtnClick)
-            )
+            self.qrItem = data["qrItem"] as? QRDataModel ?? nil
+            getOwnerDetails(ownerId: qrItem?.assigned_to)
+            
+            
+        }
+        
+        
+        userProfileImage.layer.cornerRadius =
+                userProfileImage.frame.width / 2
 
-        addEmergencyContactBtn.addGestureRecognizer(addEmergencyContactBtnTap)
+            userProfileImage.clipsToBounds = true
+            userProfileImage.contentMode = .scaleAspectFill
+        
+        
+        onAlertViewClicked(selectedView: nil)
+        
+        alertViews.forEach {
+            addTapGesture(to: $0)
+        }
+        
+        enableSendButton()
         
     }
     
-    @objc private func onAddEmergencyContactBtnClick() {
-        NavigationManager.pushScreen(
-            from: self,
-            storyboardName: "Main",
-            viewControllerID: "UpdateEmergencyContactsVC"
-        )
+    private func disableOtherViews() {
+        
+        self.isOtherAlerDisabled = true
+
+        for view in alertViews {
+
+            if view != selectedAlertViewBtn {
+                setCardSelected(
+                    isSelected: false,
+                    clickedView: view
+                )
+            }
+        }
+        
+        disableSendButton()
         
     }
+    
+    private func disableSendButton() {
 
-    func editContact(_ contact: EmergencyContactModel) {
-        // shared data
-        let sharedData: [String: Any] = [
-            "hit_type": "update",
-            "contactDetails": contact
-        ]
+        if #available(iOS 15.0, *) {
 
-        // Navigate to edit screen here
-        
-        NavigationManager.pushScreen(
-            from: self,
-            storyboardName: "Main",
-            viewControllerID: "UpdateEmergencyContactsVC",
-            data: sharedData
-        )
+            var config = sendAlertBtn.configuration
+            config?.baseBackgroundColor = UIColor(named: "textDescription")
+            config?.baseForegroundColor = .white
+            sendAlertBtn.configuration = config
+        } else {
+
+            sendAlertBtn.backgroundColor = UIColor(named: "textDescription")
+            sendAlertBtn.setTitleColor(.white, for: .normal)
+        }
+
+        sendAlertBtn.isEnabled = false
     }
+    
+    private func enableSendButton() {
 
-    func deleteContact(_ contact: EmergencyContactModel, at index: Int) {
+        if #available(iOS 15.0, *) {
 
-        if contacts.count <= 1 {
-            showToast(message: "There should be at least one contact")
+            var config = sendAlertBtn.configuration
+            config?.baseBackgroundColor = UIColor(named: "iconColor")
+            config?.baseForegroundColor = .white
+            sendAlertBtn.configuration = config
+        } else {
+
+            sendAlertBtn.backgroundColor = UIColor(named: "iconColor")
+            sendAlertBtn.setTitleColor(.white, for: .normal)
+        }
+
+        sendAlertBtn.isEnabled = true
+    }
+    
+    private func startCountdown(
+        issueType: String,
+        issueMessage: String
+    ) {
+
+        remainingSeconds = 30
+
+        sendAlertBtn.setTitle("Wait (\(remainingSeconds))", for: .normal)
+
+        countdownTimer?.invalidate()
+
+        countdownTimer = Timer.scheduledTimer(
+            withTimeInterval: 1,
+            repeats: true
+        ) { [weak self] timer in
+
+            guard let self = self else { return }
+
+            self.remainingSeconds -= 1
+
+            self.sendAlertBtn.setTitle(
+                "Wait (\(self.remainingSeconds))",
+                for: .normal
+            )
+
+            if self.remainingSeconds <= 0 {
+
+                timer.invalidate()
+
+                self.sendAlertBtn.setTitle(
+                    "Send Notification",
+                    for: .normal
+                )
+                
+                enableSendButton()
+                
+                NavigationManager.pushScreen(
+                    from: self,
+                    viewControllerID: "CustomNotificationAlertVC",
+                    closeCurrentScreen: true,
+                    data: [
+                            "qrItem": qrItem
+                        ]
+                )
+            }
+        }
+    }
+    
+    private func addTapGesture(to view: UIView) {
+        view.isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(alertViewTapped(_:)))
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc private func alertViewTapped(_ sender: UITapGestureRecognizer) {
+
+        guard let clickedView = sender.view else {
             return
         }
 
-        let alert = UIAlertController(
-            title: "Delete Contact",
-            message: "Are you sure you want to remove it?",
-            preferredStyle: .alert
-        )
-
-        alert.addAction(UIAlertAction(title: "No", style: .cancel))
-
-        alert.addAction(UIAlertAction(
-            title: "Yes, Delete",
-            style: .destructive
-        ) { [weak self] _ in
-
-            guard let self = self else { return }
-            
-            LoadingManager.shared.show(on: view)
-
-            let params: [String: Any] = [
-                "user_id": PreferenceManager.shared.getUserId(),
-                "contact_id": contact._id
-            ]
-
-            NetworkManager.shared.callAPI(
-                url: APIEndpoints.DELETE_EMERGENCY_CONTACT,
-                method: "POST",
-                parameters: params
-            ) { response, status, message in
-
-                LoadingManager.shared.hide()
-                
-                self.showToast(message: message)
-
-                if status {
-
-                    self.contacts.remove(at: index)
-
-                    self.tableView.deleteRows(
-                        at: [IndexPath(row: index, section: 0)],
-                        with: .automatic
-                    )
-
-                } else {
-
-                    self.showToast(message: message)
-                }
-            }
-        })
-
-        present(alert, animated: true)
+        onAlertViewClicked(selectedView: clickedView)
     }
     
     
-    func getEmergencyContactList() {
+    func sendNotification(receiver_id: String?, notification_type: String?, issue_type: String?, issueMessage: String?, notification_title: String?, vehicle_id: String?, isVaultAccess: Bool?) {
+
+        LoadingManager.shared.show(on: view)
+
+
+        var params: [String: Any] = [
+            "sender_id": PreferenceManager.shared.getUserId(),
+            "receiver_id": receiver_id ?? "",
+            "notification_type": notification_type ?? "",
+            "issue_type": issue_type ?? "",
+            "notification_title": notification_title ?? "",
+            "message": issueMessage ?? "",
+            "vehicle_id": vehicle_id ?? ""
+        ]
+        
+        if let latitude = LocationManager.shared.latitude,
+           let longitude = LocationManager.shared.longitude {
+
+            params["latitude"] = latitude
+            params["longitude"] = longitude
+        }
+
+        NetworkManager.shared.callAPI(
+            url: APIEndpoints.SEND_NOTIFICATION,
+            method: "POST",
+            parameters: params
+        ) { response, status, message in
+
+            LoadingManager.shared.hide()
+
+            if status {
+                self.qrItem?.notificationType = notification_type
+                self.qrItem?.issueType = issue_type
+                self.qrItem?.issueMessage = issueMessage
+                self.qrItem?.notificationTitle = notification_title
+
+                if isVaultAccess == true {
+                    
+                }else{
+                    self.startCountdown(issueType: issue_type ?? "", issueMessage: issueMessage ?? "")
+                }
+            }
+        }
+    }
+
+
+    
+    
+    func getOwnerDetails(ownerId: String? = "") {
 
         LoadingManager.shared.show(on: view)
 
         let params: [String: Any] = [
-            "user_id": PreferenceManager.shared.getUserId(),
-            "details_type": "emergency_contacts"
+            "user_id": ownerId ?? "",
+            "details_type": "all"
         ]
 
         NetworkManager.shared.callAPI(
@@ -170,92 +356,109 @@ class EmergencyContactsListVC: BaseViewController {
 
             if status {
 
-                self.contacts.removeAll()
+                if let data = response?["data"] as? [String: Any] {
 
-                if let response = response,
-                   let dataArray = response["data"] as? [[String: Any]] {
+                    // Public Details
+                    let publicDetails = data["public_details"] as? [String: Any]
 
-                    do {
+                    self.qrItem?.public_pic = publicDetails?["public_pic"] as? String ?? ""
+                    self.qrItem?.nick_name = publicDetails?["nick_name"] as? String ?? ""
+                    self.qrItem?.gender = publicDetails?["gender"] as? String ?? ""
+                    self.qrItem?.address = publicDetails?["address"] as? String ?? ""
+                    self.qrItem?.age = TimeUtils.getDatePart(
+                        from: publicDetails?["age"] as? String ?? "",
+                        type: "age"
+                    )
 
-                        let jsonData = try JSONSerialization.data(
-                            withJSONObject: dataArray,
-                            options: []
-                        )
+                    // Basic Details
+                    let basicDetails = data["basic_details"] as? [String: Any]
 
-                        let contactList = try JSONDecoder().decode(
-                            [EmergencyContactModel].self,
-                            from: jsonData
-                        )
+                    self.qrItem?.ownerNumber = basicDetails?["phone_number"] as? String ?? ""
 
-                        self.contacts.append(contentsOf: contactList)
+                    // Set UI
+                    self.ownerName.text = self.qrItem?.nick_name
+                    self.ownerGender.text = self.qrItem?.gender
+                    self.ownerLocation.text = self.qrItem?.address
+                    self.ownerAge.text = "\(self.qrItem?.age ?? "") year old"
 
-                        self.tableView.reloadData()
-
-                        // Show Empty/List View
-                        self.listView.isHidden = self.contacts.isEmpty
-                        self.emptyView.isHidden = !self.contacts.isEmpty
-
-                    } catch {
-
-                        print("Decode Error:", error.localizedDescription)
-                    }
+                    self.userProfileImage.sd_setImage(
+                        with: URL(string: self.qrItem?.public_pic ?? ""),
+                        placeholderImage: UIImage(named: "defaultProfileIcon")
+                    )
                 }
-
-            } else {
-
-                self.showToast(message: message)
             }
         }
     }
     
-}
-
-extension EmergencyContactsListVC: UITableViewDelegate, UITableViewDataSource {
-
-    func tableView(_ tableView: UITableView,
-                   numberOfRowsInSection section: Int) -> Int {
-
-        return contacts.count
+    
+    
+    private var alertViews: [UIView] {
+        [
+            parkingViewBtn,
+            congestedParkingViewBtn,
+            roadBlockAlertViewBtn,
+            blockedVehicleAlertViewBtn,
+            carLightsWindowsLeftOpenViewBtn,
+            carHornOrAlarmGoingOffViewBtn,
+            unknownIssueAlertViewBtn,
+            accidentAlertViewBtn,
+            requestForDocumentAccessViewBtn
+        ]
     }
 
-    func tableView(_ tableView: UITableView,
-                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    private func onAlertViewClicked(selectedView: UIView?) {
 
-        let contact = contacts[indexPath.row]
-
-        let cell = tableView.dequeueReusableCell(
-            withIdentifier: "EmergencyContactCell",
-            for: indexPath
-        ) as! EmergencyContactCell
-
-        cell.selectionStyle = .none
-
-        cell.userName.text = "\(contact.first_name) \(contact.last_name)"
-        cell.userNumber.text = contact.phone_number
-
-        if contact.profile_pic.isEmpty {
-
-            cell.userImage.image = UIImage(named: "defaultProfileIcon")
-
-        } else if let url = URL(string: contact.profile_pic) {
-
-            cell.userImage.sd_setImage(
-                with: url,
-                placeholderImage: UIImage(named: "defaultProfileIcon")
-            )
+        alertViews.forEach {
+            setCardSelected(isSelected: false, clickedView: $0)
         }
 
-        cell.editBtn.isHidden = !isEditable
-        cell.deleteBtn.isHidden = !isEditable
-
-        cell.editAction = { [weak self] in
-            self?.editContact(contact)
+        if let selectedView = selectedView {
+            self.selectedAlertViewBtn = selectedView
+            setCardSelected(isSelected: true, clickedView: selectedView)
+        } else {
+            self.selectedAlertViewBtn = nil
         }
+    }
+    
+    
+    private func setCardSelected(
+        isSelected: Bool,
+        clickedView: UIView
+    ) {
 
-        cell.deleteAction = { [weak self] in
-            self?.deleteContact(contact, at: indexPath.row)
+        clickedView.layer.cornerRadius = 16
+        clickedView.layer.masksToBounds = true
+        clickedView.layer.borderWidth = 3
+
+        if isSelected {
+
+            // Selected view can never be disabled
+            clickedView.backgroundColor = .white
+            clickedView.layer.borderColor = (
+                UIColor(named: "iconColor") ?? .systemBlue
+            ).cgColor
+
+            clickedView.isUserInteractionEnabled = true
+
+        } else if self.isOtherAlerDisabled {
+
+            // Disabled view
+            clickedView.backgroundColor = UIColor(named: "textDescription")
+            clickedView.layer.borderColor = (
+                UIColor(named: "textDescription") ?? .lightGray
+            ).cgColor
+
+            clickedView.isUserInteractionEnabled = false
+
+        } else {
+
+            // Normal view
+            clickedView.backgroundColor = .white
+            clickedView.layer.borderColor = (
+                UIColor(named: "textDescription") ?? .lightGray
+            ).cgColor
+
+            clickedView.isUserInteractionEnabled = true
         }
-
-        return cell
     }
 }

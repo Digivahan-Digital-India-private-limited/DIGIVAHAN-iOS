@@ -9,6 +9,8 @@ import UIKit
 
 class RestPasswordVC: BaseViewController {
     
+    @IBOutlet weak var mainScrollView: UIScrollView!
+    
     @IBOutlet weak var passwordField: CustomInputFieldView!
     @IBOutlet weak var confirmPasswordField: CustomInputFieldView!
     @IBOutlet weak var savePasswordBtn: UIButton!
@@ -17,6 +19,7 @@ class RestPasswordVC: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        enableKeyboardAvoiding(scrollView: mainScrollView)
        
         if let data = receivedData as? [String: Any] {
             self.userId = data["userId"] as? String ?? ""
@@ -57,9 +60,10 @@ class RestPasswordVC: BaseViewController {
                         
             if status {
                 
-                CommonFunctions.showSuccessDialog(
+                NavigationManager.moveToNavigationController(
                     from: self,
-                    verificationType: "changePassword"
+                    storyboardName: "Auth",
+                    navigationControllerID: "AuthNavigationController"
                 )
                 
             } else {

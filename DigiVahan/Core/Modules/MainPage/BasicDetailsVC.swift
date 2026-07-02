@@ -18,6 +18,8 @@ import SDWebImage
 
 class BasicDetailsVC: BaseViewController {
     
+    @IBOutlet weak var mainScrollView: UIScrollView!
+    
     @IBOutlet weak var userProfileImage: UIImageView!
     @IBOutlet weak var profileProgress: CircularProgressView!
     
@@ -59,6 +61,8 @@ class BasicDetailsVC: BaseViewController {
         super.viewDidLoad()
         
         enableKeyboardDismissOnTap()
+        enableKeyboardAvoiding(scrollView: mainScrollView)
+        
         sutUI()
     }
     

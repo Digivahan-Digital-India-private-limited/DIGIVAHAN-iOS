@@ -7,32 +7,43 @@
 
 import UIKit
 
-class EmergencyContactCell: UITableViewCell {
+class GarageListCell: UITableViewCell {
 
-    @IBOutlet weak var userImage: UIImageView!
-    @IBOutlet weak var userName: UILabel!
-    @IBOutlet weak var userNumber: UILabel!
+    @IBOutlet weak var cardView: UIView!
 
-    @IBOutlet weak var editBtn: UIImageView!
+    @IBOutlet weak var vehicleImage: UIImageView!
+
+    @IBOutlet weak var vehicleName: UILabel!
+    @IBOutlet weak var vehicleClass: UILabel!
+    
     @IBOutlet weak var deleteBtn: UIImageView!
 
-    var editAction: (() -> Void)?
+    var itemClickAction: (() -> Void)?
     var deleteAction: (() -> Void)?
 
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        userImage.layer.cornerRadius = 25
-        userImage.clipsToBounds = true
+        // Card
+        cardView.layer.cornerRadius = 15
+        cardView.layer.borderWidth = 1
+        cardView.layer.borderColor = UIColor.black.cgColor
+        cardView.clipsToBounds = true
 
-        editBtn.isUserInteractionEnabled = true
-        editBtn.addGestureRecognizer(
-            UITapGestureRecognizer(
-                target: self,
-                action: #selector(editBtnClick)
-            )
+        // Vehicle image
+//        vehicleImage.layer.cornerRadius = 12
+//        vehicleImage.clipsToBounds = true
+        vehicleImage.contentMode = .scaleAspectFill
+
+
+        // Card click
+        cardView.isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer(
+            target: self,
+            action: #selector(cardViewClicked)
         )
-
+        cardView.addGestureRecognizer(tap)
+        
         deleteBtn.isUserInteractionEnabled = true
         deleteBtn.addGestureRecognizer(
             UITapGestureRecognizer(
@@ -40,13 +51,15 @@ class EmergencyContactCell: UITableViewCell {
                 action: #selector(deleteBtnClick)
             )
         )
+        
     }
-
-    @objc private func editBtnClick() {
-        editAction?()
-    }
-
+    
     @objc private func deleteBtnClick() {
         deleteAction?()
     }
+
+    @objc private func cardViewClicked() {
+        itemClickAction?()
+    }
 }
+

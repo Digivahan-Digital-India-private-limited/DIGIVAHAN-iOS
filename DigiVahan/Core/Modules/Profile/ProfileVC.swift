@@ -7,6 +7,7 @@
 
 import UIKit
 import SDWebImage
+import OneSignalFramework
 
 class ProfileVC: UIView, UITextFieldDelegate {
     
@@ -20,6 +21,9 @@ class ProfileVC: UIView, UITextFieldDelegate {
     @IBOutlet weak var userProfileImage: UIImageView!
     @IBOutlet weak var userName: UILabel!
     @IBOutlet weak var profileCompletionPercent: UILabel!
+    @IBOutlet weak var scanBtn: UIView!
+    @IBOutlet weak var garageBtn: UIView!
+    @IBOutlet weak var myVirtualQRBtn: UIView!
     
     @IBOutlet weak var profileProgress: CircularProgressView!
 
@@ -63,7 +67,7 @@ class ProfileVC: UIView, UITextFieldDelegate {
         setupUI()
     }
 
-    private func setupUI() {
+    public func setupUI() {
         userProfileImage.layer.cornerRadius =
                 userProfileImage.frame.width / 2
 
@@ -132,6 +136,56 @@ class ProfileVC: UIView, UITextFieldDelegate {
             )
 
         logoutBtn.addGestureRecognizer(logoutBtnTap)
+        
+        // set scanBtn
+        scanBtn.isUserInteractionEnabled = true
+
+            let scanBtnTap = UITapGestureRecognizer(
+                target: self,
+                action: #selector(onScanBtnClick)
+            )
+
+        scanBtn.addGestureRecognizer(scanBtnTap)
+        
+        // set garageBtn
+        garageBtn.isUserInteractionEnabled = true
+
+            let garageBtnTap = UITapGestureRecognizer(
+                target: self,
+                action: #selector(onGarageBtnClick)
+            )
+
+        garageBtn.addGestureRecognizer(garageBtnTap)
+        
+        // set myVirtualQRBtn
+        myVirtualQRBtn.isUserInteractionEnabled = true
+
+            let myVirtualQRBtnTap = UITapGestureRecognizer(
+                target: self,
+                action: #selector(onMyVirtualQRBtnClick)
+            )
+
+        myVirtualQRBtn.addGestureRecognizer(myVirtualQRBtnTap)
+    }
+    
+    @objc private func onMyVirtualQRBtnClick() {
+        if let vc = parentViewController {
+            NavigationManager.pushScreen(
+                from: vc,
+                storyboardName: "Main",
+                viewControllerID: "VirtualQRListVC"
+            )
+        }
+    }
+    
+    @objc private func onGarageBtnClick() {
+        if let vc = parentViewController {
+            NavigationManager.pushScreen(
+                from: vc,
+                storyboardName: "Main",
+                viewControllerID: "GarageListVC"
+            )
+        }
     }
     
     @objc private func onUpdateProfileBtnClick() {
@@ -140,6 +194,16 @@ class ProfileVC: UIView, UITextFieldDelegate {
                 from: vc,
                 storyboardName: "Main",
                 viewControllerID: "ProfileUpdateMenuVC"
+            )
+        }
+    }
+    
+    @objc private func onScanBtnClick() {
+        if let vc = parentViewController {
+            NavigationManager.pushScreen(
+                from: vc,
+                storyboardName: "Main",
+                viewControllerID: "ScanVC"
             )
         }
         
@@ -166,6 +230,9 @@ class ProfileVC: UIView, UITextFieldDelegate {
     }
     
     @objc private func onLogoutBtnClick() {
+        
+        OneSignal.logout()
+        
         if let vc = parentViewController {
             CommonFunctions.logout(
                 from: vc,

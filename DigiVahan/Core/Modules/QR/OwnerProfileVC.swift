@@ -9,7 +9,7 @@
 import UIKit
 import SDWebImage
 
-class CustomNotificationAlertVC: BaseViewController {
+class OwnerProfileVC: BaseViewController {
 
     private var qrItem: QRDataModel?
     @IBOutlet weak var ownerName: UILabel!
@@ -18,9 +18,10 @@ class CustomNotificationAlertVC: BaseViewController {
     @IBOutlet weak var ownerLocation: UILabel!
     @IBOutlet weak var userProfileImage: UIImageView!
     
-    @IBOutlet weak var sendAlertBtn: UIButton!
+    @IBOutlet weak var callBtn: UIButton!
+    private var countdownTimer: Timer?
+    private var remainingSeconds = 30
     
-    @IBOutlet weak var messageField: UITextView!
     
         
     override func viewDidLoad() {
@@ -31,14 +32,13 @@ class CustomNotificationAlertVC: BaseViewController {
 
     }
     
-    
-    @IBAction func sendAlertBtnClicked(_ sender: Any) {
-        
+    @IBAction func callBtnClicked(_ sender: Any) {
+        makeCall(receiverNumber: qrItem?.ownerNumber)
     }
     
     private func setUI() {
 
-        title = "Notification"
+        title = "Profile"
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationItem.largeTitleDisplayMode = .never
         
@@ -62,20 +62,6 @@ class CustomNotificationAlertVC: BaseViewController {
             userProfileImage.clipsToBounds = true
             userProfileImage.contentMode = .scaleAspectFill
         
-        messageField.layer.cornerRadius = 16
-            messageField.layer.borderWidth = 1.5
-            messageField.layer.borderColor =
-                (UIColor(named: "iconColor") ?? .systemBlue).cgColor
-
-            messageField.textContainerInset = UIEdgeInsets(
-                top: 12,
-                left: 12,
-                bottom: 12,
-                right: 12
-            )
-
-            messageField.font = UIFont.systemFont(ofSize: 16)
-        
         
         self.ownerName.text = self.qrItem?.nick_name
         self.ownerGender.text = self.qrItem?.gender
@@ -87,30 +73,26 @@ class CustomNotificationAlertVC: BaseViewController {
             placeholderImage: UIImage(named: "defaultProfileIcon")
         )
         
+        enableCallButton()
         
-        sendNotification(receiver_id: qrItem?.assigned_to, notification_type: qrItem?.notificationType, issue_type: qrItem?.issueType, issueMessage: qrItem?.issueMessage, notification_title: qrItem?.notificationTitle, vehicle_id: qrItem?.vehicle_id)
        
     }
 
     
-    func sendNotification(receiver_id: String?, notification_type: String?, issue_type: String?, issueMessage: String?, notification_title: String?, vehicle_id: String?) {
+    func makeCall(receiverNumber: String?) {
+        
+        print("receiverNumber:- \(String(describing: receiverNumber))")
 
         LoadingManager.shared.show(on: view)
 
 
         let params: [String: Any] = [
-            "token": PreferenceManager.shared.getAuthToken(),
-            "sender_id": PreferenceManager.shared.getUserId(),
-            "receiver_id": receiver_id ?? "",
-            "notification_type": notification_type ?? "",
-            "issue_type": issue_type ?? "",
-            "notification_title": notification_title ?? "",
-            "message": issueMessage ?? "",
-            "vehicle_id": vehicle_id ?? ""
+            "agent": PreferenceManager.shared.getUser()?.phoneNumber ?? "",
+            "receiver": receiverNumber ?? ""
         ]
 
         NetworkManager.shared.callAPI(
-            url: APIEndpoints.SEND_NOTIFICATION,
+            url: APIEndpoints.CONTACT_VIA_CALL,
             method: "POST",
             parameters: params
         ) { response, status, message in
@@ -119,14 +101,83 @@ class CustomNotificationAlertVC: BaseViewController {
 
             if status {
 
-                NavigationManager.pushScreen(
-                    from: self,
-                    viewControllerID: "CustomNotificationAlertVC",
-                    closeCurrentScreen: true,
-                    data: [
-                        "qrItem": self.qrItem
-                        ]
+                self.showToast(message: "Call initiated successfully")
+                
+                self.disableCallButton()
+                
+                self.startCountdown()
+            } else {
+                self.showToast(message: "Can't initiate a Call")
+            }
+        }
+    }
+    
+    private func disableCallButton() {
+
+        if #available(iOS 15.0, *) {
+
+            var config = self.callBtn.configuration
+            config?.baseBackgroundColor = UIColor(named: "textDescription")
+            config?.baseForegroundColor = .white
+            self.callBtn.configuration = config
+        } else {
+
+            self.callBtn.backgroundColor = UIColor(named: "textDescription")
+            self.callBtn.setTitleColor(.white, for: .normal)
+        }
+
+        self.callBtn.isEnabled = false
+    }
+    
+    private func enableCallButton() {
+
+        if #available(iOS 15.0, *) {
+
+            var config = self.callBtn.configuration
+            config?.baseBackgroundColor = UIColor(named: "iconColor")
+            config?.baseForegroundColor = .white
+            self.callBtn.configuration = config
+        } else {
+
+            self.callBtn.backgroundColor = UIColor(named: "iconColor")
+            self.callBtn.setTitleColor(.white, for: .normal)
+        }
+
+        self.callBtn.isEnabled = true
+    }
+    
+    private func startCountdown() {
+
+        remainingSeconds = 30
+
+        self.callBtn.setTitle("Wait (\(remainingSeconds))", for: .normal)
+
+        countdownTimer?.invalidate()
+
+        countdownTimer = Timer.scheduledTimer(
+            withTimeInterval: 1,
+            repeats: true
+        ) { [weak self] timer in
+
+            guard let self = self else { return }
+
+            self.remainingSeconds -= 1
+
+            self.callBtn.setTitle(
+                "Wait (\(self.remainingSeconds))",
+                for: .normal
+            )
+
+            if self.remainingSeconds <= 0 {
+
+                timer.invalidate()
+
+                self.callBtn.setTitle(
+                    "Call",
+                    for: .normal
                 )
+                
+                enableCallButton()
             }
         }
     }

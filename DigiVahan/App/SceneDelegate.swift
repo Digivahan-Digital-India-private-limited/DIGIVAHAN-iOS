@@ -17,32 +17,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                willConnectTo session: UISceneSession,
                options connectionOptions: UIScene.ConnectionOptions) {
 
-        // Convert generic UIScene into UIWindowScene
-        // If conversion fails then stop execution
         guard let windowScene = (scene as? UIWindowScene) else { return }
 
-        // Create the main app window
-        // Similar to setting root activity in Android
         window = UIWindow(windowScene: windowScene)
 
-        // Load Auth.storyboard file
-        // bundle: nil means current app bundle
         let storyboard = UIStoryboard(name: "Auth", bundle: nil)
 
-        // Create instance of InfoScreenVC from Auth.storyboard
-        // "InfoScreenVC" must match Storyboard ID exactly
-        let infoVC = storyboard.instantiateViewController(withIdentifier: "InfoScreenVC")
+        let splashVC = storyboard.instantiateViewController(
+            withIdentifier: "SplashScreenVC"
+        )
 
-        // Add navigation support
-        // Similar to Fragment backstack/navigation in Android
-        let navController = UINavigationController(rootViewController: infoVC)
+        let navController = UINavigationController(rootViewController: splashVC)
 
-        // Set first screen of application
-        // App will open this controller first
+        navController.navigationBar.isHidden = true
+
         window?.rootViewController = navController
 
-        // Make window visible on screen
-        // Without this app screen will stay blank
         window?.makeKeyAndVisible()
     }
 

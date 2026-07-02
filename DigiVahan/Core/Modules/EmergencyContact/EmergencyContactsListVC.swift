@@ -35,7 +35,7 @@ class EmergencyContactsListVC: BaseViewController {
 
     private func setUI() {
 
-        title = "Emergency Contacts"
+        title = "Scan QR Code"
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationItem.largeTitleDisplayMode = .never
         

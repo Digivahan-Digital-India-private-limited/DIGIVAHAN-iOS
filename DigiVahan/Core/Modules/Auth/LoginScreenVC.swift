@@ -6,13 +6,16 @@
 //
 
 import UIKit
+import OneSignalFramework
 
 class LoginScreenVC: BaseViewController {
     
     var isOTPLogin: Bool = false
     
+    @IBOutlet weak var mainScrollView: UIScrollView!
+    
     // Layouts
-    @IBOutlet weak var userLoginLayout: UIScrollView!
+    @IBOutlet weak var userLoginLayout: UIView!
     @IBOutlet weak var userRegisterLayout: UIView!
     
     @IBOutlet weak var oldNewUserBtnLayout: UIStackView!
@@ -37,6 +40,8 @@ class LoginScreenVC: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        enableKeyboardAvoiding(scrollView: mainScrollView)
         
         oldNewUserBtnLayout.isLayoutMarginsRelativeArrangement = true
 
@@ -68,6 +73,7 @@ class LoginScreenVC: BaseViewController {
             view.addGestureRecognizer(tap)
         
         forgotPasswordBtn.isUserInteractionEnabled = true
+        
         let tapToMoveForgotPassword = UITapGestureRecognizer(target: self, action: #selector(moveToForgotPage))
         forgotPasswordBtn.addGestureRecognizer(tapToMoveForgotPassword)
 
@@ -100,6 +106,7 @@ class LoginScreenVC: BaseViewController {
         }
         
         if isOTPLogin {
+            
             print("Navigation Controller =", self.navigationController as Any)
             NavigationManager.pushScreen(
                    from: self,
@@ -147,13 +154,25 @@ class LoginScreenVC: BaseViewController {
                         
                         PreferenceManager.shared.setLoggedIn(true)
                             
-                            PreferenceManager.shared.saveUser(CommonFunctions.parseUserFromJson(user))
+                        PreferenceManager.shared.saveUser(CommonFunctions.parseUserFromJson(user))
+                        
+                        if !PreferenceManager.shared.getUserId().isEmpty {
 
+                            OneSignal.login(
+                                PreferenceManager.shared.getUserId()
+                            )
+
+                            print(
+                                "OneSignal linked to user:",
+                                PreferenceManager.shared.getUserId()
+                            )
+                        }
                         
                         // Move Next Screen
-                        NavigationManager.moveToScreen(
+                        NavigationManager.moveToNavigationController(
                             from: self,
-                            viewControllerID: "MainPage"
+                            storyboardName: "Main",
+                            navigationControllerID: "MainNavigationController"
                         )
                         
                         
@@ -298,6 +317,9 @@ class LoginScreenVC: BaseViewController {
     }
     
     @objc func moveToForgotPage() {
+        
+        print("moveToForgotPage")
+        
         let params: [String: Any] = [
             "verificationType": "changePassword"
         ]

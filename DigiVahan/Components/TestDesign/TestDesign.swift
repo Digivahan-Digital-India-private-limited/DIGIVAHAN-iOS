@@ -5,4 +5,8 @@
 //  Created by Mr Ash on 19/05/26.
 //
 
-import Foundation
+import UIKit
+
+class TestDesign: UIView {
+    
+}
