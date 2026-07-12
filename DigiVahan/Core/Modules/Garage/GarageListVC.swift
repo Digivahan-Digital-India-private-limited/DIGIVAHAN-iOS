@@ -179,6 +179,30 @@ class GarageListVC: BaseViewController {
                             model.insurance_policy_number = info["insurance_policy_number"] as? String ?? ""
                             model.category = info["category"] as? String ?? ""
                         }
+                        
+                      
+                        if let vehicleDoc = vehicle["vehicle_doc"] as? [String: Any] {
+                                if let documents = vehicleDoc["documents"] as? [[String: Any]] {
+
+                                    var documentList: [VehicleDocuments] = []
+
+                                    for document in documents {
+
+                                        var documentModel = VehicleDocuments()
+
+                                        documentModel.doc_name = document["doc_name"] as? String ?? ""
+                                        documentModel.doc_type = document["doc_type"] as? String ?? ""
+                                        documentModel.doc_number = document["doc_number"] as? String ?? ""
+                                        documentModel.doc_url = document["doc_url"] as? String ?? ""
+                                        documentModel.public_id = document["public_id"] as? String ?? ""
+                                        documentModel.uploaded_at = document["uploaded_at"] as? String ?? ""
+
+                                        documentList.append(documentModel)
+                                    }
+
+                                    model.vehicleDocumentsArrayList = documentList
+                                }
+                            }
 
                         self.garageItemList.append(model)
                     }
@@ -226,7 +250,7 @@ class GarageListVC: BaseViewController {
     func deleteVehicle(_ contact: GarageItemModel, at index: Int) {
 
         let alert = UIAlertController(
-            title: "Delete Contact",
+            title: "Remove Vehicle",
             message: "Are you sure you want to remove it?",
             preferredStyle: .alert
         )
@@ -265,6 +289,10 @@ class GarageListVC: BaseViewController {
                         at: [IndexPath(row: index, section: 0)],
                         with: .automatic
                     )
+                    
+                    if self.garageItemList.isEmpty {
+                        self.setEmptyLayout(true)
+                    }
 
                 } else {
 
@@ -478,23 +506,23 @@ extension GarageListVC: UITableViewDelegate, UITableViewDataSource, UITextFieldD
         return cell
     }
 
-    func tableView(
-        _ tableView: UITableView,
-        didSelectRowAt indexPath: IndexPath
-    ) {
-
-        let contact = garageItemList[indexPath.row]
-
-        let sharedData: [String: Any] = [
-            "vehicleData": contact
-        ]
-
-        NavigationManager.pushScreen(
-            from: self,
-            viewControllerID: "VehicleInfoVC",
-            data: sharedData
-        )
-    }
+//    func tableView(
+//        _ tableView: UITableView,
+//        didSelectRowAt indexPath: IndexPath
+//    ) {
+//
+//        let contact = garageItemList[indexPath.row]
+//
+//        let sharedData: [String: Any] = [
+//            "vehicleData": contact
+//        ]
+//
+//        NavigationManager.pushScreen(
+//            from: self,
+//            viewControllerID: "VehicleInfoVC",
+//            data: sharedData
+//        )
+//    }
 
     func textField(
         _ textField: UITextField,

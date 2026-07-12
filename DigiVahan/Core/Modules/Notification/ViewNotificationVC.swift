@@ -6,8 +6,9 @@
 //
 
 import UIKit
+import SDWebImage
 
-class ViewNotificationVC: BaseViewController {
+class ViewNotificationVC: BaseViewController  {
         
     @IBOutlet weak var mapBtn: UIButton!
     @IBOutlet weak var mapBtnLayout: UIView!
@@ -17,6 +18,11 @@ class ViewNotificationVC: BaseViewController {
     @IBOutlet weak var callBtnLayout: UIView!
     @IBOutlet weak var notificationTypeImage: UIImageView!
     private var notificationListItem : NotificationItemModel?
+    @IBOutlet weak var collectionView: UICollectionView!
+    
+    @IBOutlet weak var viewImageLayout: UIView!
+    @IBOutlet weak var viewImage: UIImageView!
+    @IBOutlet weak var viewImageCloseIcon: UIImageView!
     
     private var ownerContect : String? = ""
     private var countdownTimer: Timer?
@@ -29,8 +35,15 @@ class ViewNotificationVC: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-    
-                
+        navigationItem.hidesBackButton = true
+
+            navigationItem.leftBarButtonItem = UIBarButtonItem(
+                image: UIImage(systemName: "chevron.left"),
+                style: .plain,
+                target: self,
+                action: #selector(backPressed)
+            )
+         
         // Receive Data
         if let data = receivedData as? [String: Any] {
             notificationListItem = data["notificationListItem"] as? NotificationItemModel ?? nil
@@ -38,18 +51,24 @@ class ViewNotificationVC: BaseViewController {
         
         if notificationListItem != nil {
             
+            if !(notificationListItem?.seen_status ?? true) {
+                setSeenNotificationTrue(notification_id: notificationListItem?._id ?? "")
+            }
+            
             notificationTitle.text = notificationListItem?.notification_title
             notificationDescription.text = notificationListItem?.message
             
             if (notificationListItem?.latitude != nil && notificationListItem?.latitude != "") && (notificationListItem?.longitude != nil && notificationListItem?.longitude != ""){
-                mapBtn.isHidden = false
+                mapBtnLayout.isHidden = false
             } else {
-                mapBtn.isHidden = true
+                mapBtnLayout.isHidden = true
             }
+            
             
             if notificationListItem?.notification_type == "chat" {
                 getOwnerContect(userId: notificationListItem?.sender_id ?? "")
             }
+            
             
             if notificationListItem?.issue_type == "no_parking" {
                 notificationTypeImage.image = UIImage(named: "parkingIcon")
@@ -76,15 +95,59 @@ class ViewNotificationVC: BaseViewController {
         mapBtn.layer.borderWidth = 2
         mapBtn.layer.borderColor = UIColor.green.cgColor
         
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.reloadData()
         
-        getOwnerContect(userId: notificationListItem?.sender_id ?? "")
+        viewImageCloseIcon.isUserInteractionEnabled = true
+
+        let tap = UITapGestureRecognizer(
+            target: self,
+            action: #selector(closeViewImageBtnClicked(_:))
+        )
+        viewImageCloseIcon.addGestureRecognizer(tap)
         
+    }
+    
+    @objc func backPressed() {
+
+        if !viewImageLayout.isHidden {
+            viewImageLayout.isHidden = true
+        } else {
+            navigationController?.popViewController(animated: true)
+        }
+    }
+    
+    @objc func closeViewImageBtnClicked(_ sender: UITapGestureRecognizer) {
+        viewImageLayout.isHidden = true
+    }
+    
+    @objc func cardViewClicked(_ sender: UITapGestureRecognizer) {
+
+        guard let card = sender.view else { return }
+
+        let index = card.tag
         
+        if let imageUrl = notificationListItem?.incident_proof?[index] {
+
+            viewImage.sd_setImage(
+                with: URL(string: imageUrl),
+                placeholderImage: UIImage(named: "emptyImage")
+            )
+
+        } else {
+
+            viewImage.image = UIImage(named: "emptyImage")
+        }
+        
+        viewImageLayout.isHidden = false
     }
    
     @IBAction func callBtnClicked(_ sender: Any) {
         self.makeCall(receiverNumber: ownerContect)
     }
+    
+    
     @IBAction func mapClicked(_ sender: Any) {
         showToast(message: "Unable to find location")
         if (notificationListItem?.latitude != nil && notificationListItem?.latitude != "") && (notificationListItem?.longitude != nil && notificationListItem?.longitude != ""){
@@ -249,5 +312,94 @@ class ViewNotificationVC: BaseViewController {
         }
     }
     
+    private func setSeenNotificationTrue(notification_id: String) {
+        
+        // Params
+        let params: [String: Any] = [
+            "user_id": PreferenceManager.shared.getUserId(),
+            "notification_id": notification_id
+        ]
+        
+        // API Call
+        NetworkManager.shared.callAPI(
+            url: APIEndpoints.SET_NOTIFICATION_SEEN,
+            method: "POST",
+            parameters: params
+        ) { response, status, message in
+                        
+        }
+        
+    }
+    
+}
+
+extension ViewNotificationVC:
+    UICollectionViewDelegate,
+    UICollectionViewDataSource,
+    UICollectionViewDelegateFlowLayout {
+
+        func collectionView(
+            _ collectionView: UICollectionView,
+            numberOfItemsInSection section: Int
+        ) -> Int {
+
+            return notificationListItem?.incident_proof?.count ?? 0
+        }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
+
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: "NotificationImageCell",
+            for: indexPath
+        ) as! NotificationImageCell
+
+        CommonFunctions.addDashedBorder(to: cell.cardView)
+
+        cell.cardView.tag = indexPath.row
+        cell.cardView.isUserInteractionEnabled = true
+
+        let tap = UITapGestureRecognizer(
+            target: self,
+            action: #selector(cardViewClicked(_:))
+        )
+
+        cell.cardView.gestureRecognizers?.removeAll()
+        cell.cardView.addGestureRecognizer(tap)
+
+        cell.closeIcon.isHidden = true
+
+        if let imageUrl = notificationListItem?.incident_proof?[indexPath.row] {
+
+            cell.fieldProfileIcon.sd_setImage(
+                with: URL(string: imageUrl),
+                placeholderImage: UIImage(named: "emptyImage")
+            )
+
+        } else {
+
+            cell.fieldProfileIcon.image = UIImage(named: "emptyImage")
+        }
+
+        return cell
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        print("Card Clicked: \(indexPath.row)")
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+
+        return CGSize(width: 90, height: 90)
+    }
     
 }

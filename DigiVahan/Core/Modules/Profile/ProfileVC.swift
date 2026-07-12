@@ -261,15 +261,10 @@ class ProfileVC: UIView, UITextFieldDelegate {
     
     private func loadUserProfile() {
         
-        print("load User Profile")
 
             let user = PreferenceManager.shared.getUser()
 
-            print("USER =", user as Any)
-
             guard let user = user else {
-
-                print("USER IS NIL")
 
                 userProfileImage.image =
                 UIImage(named: "defaultProfileIcon")

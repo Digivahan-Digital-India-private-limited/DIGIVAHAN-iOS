@@ -66,5 +66,6 @@ struct VehicleDocuments: Codable {
     var public_id: String?
     var doc_number: String?
     var doc_url: String?
+    var uploaded_at: String?
     var _id: String?
 }

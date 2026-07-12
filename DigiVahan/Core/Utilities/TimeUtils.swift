@@ -284,4 +284,45 @@ class TimeUtils {
             return Int(diff / (24 * 60 * 60))
         }
     
+    // MARK: - Convert UTC To Device Local Time
+
+    static func convertUtcToDeviceTime(
+        _ utcTime: String?,
+        outputFormat: String = "dd MMM yyyy, hh:mm a"
+    ) -> String {
+
+        guard let utcTime = utcTime,
+              !utcTime.isEmpty else {
+            return ""
+        }
+
+        let utcFormatter = DateFormatter()
+        utcFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        utcFormatter.locale = Locale(identifier: "en_US_POSIX")
+        utcFormatter.timeZone = TimeZone(abbreviation: "UTC")
+
+        guard let date = utcFormatter.date(from: utcTime) else {
+            print("❌ Failed to parse UTC time: \(utcTime)")
+            return ""
+        }
+
+        let localFormatter = DateFormatter()
+        localFormatter.dateFormat = outputFormat
+        localFormatter.locale = Locale.current
+        localFormatter.timeZone = .current
+
+        let result = localFormatter.string(from: date)
+
+        print("""
+        ==========================
+        UTC Time      : \(utcTime)
+        Device Zone   : \(TimeZone.current.identifier)
+        Local Time    : \(result)
+        ==========================
+        """)
+
+        return result
+    }
+    
+    
 }

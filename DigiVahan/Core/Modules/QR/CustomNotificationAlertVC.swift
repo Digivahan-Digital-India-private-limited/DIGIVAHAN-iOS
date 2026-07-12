@@ -180,7 +180,8 @@ class CustomNotificationAlertVC: BaseViewController {
                 incidentProof.append(imageURL)
             }
         }
-
+        
+        
         LoadingManager.shared.show(on: view)
 
 
@@ -193,12 +194,12 @@ class CustomNotificationAlertVC: BaseViewController {
             "message": issueMessage ?? "",
             "vehicle_id": vehicle_id ?? "",
             "seen_status": false,
-            "incident_proof": incidentProof
+                       "incident_proof": incidentProof
         ]
         
-        if chatRoomId == "empty" {
-            params["chat_room_id"] = chatRoomId
-        }
+        if chatRoomId != "empty" {
+                    params["chat_room_id"] = chatRoomId
+                }
         
         if let latitude = LocationManager.shared.latitude,
            let longitude = LocationManager.shared.longitude {
@@ -216,17 +217,18 @@ class CustomNotificationAlertVC: BaseViewController {
             LoadingManager.shared.hide()
 
             if status {
-
                 NavigationManager.pushScreen(
-                    from: self,
-                    viewControllerID: "OwnerProfileVC",
-                    closeCurrentScreen: true,
-                    data: [
-                        "qrItem": self.qrItem
-                        ]
-                )
+                                    from: self,
+                                    viewControllerID: "OwnerProfileVC",
+                                    closeCurrentScreen: true,
+                                    data: [
+                                        "qrItem": self.qrItem
+                                        ]
+                                )
             }
         }
+        
+        
     }
     
     func createChatRoom(receiver_id: String?) {

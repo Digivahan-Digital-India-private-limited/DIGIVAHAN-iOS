@@ -34,8 +34,8 @@ class NetworkManager {
             return
         }
 
-        print("========== API REQUEST ==========")
-        print("URL:", apiURL)
+//        print("========== API REQUEST ==========")
+//        print("URL:", apiURL)
 
         // Request
         var request = URLRequest(url: apiURL)
@@ -69,7 +69,7 @@ class NetworkManager {
                     options: []
                 )
 
-                print("PARAMS:", params)
+//                print("PARAMS:", params)
 
             } catch {
 
@@ -92,7 +92,7 @@ class NetworkManager {
                 // Network Error
                 if let error = error {
 
-                    print("ERROR:", error.localizedDescription)
+//                    print("ERROR:", error.localizedDescription)
 
                     completion(nil, false, error.localizedDescription)
 
@@ -113,8 +113,8 @@ class NetworkManager {
                         options: []
                     ) as? [String: Any] {
 
-                        print("========== API RESPONSE ==========")
-                        print(json)
+//                        print("========== API RESPONSE ==========")
+//                        print(json)
 
                         // Status
                         let status =
@@ -180,7 +180,7 @@ class NetworkManager {
                             targetSizeKB: 1024
                        ) {
 
-                        print("📦 Upload Size = \(imageData.count / 1024) KB")
+//                        print("📦 Upload Size = \(imageData.count / 1024) KB")
 
                         multipartData.append(
                             imageData,
@@ -191,7 +191,7 @@ class NetworkManager {
 
                     } else {
 
-                        print("⚠️ No image selected")
+//                        print("⚠️ No image selected")
 
                         multipartData.append(
                             Data(),
@@ -298,7 +298,7 @@ class NetworkManager {
                         targetSizeKB: 1024
                    ) {
 
-                    print("📦 Upload Size = \(imageData.count / 1024) KB")
+//                    print("📦 Upload Size = \(imageData.count / 1024) KB")
 
                     multipartData.append(
                         imageData,
@@ -309,7 +309,7 @@ class NetworkManager {
 
                 } else {
 
-                    print("⚠️ No image selected")
+//                    print("⚠️ No image selected")
 
                     multipartData.append(
                         Data(),
@@ -409,7 +409,7 @@ class NetworkManager {
                         targetSizeKB: 1024
                    ) {
 
-                    print("📦 Upload Size = \(imageData.count / 1024) KB")
+//                    print("📦 Upload Size = \(imageData.count / 1024) KB")
 
                     multipartData.append(
                         imageData,
@@ -420,7 +420,7 @@ class NetworkManager {
 
                 } else {
 
-                    print("⚠️ No image selected")
+//                    print("⚠️ No image selected")
 
                     multipartData.append(
                         Data(),
@@ -457,8 +457,8 @@ class NetworkManager {
                     
                     let message = json["message"] as? String ?? ""
                     
-                    print("========== API RESPONSE ==========")
-                    print(json)
+//                    print("========== API RESPONSE ==========")
+//                    print(json)
                     
                     completion(status, message, json)
                     
@@ -469,14 +469,14 @@ class NetworkManager {
                 
             case .failure(let error):
                 
-                print("❌ Error:", error.localizedDescription)
-                print("Status Code:", response.response?.statusCode ?? 0)
+//                print("❌ Error:", error.localizedDescription)
+//                print("Status Code:", response.response?.statusCode ?? 0)
                 
                 if let data = response.data,
                    let responseString = String(data: data, encoding: .utf8) {
                     
-                    print("Response Body:")
-                    print(responseString)
+//                    print("Response Body:")
+//                    print(responseString)
                 }
                 
                 completion(false, error.localizedDescription, nil)
@@ -530,7 +530,7 @@ class NetworkManager {
                         targetSizeKB: 1024
                    ) {
 
-                    print("📦 Upload Size = \(imageData.count / 1024) KB")
+//                    print("📦 Upload Size = \(imageData.count / 1024) KB")
 
                     multipartData.append(
                         imageData,
@@ -541,7 +541,7 @@ class NetworkManager {
 
                 } else {
 
-                    print("⚠️ No image selected")
+//                    print("⚠️ No image selected")
 
                     multipartData.append(
                         Data(),
@@ -587,14 +587,14 @@ class NetworkManager {
 
             case .failure(let error):
 
-                print("❌ Error:", error.localizedDescription)
-                print("Status Code:", response.response?.statusCode ?? 0)
+//                print("❌ Error:", error.localizedDescription)
+//                print("Status Code:", response.response?.statusCode ?? 0)
                 
                 if let data = response.data,
                    let responseString = String(data: data, encoding: .utf8) {
                     
-                    print("Response Body:")
-                    print(responseString)
+//                    print("Response Body:")
+//                    print(responseString)
                 }
                 
                 completion(false, error.localizedDescription, nil)
@@ -631,7 +631,7 @@ class NetworkManager {
                         targetSizeKB: 1024
                    ) {
 
-                    print("📦 Upload Size = \(imageData.count / 1024) KB")
+//                    print("📦 Upload Size = \(imageData.count / 1024) KB")
 
                     multipartData.append(
                         imageData,
@@ -642,7 +642,7 @@ class NetworkManager {
 
                 } else {
 
-                    print("⚠️ No image selected")
+//                    print("⚠️ No image selected")
 
                     return
                 }
@@ -682,19 +682,205 @@ class NetworkManager {
 
             case .failure(let error):
 
-                print("❌ Error:", error.localizedDescription)
-                print("Status Code:", response.response?.statusCode ?? 0)
-                
-                if let data = response.data,
-                   let responseString = String(data: data, encoding: .utf8) {
-                    
-                    print("Response Body:")
-                    print(responseString)
-                }
+//                print("❌ Error:", error.localizedDescription)
+//                print("Status Code:", response.response?.statusCode ?? 0)
+//                
+//                if let data = response.data,
+//                   let responseString = String(data: data, encoding: .utf8) {
+//                    
+//                    print("Response Body:")
+//                    print(responseString)
+//                }
                 
                 completion(false, error.localizedDescription, nil)
                 
             }
         }
     }
+    
+    
+    // upload Document Image
+    func updateDocument(
+        userId: String,
+        vehicleId: String,
+        docName: String,
+        docNumber: String,
+        docType: String,
+        docFile: UIImage?,
+        completion: @escaping (
+            Bool,
+            String,
+            [String: Any]?
+        ) -> Void
+    ) {
+
+        let TAG = "UploadDocument"
+
+        print("========================================")
+        print("🚀 Starting Document Upload")
+        print("👤 User ID:", userId)
+        print("🚗 Vehicle ID:", vehicleId)
+        print("📄 Doc Name:", docName)
+        print("📃 Doc Type:", docType)
+        print("🔢 Doc Number:", docNumber)
+
+        guard let image = docFile else {
+            print("❌ No Image Selected")
+            completion(false, "No document selected", nil)
+            return
+        }
+
+        guard let imageData = CommonFunctions.compressImage(
+            image,
+            targetSizeKB: 1024
+        ) else {
+
+            print("❌ Failed to compress image")
+            completion(false, "Image compression failed", nil)
+            return
+        }
+
+        print("📦 Upload Size: \(imageData.count / 1024) KB")
+
+        let url = APIEndpoints.UPLOAD_DOCUMENT
+
+        AF.upload(
+            multipartFormData: { multipartData in
+
+                multipartData.append(
+                    Data(userId.utf8),
+                    withName: "user_id"
+                )
+
+                multipartData.append(
+                    Data(vehicleId.utf8),
+                    withName: "vehicle_id"
+                )
+
+                multipartData.append(
+                    Data(docName.utf8),
+                    withName: "doc_name"
+                )
+
+                multipartData.append(
+                    Data(docNumber.utf8),
+                    withName: "doc_number"
+                )
+
+                multipartData.append(
+                    Data(docType.utf8),
+                    withName: "doc_type"
+                )
+
+                multipartData.append(
+                    imageData,
+                    withName: "doc_file",
+                    fileName: "document.jpg",
+                    mimeType: "image/jpeg"
+                )
+
+                print("✅ Multipart Form Created")
+
+            },
+            to: url,
+            method: .post
+        )
+        .validate()
+        .responseData { response in
+
+            print("========================================")
+            print("🌐 Response Received")
+
+            print("Status Code:",
+                  response.response?.statusCode ?? 0)
+
+            switch response.result {
+
+            case .success(let data):
+
+                if let responseString = String(
+                    data: data,
+                    encoding: .utf8
+                ) {
+
+                    print("📦 Raw Response:")
+                    print(responseString)
+                }
+
+                do {
+
+                    guard let json =
+                            try JSONSerialization.jsonObject(
+                                with: data
+                            ) as? [String: Any] else {
+
+                        print("❌ Invalid JSON")
+
+                        completion(false,
+                                   "Invalid Response",
+                                   nil)
+
+                        return
+                    }
+
+                    let status =
+                        json["status"] as? Bool ??
+                        json["success"] as? Bool ??
+                        false
+
+                    let message =
+                        json["message"] as? String ??
+                        "Unknown"
+
+                    print("✅ Success:", status)
+                    print("💬 Message:", message)
+
+                    completion(
+                        status,
+                        message,
+                        json
+                    )
+
+                } catch {
+
+                    print("🔥 JSON Parse Error")
+                    print(error.localizedDescription)
+
+                    completion(
+                        false,
+                        "Unable to upload Document",
+                        nil
+                    )
+                }
+
+            case .failure(let error):
+
+                print("❌ Upload Failed")
+                    print(error.localizedDescription)
+
+                    var errorMessage = "Unable to upload Document"
+
+                    if let data = response.data,
+                       let body = String(data: data, encoding: .utf8) {
+
+                        print("Response Body:")
+                        print(body)
+
+                        if let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
+
+                            errorMessage = json["message"] as? String ?? errorMessage
+                        }
+                    }
+
+                    completion(
+                        false,
+                        errorMessage,
+                        nil
+                    )
+            }
+
+            print("========================================")
+        }
+    }
+    
 }

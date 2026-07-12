@@ -18,6 +18,6 @@ enum FieldType {
     case rc
     case drivingLicence
     case password
-    case age
+    case age  
     case normal
 }

@@ -10,6 +10,7 @@ import UIKit
 class NotificationListCell: UITableViewCell {
 
     @IBOutlet weak var cardView: UIView!
+    @IBOutlet weak var seenUnseenDot: UIView!
     
     @IBOutlet weak var ownerImage: UIImageView!
     @IBOutlet weak var ownerName: UILabel!

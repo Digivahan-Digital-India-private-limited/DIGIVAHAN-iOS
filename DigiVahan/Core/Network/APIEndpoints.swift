@@ -34,10 +34,13 @@ struct APIEndpoints {
     static let GET_QR_TEMPLATE = "/api/create/qr-template-user/"
     
     // Notification
+//    static let SEND_NOTIFICATION = "/api/ios-notifications/send"
     static let SEND_NOTIFICATION = "/api/notifications/send"
     static let UPLOAD_SINGLE_FILE = baseURL + "/api/v1/notification/image"
     static let DELETE_SINGLE_FILE = "/api/v1/notification/delete-image"
     static let GET_NOTIFICATION = "/api/notifications/"
+    static let SET_NOTIFICATION_SEEN = "/api/notifications/user/seen-notification"
+    static let DELETE_NOTIFICATION = "/api/notifications/delete"
     
     static let CREATE_CHAT_ROOM = "/api/create/room"
     
@@ -52,5 +55,7 @@ struct APIEndpoints {
     static let GET_VEHICLE_LIST = "/api/v1/garage/"
     static let DELETE_VEHICLE = "/api/v1/garage/remove-vehicle"
     static let REFRESH_VEHICLE = "/api/v1/refresh/vehicle-data"
+    static let UPLOAD_DOCUMENT = baseURL + "/api/upload/single"
+    static let DELETE_DOCUMENT = "/api/vehicle/doc-delete"
     
 }

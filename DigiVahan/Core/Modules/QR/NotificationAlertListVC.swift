@@ -68,10 +68,12 @@ class NotificationAlertListVC: BaseViewController {
         switch selectedView {
 
         case parkingViewBtn:
+            notificationTitle = "No Parking"
             notificationIssueType = "no_parking"
             notificationIssueMessage = "Your car is parking in no parking zone."
 
         case congestedParkingViewBtn:
+            notificationTitle = "Congested Parking"
             notificationIssueType = "congested_parking"
             notificationIssueMessage = """
             Your vehicle has been identified as causing parking congestion in the area.
@@ -79,6 +81,7 @@ class NotificationAlertListVC: BaseViewController {
             """
 
         case roadBlockAlertViewBtn:
+            notificationTitle = "Road Block Alert"
             notificationIssueType = "road_block_alert"
             notificationIssueMessage = """
             Your vehicle has been identified as obstructing traffic flow and causing a road block.
@@ -86,6 +89,7 @@ class NotificationAlertListVC: BaseViewController {
             """
 
         case blockedVehicleAlertViewBtn:
+            notificationTitle = "Blocked Vehicle Alert"
             notificationIssueType = "blocked_vehicle_alert"
             notificationIssueMessage = """
             Your vehicle is blocking another parked vehicle.
@@ -93,35 +97,44 @@ class NotificationAlertListVC: BaseViewController {
             """
 
         case carLightsWindowsLeftOpenViewBtn:
+            notificationTitle = "Car Lights Windows Left Open"
             notificationIssueType = "car_lights_windows_left_open"
             notificationIssueMessage = "⚠️ Your car lights or windows are open. Please check your vehicle immediately for safety."
 
         case carHornOrAlarmGoingOffViewBtn:
+            notificationTitle = "Car Horn Alarm Going On"
             notificationIssueType = "car_horn_alarm_going_on"
             notificationIssueMessage = "Your car alarm or horn is going off. Please check your vehicle immediately."
 
         case unknownIssueAlertViewBtn:
+            notificationTitle = "Unknown Issue Alert"
             notificationIssueType = "unknown_issue_alert"
             notificationIssueMessage = "🚗 An unknown issue has been detected with your vehicle. Please inspect it for safety."
 
         case accidentAlertViewBtn:
+            notificationTitle = "Accident Alert"
             notificationIssueType = "accident_alert"
             notificationIssueMessage = "⚠️ Your vehicle may have been involved in an accident. Please check immediately."
+            
+            self.qrItem?.notificationType = "chat"
+            self.qrItem?.issueType = notificationIssueType
+            self.qrItem?.issueMessage = notificationIssueMessage
+            self.qrItem?.notificationTitle = notificationTitle
 
-//            // Navigate if needed
-//            NavigationManager.pushScreen(
-//                from: self,
-//                storyboardName: "Main",
-//                viewControllerID: "ChatNotificationInfoRequestVC",
-//                data: [
-//                    "notificationIssueType": notificationIssueType,
-//                    "notificationIssueMessage": notificationIssueMessage
-//                ]
-//            )
-//            return
+            NavigationManager.pushScreen(
+                from: self,
+                viewControllerID: "CustomNotificationAlertVC",
+                closeCurrentScreen: true,
+                data: [
+                        "qrItem": qrItem
+                    ]
+            )
+            return
 
         case requestForDocumentAccessViewBtn:
             isVaultAccess = true
+            notificationTitle = "Doc Access"
+            self.qrItem?.notificationType = "doc_access"
             notificationIssueType = "doc_access"
             notificationIssueMessage = "⚠️ You've received a request for document access. Please review and approve if appropriate."
 

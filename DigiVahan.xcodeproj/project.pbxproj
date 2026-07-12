@@ -8,11 +8,33 @@
 
 /* Begin PBXBuildFile section */
 		5405E23C2FD4C72300F4FC27 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 5405E23B2FD4C72300F4FC27 /* Alamofire */; };
+		54690A3B30010C1B005353C1 /* car_lights_windows_left_open.caf in Resources */ = {isa = PBXBuildFile; fileRef = 54690A3030010C1B005353C1 /* car_lights_windows_left_open.caf */; };
+		54690A3C30010C1B005353C1 /* call_sound.caf in Resources */ = {isa = PBXBuildFile; fileRef = 54690A3130010C1B005353C1 /* call_sound.caf */; };
+		54690A3D30010C1B005353C1 /* car_horn_alarm_going_on.caf in Resources */ = {isa = PBXBuildFile; fileRef = 54690A3230010C1B005353C1 /* car_horn_alarm_going_on.caf */; };
+		54690A3E30010C1B005353C1 /* no_parking.caf in Resources */ = {isa = PBXBuildFile; fileRef = 54690A3330010C1B005353C1 /* no_parking.caf */; };
+		54690A3F30010C1B005353C1 /* blocked_vehicle_alert.caf in Resources */ = {isa = PBXBuildFile; fileRef = 54690A3430010C1B005353C1 /* blocked_vehicle_alert.caf */; };
+		54690A4030010C1B005353C1 /* doc_access.caf in Resources */ = {isa = PBXBuildFile; fileRef = 54690A3530010C1B005353C1 /* doc_access.caf */; };
+		54690A4130010C1B005353C1 /* road_block_alert.caf in Resources */ = {isa = PBXBuildFile; fileRef = 54690A3630010C1B005353C1 /* road_block_alert.caf */; };
+		54690A4230010C1B005353C1 /* sound.caf in Resources */ = {isa = PBXBuildFile; fileRef = 54690A3730010C1B005353C1 /* sound.caf */; };
+		54690A4330010C1B005353C1 /* unknown_issue_alert.caf in Resources */ = {isa = PBXBuildFile; fileRef = 54690A3830010C1B005353C1 /* unknown_issue_alert.caf */; };
+		54690A4430010C1B005353C1 /* congested_parking.caf in Resources */ = {isa = PBXBuildFile; fileRef = 54690A3930010C1B005353C1 /* congested_parking.caf */; };
+		54690A4530010C1B005353C1 /* accident_alert.caf in Resources */ = {isa = PBXBuildFile; fileRef = 54690A3A30010C1B005353C1 /* accident_alert.caf */; };
 		54B811F12FD085A1009FCF92 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54B811F02FD085A1009FCF92 /* WebKit.framework */; };
 		54B812672FD0A1E2009FCF92 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 54B812662FD0A1E2009FCF92 /* SDWebImage */; };
 		54B812692FD0A1E2009FCF92 /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 54B812682FD0A1E2009FCF92 /* SDWebImageMapKit */; };
 		54B862172FEB1EE5000D0626 /* OneSignalFramework in Frameworks */ = {isa = PBXBuildFile; productRef = 54B862162FEB1EE5000D0626 /* OneSignalFramework */; };
+		54E52F0D2FF8F72D0068F459 /* OneSignalNotificationServiceExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 54E52F062FF8F72D0068F459 /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		54E52F0B2FF8F72D0068F459 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 54AE27192FB237770066C752 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 54E52F052FF8F72D0068F459;
+			remoteInfo = OneSignalNotificationServiceExtension;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		5405E2402FD4D7A500F4FC27 /* Embed Frameworks */ = {
@@ -25,11 +47,34 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		54E52F122FF8F72D0068F459 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				54E52F0D2FF8F72D0068F459 /* OneSignalNotificationServiceExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		54690A3030010C1B005353C1 /* car_lights_windows_left_open.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = car_lights_windows_left_open.caf; path = "DigiVahan/Resources/Notification Sound/car_lights_windows_left_open.caf"; sourceTree = "<group>"; };
+		54690A3130010C1B005353C1 /* call_sound.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = call_sound.caf; path = "DigiVahan/Resources/Notification Sound/call_sound.caf"; sourceTree = "<group>"; };
+		54690A3230010C1B005353C1 /* car_horn_alarm_going_on.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = car_horn_alarm_going_on.caf; path = "DigiVahan/Resources/Notification Sound/car_horn_alarm_going_on.caf"; sourceTree = "<group>"; };
+		54690A3330010C1B005353C1 /* no_parking.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = no_parking.caf; path = "DigiVahan/Resources/Notification Sound/no_parking.caf"; sourceTree = "<group>"; };
+		54690A3430010C1B005353C1 /* blocked_vehicle_alert.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = blocked_vehicle_alert.caf; path = "DigiVahan/Resources/Notification Sound/blocked_vehicle_alert.caf"; sourceTree = "<group>"; };
+		54690A3530010C1B005353C1 /* doc_access.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = doc_access.caf; path = "DigiVahan/Resources/Notification Sound/doc_access.caf"; sourceTree = "<group>"; };
+		54690A3630010C1B005353C1 /* road_block_alert.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = road_block_alert.caf; path = "DigiVahan/Resources/Notification Sound/road_block_alert.caf"; sourceTree = "<group>"; };
+		54690A3730010C1B005353C1 /* sound.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = sound.caf; path = "DigiVahan/Resources/Notification Sound/sound.caf"; sourceTree = "<group>"; };
+		54690A3830010C1B005353C1 /* unknown_issue_alert.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = unknown_issue_alert.caf; path = "DigiVahan/Resources/Notification Sound/unknown_issue_alert.caf"; sourceTree = "<group>"; };
+		54690A3930010C1B005353C1 /* congested_parking.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = congested_parking.caf; path = "DigiVahan/Resources/Notification Sound/congested_parking.caf"; sourceTree = "<group>"; };
+		54690A3A30010C1B005353C1 /* accident_alert.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = accident_alert.caf; path = "DigiVahan/Resources/Notification Sound/accident_alert.caf"; sourceTree = "<group>"; };
 		54AE27212FB237770066C752 /* DigiVahan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DigiVahan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		54B811F02FD085A1009FCF92 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		54E52F062FF8F72D0068F459 /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -37,8 +82,16 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
+				"Resources/Notification Sound",
 			);
 			target = 54AE27202FB237770066C752 /* DigiVahan */;
+		};
+		54E52F112FF8F72D0068F459 /* Exceptions for "OneSignalNotificationServiceExtension" folder in "OneSignalNotificationServiceExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 54E52F052FF8F72D0068F459 /* OneSignalNotificationServiceExtension */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -52,6 +105,14 @@
 				"Resources/Notification Sound",
 			);
 			path = DigiVahan;
+			sourceTree = "<group>";
+		};
+		54E52F072FF8F72D0068F459 /* OneSignalNotificationServiceExtension */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				54E52F112FF8F72D0068F459 /* Exceptions for "OneSignalNotificationServiceExtension" folder in "OneSignalNotificationServiceExtension" target */,
+			);
+			path = OneSignalNotificationServiceExtension;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -69,13 +130,32 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		54E52F032FF8F72D0068F459 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		54AE27182FB237770066C752 = {
 			isa = PBXGroup;
 			children = (
+				54690A3A30010C1B005353C1 /* accident_alert.caf */,
+				54690A3430010C1B005353C1 /* blocked_vehicle_alert.caf */,
+				54690A3130010C1B005353C1 /* call_sound.caf */,
+				54690A3230010C1B005353C1 /* car_horn_alarm_going_on.caf */,
+				54690A3030010C1B005353C1 /* car_lights_windows_left_open.caf */,
+				54690A3930010C1B005353C1 /* congested_parking.caf */,
+				54690A3530010C1B005353C1 /* doc_access.caf */,
+				54690A3330010C1B005353C1 /* no_parking.caf */,
+				54690A3630010C1B005353C1 /* road_block_alert.caf */,
+				54690A3730010C1B005353C1 /* sound.caf */,
+				54690A3830010C1B005353C1 /* unknown_issue_alert.caf */,
 				54AE27232FB237770066C752 /* DigiVahan */,
+				54E52F072FF8F72D0068F459 /* OneSignalNotificationServiceExtension */,
 				54B811EF2FD085A1009FCF92 /* Frameworks */,
 				54AE27222FB237770066C752 /* Products */,
 			);
@@ -85,6 +165,7 @@
 			isa = PBXGroup;
 			children = (
 				54AE27212FB237770066C752 /* DigiVahan.app */,
+				54E52F062FF8F72D0068F459 /* OneSignalNotificationServiceExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -108,10 +189,12 @@
 				54AE271E2FB237770066C752 /* Frameworks */,
 				54AE271F2FB237770066C752 /* Resources */,
 				5405E2402FD4D7A500F4FC27 /* Embed Frameworks */,
+				54E52F122FF8F72D0068F459 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				54E52F0C2FF8F72D0068F459 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				54AE27232FB237770066C752 /* DigiVahan */,
@@ -127,6 +210,28 @@
 			productReference = 54AE27212FB237770066C752 /* DigiVahan.app */;
 			productType = "com.apple.product-type.application";
 		};
+		54E52F052FF8F72D0068F459 /* OneSignalNotificationServiceExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 54E52F0E2FF8F72D0068F459 /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */;
+			buildPhases = (
+				54E52F022FF8F72D0068F459 /* Sources */,
+				54E52F032FF8F72D0068F459 /* Frameworks */,
+				54E52F042FF8F72D0068F459 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				54E52F072FF8F72D0068F459 /* OneSignalNotificationServiceExtension */,
+			);
+			name = OneSignalNotificationServiceExtension;
+			packageProductDependencies = (
+			);
+			productName = OneSignalNotificationServiceExtension;
+			productReference = 54E52F062FF8F72D0068F459 /* OneSignalNotificationServiceExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -138,6 +243,9 @@
 				LastUpgradeCheck = 2640;
 				TargetAttributes = {
 					54AE27202FB237770066C752 = {
+						CreatedOnToolsVersion = 26.4.1;
+					};
+					54E52F052FF8F72D0068F459 = {
 						CreatedOnToolsVersion = 26.4.1;
 					};
 				};
@@ -162,12 +270,31 @@
 			projectRoot = "";
 			targets = (
 				54AE27202FB237770066C752 /* DigiVahan */,
+				54E52F052FF8F72D0068F459 /* OneSignalNotificationServiceExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		54AE271F2FB237770066C752 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				54690A3B30010C1B005353C1 /* car_lights_windows_left_open.caf in Resources */,
+				54690A3C30010C1B005353C1 /* call_sound.caf in Resources */,
+				54690A3D30010C1B005353C1 /* car_horn_alarm_going_on.caf in Resources */,
+				54690A3E30010C1B005353C1 /* no_parking.caf in Resources */,
+				54690A3F30010C1B005353C1 /* blocked_vehicle_alert.caf in Resources */,
+				54690A4030010C1B005353C1 /* doc_access.caf in Resources */,
+				54690A4130010C1B005353C1 /* road_block_alert.caf in Resources */,
+				54690A4230010C1B005353C1 /* sound.caf in Resources */,
+				54690A4330010C1B005353C1 /* unknown_issue_alert.caf in Resources */,
+				54690A4430010C1B005353C1 /* congested_parking.caf in Resources */,
+				54690A4530010C1B005353C1 /* accident_alert.caf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		54E52F042FF8F72D0068F459 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -184,7 +311,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		54E52F022FF8F72D0068F459 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		54E52F0C2FF8F72D0068F459 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 54E52F052FF8F72D0068F459 /* OneSignalNotificationServiceExtension */;
+			targetProxy = 54E52F0B2FF8F72D0068F459 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		54AE27352FB237780066C752 /* Debug */ = {
@@ -192,11 +334,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = DigiVahan/DigiVahan.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = LM36DR2A6H;
+				DEVELOPMENT_TEAM = 6WT3748N64;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DigiVahan/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Allow access to camera to capture profile photo.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Allow DigiVahan to save QR codes to your Photos.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Allow access to photo library to select profile photo.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -229,11 +375,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = DigiVahan/DigiVahan.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = LM36DR2A6H;
+				DEVELOPMENT_TEAM = 6WT3748N64;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DigiVahan/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Allow access to camera to capture profile photo.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Allow DigiVahan to save QR codes to your Photos.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Allow access to photo library to select profile photo.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -380,6 +530,66 @@
 			};
 			name = Release;
 		};
+		54E52F0F2FF8F72D0068F459 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6WT3748N64;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = OneSignalNotificationServiceExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.DigiVahan.OneSignalNotificationServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		54E52F102FF8F72D0068F459 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6WT3748N64;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = OneSignalNotificationServiceExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.DigiVahan.OneSignalNotificationServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -397,6 +607,15 @@
 			buildConfigurations = (
 				54AE27352FB237780066C752 /* Debug */,
 				54AE27362FB237780066C752 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		54E52F0E2FF8F72D0068F459 /* Build configuration list for PBXNativeTarget "OneSignalNotificationServiceExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				54E52F0F2FF8F72D0068F459 /* Debug */,
+				54E52F102FF8F72D0068F459 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

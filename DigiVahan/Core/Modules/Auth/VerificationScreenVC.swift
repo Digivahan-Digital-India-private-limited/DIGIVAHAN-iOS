@@ -200,6 +200,8 @@ class VerificationScreenVC: BaseViewController {
                 
                 self.sendVerifiyOTPBtn.setTitle(self.isOTPSent ? "Verify" : "Send OTP", for: .normal)
                 
+                self.resendOtpBtn.isHidden = false
+                
                 LoadingManager.shared.hide()
                 
             } else {
@@ -329,8 +331,11 @@ class VerificationScreenVC: BaseViewController {
                         
                         self.sendVerifiyOTPBtn.setTitle(self.isOTPSent ? "Verify" : "Send OTP", for: .normal)
                     }
+                    
+                    self.resendOtpBtn.isHidden = true
+                    
                 })
-
+        
                 present(alert, animated: true)
         
     }

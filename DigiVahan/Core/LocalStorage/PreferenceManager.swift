@@ -35,6 +35,12 @@ class PreferenceManager {
         static let notificationSound = "notification_sound"
 
         static let KEY_USER_DATA = "USER_DATA"
+        
+        static let NOTIFICATION_CLICKED = "notification_clicked"
+        static let NOTIFICATION_TYPE_TEMP = "notification_type_temp"
+        static let NOTIFICATION_CHAT_ROOM_ID_TEMP = "notification_chat_room_id_temp"
+        static let NOTIFICATION_SENDER_ID_TEMP = "notification_sender_id_temp"
+        static let NOTIFICATION_VEHICLE_ID_TEMP = "notification_vehicle_id_temp"
     }
 
     
@@ -230,4 +236,47 @@ class PreferenceManager {
 
             UserDefaults.standard.removeObject(forKey: Keys.KEY_USER_DATA)
         }
+    
+    
+    func setCurrentDate(_ value: String) {
+        UserDefaults.standard.set(value, forKey: "CURRENT_DATE")
+    }
+
+    func getCurrentDate() -> String {
+        UserDefaults.standard.string(forKey: "CURRENT_DATE") ?? ""
+    }
+    
+    func setOneSignalId(_ value: String) {
+        UserDefaults.standard.set(value, forKey: "ONE_SIGNAL_ID")
+    }
+
+    func getOneSignalId() -> String {
+        UserDefaults.standard.string(forKey: "ONE_SIGNAL_ID") ?? ""
+    }
+    
+    func setAppSharingMessage(_ value: String) {
+        UserDefaults.standard.set(value, forKey: "APP_SHARING_MESSAGE")
+    }
+
+    func getAppSharingMessage() -> String {
+        UserDefaults.standard.string(forKey: "APP_SHARING_MESSAGE") ?? ""
+    }
+    
+    // MARK: - Get Current Date (Server Preferred)
+
+    static func getCurrentDate(_ format: String) -> String {
+
+        let serverDate = PreferenceManager.shared.getCurrentDate()
+
+        if !serverDate.isEmpty {
+            return TimeUtils.convertDateFormat(
+                serverDate,
+                outputFormat: format
+            )
+        }
+
+        return TimeUtils.getCurrentDate(format)
+    }
+    
+    
 }

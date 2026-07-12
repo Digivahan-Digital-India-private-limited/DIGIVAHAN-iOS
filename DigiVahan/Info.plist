@@ -2,12 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Allow DigiVahan to save QR codes to your Photos.</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Allow access to camera to capture profile photo.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Allow access to photo library to select profile photo.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Hind-Bold</string>
@@ -31,5 +25,9 @@
 			</array>
 		</dict>
 	</dict>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 </dict>
 </plist>

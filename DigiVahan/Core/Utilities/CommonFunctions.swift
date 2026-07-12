@@ -752,4 +752,57 @@ class CommonFunctions {
             }
         }
     
+    static func fetchAppInfo() {
+
+        NetworkManager.shared.callAPI(
+            url: APIEndpoints.GET_APP_INFO,
+            method: "GET"
+        ) { response, status, message in
+
+            let manager = PreferenceManager.shared
+
+            guard status,
+                  let data = response?["data"] as? [String: Any] else {
+
+                manager.setCurrentDate("")
+                manager.setOneSignalId("")
+                manager.setAppSharingMessage("")
+                return
+            }
+
+            // Current Date
+            if let currentDate = data["currentDate"] as? String,
+               !currentDate.isEmpty {
+
+                manager.setCurrentDate(currentDate)
+
+            } else {
+
+                manager.setCurrentDate("")
+            }
+
+            // OneSignal ID
+            if let oneSignalId = data["oneSignalID"] as? String,
+               !oneSignalId.isEmpty {
+
+                manager.setOneSignalId(oneSignalId)
+
+            } else {
+
+                manager.setOneSignalId("")
+            }
+
+            // App Sharing Message
+            if let appSharingMessage = data["appSharingMessage"] as? String,
+               !appSharingMessage.isEmpty {
+
+                manager.setAppSharingMessage(appSharingMessage)
+
+            } else {
+
+                manager.setAppSharingMessage("")
+            }
+        }
+    }
+    
 }

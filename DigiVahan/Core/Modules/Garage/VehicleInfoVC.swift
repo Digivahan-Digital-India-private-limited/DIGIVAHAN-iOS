@@ -6,10 +6,19 @@
 //
 
 import UIKit
+import SDWebImage
 
 class VehicleInfoVC: BaseViewController {
     
+    @IBOutlet weak var mainScrollView: UIScrollView!
     private var garageModel: GarageItemModel?
+    var vehicleDocumentsArrayList: [VehicleDocuments] = []
+    
+    @IBOutlet weak var tableView: UITableView!
+    
+    @IBOutlet weak var viewImageLayout: UIView!
+    @IBOutlet weak var viewImage: UIImageView!
+    @IBOutlet weak var viewImageCloseIcon: UIImageView!
     
     @IBOutlet weak var ownerName: UILabel!
     @IBOutlet weak var vehicleNumber: UILabel!
@@ -53,6 +62,17 @@ class VehicleInfoVC: BaseViewController {
     @IBOutlet weak var vehicleColor : UILabel!
     @IBOutlet weak var unloadedWeight : UILabel!
     @IBOutlet weak var RCStatus : UILabel!
+    
+    @IBOutlet weak var vehicleInfoLayoutBtn: UIView!
+    @IBOutlet weak var vehicleInfoLayout: UIView!
+    @IBOutlet weak var vehicleInfoDevider: UIView!
+    @IBOutlet weak var vehicleInfoBtnText: UILabel!
+    
+    @IBOutlet weak var documentInfoLayoutBtn: UIView!
+    @IBOutlet weak var documentInfoLayout: UIView!
+    @IBOutlet weak var documentInfoDevider: UIView!
+    @IBOutlet weak var documentInfoBtnText: UILabel!
+        
 
     
     
@@ -61,10 +81,23 @@ class VehicleInfoVC: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationItem.hidesBackButton = true
+
+            navigationItem.leftBarButtonItem = UIBarButtonItem(
+                image: UIImage(systemName: "chevron.left"),
+                style: .plain,
+                target: self,
+                action: #selector(backPressed)
+            )
+        
         if let data = receivedData as? [String: Any] {
 
             self.garageModel = data["vehicleData"] as? GarageItemModel ?? nil
             self.vehicleDataType = data["vehicleDataType"] as? String ?? ""
+            
+            vehicleDocumentsArrayList = garageModel?.vehicleDocumentsArrayList ?? []
+            
+            print("vehicleDocumentsArrayList count:- \(vehicleDocumentsArrayList.count)")
             
             setData()
         }
@@ -79,14 +112,14 @@ class VehicleInfoVC: BaseViewController {
 
         addVehicleBtn.addGestureRecognizer(addVehicleBtnTap)
         
-        ownerShipDetailsBtn.isUserInteractionEnabled = true
-
-            let ownerShipDetailsBtnTap = UITapGestureRecognizer(
-                target: self,
-                action: #selector(onOwnerShipDetailsBtnClick)
-            )
-
-        ownerShipDetailsBtn.addGestureRecognizer(ownerShipDetailsBtnTap)
+//        ownerShipDetailsBtn.isUserInteractionEnabled = true
+//
+//            let ownerShipDetailsBtnTap = UITapGestureRecognizer(
+//                target: self,
+//                action: #selector(onOwnerShipDetailsBtnClick)
+//            )
+//
+//        ownerShipDetailsBtn.addGestureRecognizer(ownerShipDetailsBtnTap)
         
         
         vehicleDetailsBtn.isUserInteractionEnabled = true
@@ -118,6 +151,77 @@ class VehicleInfoVC: BaseViewController {
 
         otherInfoBtn.addGestureRecognizer(otherInfoBtnTap)
         
+        vehicleInfoLayoutBtn.isUserInteractionEnabled = true
+
+            let vehicleInfoLayoutBtnTap = UITapGestureRecognizer(
+                target: self,
+                action: #selector(onVehicleInfoLayoutBtnnClick)
+            )
+
+        vehicleInfoLayoutBtn.addGestureRecognizer(vehicleInfoLayoutBtnTap)
+        
+        documentInfoLayoutBtn.isUserInteractionEnabled = true
+
+            let documentInfoLayoutBtnTap = UITapGestureRecognizer(
+                target: self,
+                action: #selector(onDocumentInfoLayoutBtnnClick)
+            )
+
+        documentInfoLayoutBtn.addGestureRecognizer(documentInfoLayoutBtnTap)
+        
+        viewImageCloseIcon.isUserInteractionEnabled = true
+
+        let tap = UITapGestureRecognizer(
+            target: self,
+            action: #selector(closeViewImageBtnClicked(_:))
+        )
+        viewImageCloseIcon.addGestureRecognizer(tap)
+        
+    }
+    
+    @objc func backPressed() {
+
+        if !viewImageLayout.isHidden {
+            viewImageLayout.isHidden = true
+        } else {
+            navigationController?.popViewController(animated: true)
+        }
+    }
+    
+    @objc func closeViewImageBtnClicked(_ sender: UITapGestureRecognizer) {
+        viewImageLayout.isHidden = true
+    }
+    
+    
+    @IBAction func addDocumentBtnClicked(_ sender: Any) {
+        NavigationManager.pushScreen(
+            from: self,
+            viewControllerID: "AddDocumentVC",
+            data: [
+                "vehicleData": garageModel
+            ]
+        )
+    }
+    @objc private func onVehicleInfoLayoutBtnnClick() {
+        vehicleInfoLayout.isHidden = false
+        documentInfoLayout.isHidden = true
+        
+        vehicleInfoDevider.backgroundColor = UIColor(named: "colorPrimary")
+        vehicleInfoBtnText.textColor = UIColor(named: "colorPrimary")
+        
+        documentInfoDevider.backgroundColor = UIColor(named: "textDescription")
+        documentInfoBtnText.textColor = UIColor(named: "textDescription")
+    }
+    
+    @objc private func onDocumentInfoLayoutBtnnClick() {
+        vehicleInfoLayout.isHidden = true
+        documentInfoLayout.isHidden = false
+        
+        vehicleInfoDevider.backgroundColor = UIColor(named: "textDescription")
+        vehicleInfoBtnText.textColor = UIColor(named: "textDescription")
+        
+        documentInfoDevider.backgroundColor = UIColor(named: "colorPrimary")
+        documentInfoBtnText.textColor = UIColor(named: "colorPrimary")
     }
     
     @objc private func onOwnerShipDetailsBtnClick() {
@@ -244,6 +348,8 @@ class VehicleInfoVC: BaseViewController {
                         
                         self.garageModel = model
                         
+                        self.vehicleDataType = "verify"
+                        
                         self.setData()
                         
                     } else {
@@ -340,6 +446,23 @@ class VehicleInfoVC: BaseViewController {
     
     private func setData(){
         
+        tableView.delegate = self
+        tableView.dataSource = self
+
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 90
+
+        tableView.separatorStyle = .none
+        tableView.reloadData()
+        
+        tableView.layoutIfNeeded()
+
+        print("Table Frame:", tableView.frame)
+        print("Table Bounds:", tableView.bounds)
+        print("Table Hidden:", tableView.isHidden)
+        print("Table Alpha:", tableView.alpha)
+        print("Superview:", tableView.superview ?? "nil")
+        
         self.ownerName.text = CommonFunctions.safeValue(garageModel?.owner_name)
         self.vehicleNumber.text = "\(garageModel?.vehicle_number ?? "") |  \(garageModel?.ownership_details ?? "")"
         self.companyName.text = garageModel?.vehicle_name
@@ -405,5 +528,173 @@ class VehicleInfoVC: BaseViewController {
     }
     
     
+}
+
+
+extension VehicleInfoVC: UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
+
+    func tableView(
+        _ tableView: UITableView,
+        numberOfRowsInSection section: Int
+    ) -> Int {
+        print("Rows:", vehicleDocumentsArrayList.count)
+        return vehicleDocumentsArrayList.count
+    }
+
+    func tableView(
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath
+    ) -> UITableViewCell {
+        
+        print("cellForRowAt:", indexPath.row)
+
+        let document = vehicleDocumentsArrayList[indexPath.row]
+
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: "DocumentListCell",
+            for: indexPath
+        ) as! DocumentListCell
+
+        cell.selectionStyle = .none
+
+        // Vehicle details
+        cell.documentNumber.text = document.doc_number
+        
+        if document.doc_type == "aadhar"{
+            cell.documentName.text = "Aadhar"
+            cell.documentImage.image = UIImage(named: "infoDocIcon")
+        }
+        else if document.doc_type == "insurance"{
+            cell.documentName.text = "Insurance"
+            cell.documentImage.image = UIImage(named: "insuranceDocIcon")
+        }
+        else if document.doc_type == "pollution"{
+            cell.documentName.text = "Pollution"
+            cell.documentImage.image = UIImage(named: "pollutionDocIcon")
+        }
+        else if document.doc_type == "rc"{
+            cell.documentName.text = "Registration Certificate"
+            cell.documentImage.image = UIImage(named: "infoDocIcon")
+        }
+        else if document.doc_type == "pancard"{
+            cell.documentName.text = "Pancard"
+            cell.documentImage.image = UIImage(named: "infoDocIcon")
+        }
+        else if document.doc_type == "driving licence"{
+            cell.documentName.text = "Driving Licence"
+            cell.documentImage.image = UIImage(named: "infoDocIcon")
+        }
+        else {
+            cell.documentName.text = document.doc_name
+            cell.documentImage.image = UIImage(named: "documentIcon")
+        }
+        
+        cell.deleteAction = { [weak self] in
+            
+            print("🗑 Delete button tapped")
+                print("Row:", indexPath.row)
+                print("Document:", document.doc_name ?? "")
+            
+            self?.deleteDocument(document, at: indexPath.row)
+        }
+        
+        cell.previewAction = { [weak self] in
+            self?.viewDocBtnClick(document)
+        }
+
+        return cell
+    }
+
+    func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool {
+
+        let currentText = textField.text ?? ""
+
+        if let textRange = Range(range, in: currentText) {
+
+            let updatedText = currentText
+                .replacingCharacters(in: textRange, with: string)
+                .uppercased()
+
+            textField.text = updatedText
+        }
+
+        return false
+    }
+    
+    func deleteDocument(_ document: VehicleDocuments, at index: Int) {
+
+        let alert = UIAlertController(
+            title: "Remove Document",
+            message: "Are you sure you want to remove it?",
+            preferredStyle: .alert
+        )
+
+        alert.addAction(UIAlertAction(title: "No", style: .cancel))
+
+        alert.addAction(UIAlertAction(
+            title: "Yes, Delete",
+            style: .destructive
+        ) { [weak self] _ in
+
+            guard let self = self else { return }
+            
+            LoadingManager.shared.show(on: view)
+
+            let params: [String: Any] = [
+                "user_id": PreferenceManager.shared.getUserId(),
+                "vehicle_id": garageModel?.vehicle_id ?? "",
+                "doc_type": document.doc_type ?? ""
+            ]
+
+            NetworkManager.shared.callAPI(
+                url: APIEndpoints.DELETE_DOCUMENT,
+                method: "POST",
+                parameters: params
+            ) { response, status, message in
+
+                LoadingManager.shared.hide()
+                
+                self.showToast(message: message)
+
+                if status {
+
+                    self.vehicleDocumentsArrayList.remove(at: index)
+
+                    self.tableView.deleteRows(
+                        at: [IndexPath(row: index, section: 0)],
+                        with: .automatic
+                    )
+                    
+
+                } else {
+
+                    self.showToast(message: message)
+                }
+            }
+        })
+
+        present(alert, animated: true)
+    }
+    
+    func viewDocBtnClick(_ document: VehicleDocuments) {
+        
+        if let imageUrl = document.doc_url, !imageUrl.isEmpty {
+
+            viewImage.sd_setImage(
+                with: URL(string: imageUrl),
+                placeholderImage: UIImage(named: "emptyImage")
+            )
+
+        } else {
+
+            viewImage.image = UIImage(named: "emptyImage")
+        }
+        
+        viewImageLayout.isHidden = false
+    }
 }
 

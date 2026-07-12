@@ -10,7 +10,7 @@ import UIKit
 
 class ChangePasswordVC: BaseViewController {
     
-    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var mainScrollView: UIScrollView!
     
     @IBOutlet weak var currentPasswordField: CustomInputFieldView!
     @IBOutlet weak var newPasswordField: CustomInputFieldView!
@@ -20,7 +20,7 @@ class ChangePasswordVC: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        enableKeyboardDismissOnTap()
+        enableKeyboardAvoiding(scrollView: mainScrollView)
         
         currentPasswordField.setUpField(title: "Current Password", placeholder: "Enter your Current password", leftIcon: UIImage(named: "lockIocn"), keyboardType: .default, inputType: .password)
         
@@ -28,11 +28,6 @@ class ChangePasswordVC: BaseViewController {
         
         confirmPasswordField.setUpField(title: "Confirm password", placeholder: "Confirm your password", leftIcon: UIImage(named: "lockIocn"), keyboardType: .default, inputType: .password)
         
-        CommonFunctions.setScrolling(
-            for: confirmPasswordField.txtInputField,
-            in: scrollView,
-            to: confirmPasswordField
-        )
         
     }
     

@@ -46,7 +46,6 @@ class UpdateEmergencyContactsVC: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        enableKeyboardDismissOnTap()
         enableKeyboardAvoiding(scrollView: mainScrollView)
         
         sutUI()
@@ -158,7 +157,7 @@ class UpdateEmergencyContactsVC: BaseViewController {
             relationField.txtInputField.resignFirstResponder()
         }
     
-    @IBAction func updateProfileBtnClick(_ sender: Any) {
+    @IBAction func addEmergencyBtnClick(_ sender: Any) {
         
         let relationText = relationField.txtInputField.text?
             .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
@@ -177,7 +176,6 @@ class UpdateEmergencyContactsVC: BaseViewController {
             LoadingManager.shared.show(on: view)
         
         if hit_type == "update" {
-            
             NetworkManager.shared.editEmergencyContact(
                 userId: PreferenceManager.shared.getUserId(),
                 first_name: firstName.txtInputField.text ?? "",
