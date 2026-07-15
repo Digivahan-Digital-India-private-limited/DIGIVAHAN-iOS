@@ -133,8 +133,10 @@ class NotificationAlertListVC: BaseViewController {
 
         case requestForDocumentAccessViewBtn:
             isVaultAccess = true
+            
             notificationTitle = "Doc Access"
             self.qrItem?.notificationType = "doc_access"
+            notification_type = "doc_access"
             notificationIssueType = "doc_access"
             notificationIssueMessage = "⚠️ You've received a request for document access. Please review and approve if appropriate."
 
@@ -339,7 +341,19 @@ class NotificationAlertListVC: BaseViewController {
                 self.qrItem?.notificationTitle = notification_title
 
                 if isVaultAccess == true {
-                    
+                    let sharedData: [String: Any] = [
+                        "userId": self.qrItem?.assigned_to ?? "",
+                        "vehicleId": self.qrItem?.vehicle_id ?? "",
+                        "taskType": "verify"
+                    ]
+
+                    NavigationManager.pushScreen(
+                        from: self,
+                        storyboardName: "Main",
+                        viewControllerID: "AccessDocVC",
+                        closeCurrentScreen: true,
+                        data: sharedData
+                    )
                 }else{
                     self.startCountdown(issueType: issue_type ?? "", issueMessage: issueMessage ?? "")
                 }

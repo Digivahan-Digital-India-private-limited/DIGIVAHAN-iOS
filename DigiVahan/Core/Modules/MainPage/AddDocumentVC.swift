@@ -51,6 +51,8 @@ class AddDocumentVC: BaseViewController {
 
         }
         
+        docNumber.delegate = self
+        
         docTypePicker.delegate = self
         docTypePicker.dataSource = self
 
@@ -171,19 +173,58 @@ extension AddDocumentVC: UIPickerViewDelegate, UIPickerViewDataSource, UITextFie
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         docTypePickerField.text = docTypeList[row]
         docNumber.text = ""
+        
+        switch selectedDocType {
+
+        case "Aadhar":
+            selectedDocType = "aadhar"
+            return
+            
+        case "Pollution":
+            selectedDocType = "pollution"
+            return
+
+        case "Insurance":
+            selectedDocType = "insurance"
+            return
+
+        case "RC":
+            selectedDocType = "rc"
+            return
+
+        case "Pancard":
+            selectedDocType = "pan"
+            return
+            
+        case "Driving Licence":
+            selectedDocType = "driving_licence"
+            return
+            
+        default:
+            break
+        }
 
     }
 
-    // Prevent manual typing
-    func textField(_ textField: UITextField,
-                   shouldChangeCharactersIn range: NSRange,
-                   replacementString string: String) -> Bool {
+    func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool {
 
-        if textField == docTypePickerField {
+        let currentText = textField.text ?? ""
+
+        guard let textRange = Range(range, in: currentText) else {
             return false
         }
 
-        return true
+        let updatedText = currentText.replacingCharacters(
+            in: textRange,
+            with: string
+        )
+
+        return updatedText.count <= 30
     }
+    
 
 }

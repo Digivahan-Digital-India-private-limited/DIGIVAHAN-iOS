@@ -205,7 +205,7 @@
                                                                 <color key="backgroundColor" red="0.3725585938" green="0.7080078125" blue="0.2712402344" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <state key="normal" title="Button"/>
-                                                                <buttonConfiguration key="configuration" style="plain" title="I’m Old User" cornerStyle="large">
+                                                                <buttonConfiguration key="configuration" style="plain" title="Sign In" cornerStyle="large">
                                                                     <fontDescription key="titleFontDescription" name="Hind-SemiBold" family="Hind" pointSize="18"/>
                                                                 </buttonConfiguration>
                                                                 <connections>
@@ -217,7 +217,7 @@
                                                                 <color key="backgroundColor" name="unselected"/>
                                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <state key="normal" title="Button"/>
-                                                                <buttonConfiguration key="configuration" style="plain" title="I’m New User" cornerStyle="large">
+                                                                <buttonConfiguration key="configuration" style="plain" title="Sign Up" cornerStyle="large">
                                                                     <fontDescription key="titleFontDescription" name="Hind-SemiBold" family="Hind" pointSize="18"/>
                                                                 </buttonConfiguration>
                                                                 <userDefinedRuntimeAttributes>
@@ -582,10 +582,8 @@
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="c50-ZA-79C">
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please verify the phone number associated with your account. Do not share your OTP with anyone." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="c50-ZA-79C">
                                                                         <rect key="frame" x="0.0" y="202.66666666666663" width="350" height="51.333333333333343"/>
-                                                                        <string key="text">Please verify the number associated with your
-account. And don’t share your OTP with any one.</string>
                                                                         <fontDescription key="fontDescription" name="Hind-Regular" family="Hind" pointSize="16"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
@@ -737,7 +735,7 @@ account. And don’t share your OTP with any one.</string>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="h0x-Xq-abc">
                                                         <rect key="frame" x="0.0" y="0.0" width="400" height="346.66666666666669"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rest Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V7T-D7-ma3">
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reset Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V7T-D7-ma3">
                                                                 <rect key="frame" x="0.0" y="0.0" width="400" height="38.666666666666664"/>
                                                                 <fontDescription key="fontDescription" name="Hind-Bold" family="Hind" pointSize="24"/>
                                                                 <nil key="textColor"/>

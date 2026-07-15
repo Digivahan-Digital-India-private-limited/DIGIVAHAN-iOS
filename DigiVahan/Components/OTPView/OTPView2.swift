@@ -11,7 +11,7 @@
 
 import UIKit
 
-class OTPView: UIView {
+class OTPView2: UIView {
 
     // MARK: - Public Properties
 
@@ -189,7 +189,7 @@ class OTPView: UIView {
 
 // MARK: - UITextFieldDelegate
 
-extension OTPView: UITextFieldDelegate {
+extension OTPView2: UITextFieldDelegate {
 
     func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,

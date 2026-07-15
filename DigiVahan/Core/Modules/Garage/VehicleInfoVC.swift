@@ -179,6 +179,70 @@ class VehicleInfoVC: BaseViewController {
         
     }
     
+    func checkDoc() {
+        
+        vehicleDocumentsArrayList.removeAll()
+
+        LoadingManager.shared.show(on: view)
+      
+        // Params
+        var params: [String: Any] = [
+            "user_id": PreferenceManager.shared.getUserId(),
+            "vehicle_id": garageModel?.vehicle_id ?? ""
+        ]
+        
+
+        NetworkManager.shared.callAPI(
+            url: APIEndpoints.DOC_CHECK,
+            method: "POST",
+            parameters: params
+        ) { [weak self] response, status, message in
+
+            guard let self = self else { return }
+
+            LoadingManager.shared.hide()
+
+            if status {
+
+                guard let response = response else {
+                    self.showToast(message: "Invalid Response")
+                    return
+                }
+
+                var documentList: [VehicleDocuments] = []
+
+                if let documents = response["vehicle_doc_data"] as? [[String: Any]] {
+
+                    for document in documents {
+
+                        var model = VehicleDocuments()
+
+                        model.doc_name = document["doc_name"] as? String ?? ""
+                        model.doc_type = document["doc_type"] as? String ?? ""
+                        model.doc_number = document["doc_number"] as? String ?? ""
+                        model.doc_url = document["doc_url"] as? String ?? ""
+                        model.public_id = document["public_id"] as? String ?? ""
+                        model.uploaded_at = document["uploaded_at"] as? String ?? ""
+
+                        documentList.append(model)
+                    }
+                }
+                
+                self.vehicleDocumentsArrayList = documentList
+                print("Total Documents:", self.vehicleDocumentsArrayList.count)
+
+                self.tableView.reloadData()
+
+            }
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        checkDoc()
+    }
+    
     @objc func backPressed() {
 
         if !viewImageLayout.isHidden {
@@ -266,7 +330,7 @@ class VehicleInfoVC: BaseViewController {
             
             dialog.configure(
                 title: "Verify Owner",
-                description: "Please verify vehicle owner \(garageModel?.owner_name ?? "") to add vehicle.",
+                description: "Please verify the vehicle owner \(garageModel?.owner_name ?? "") before adding this vehicle.",
                 hint: "Enter owner name",
                 buttonTitle: "Verify"
             )
@@ -455,13 +519,7 @@ class VehicleInfoVC: BaseViewController {
         tableView.separatorStyle = .none
         tableView.reloadData()
         
-        tableView.layoutIfNeeded()
-
-        print("Table Frame:", tableView.frame)
-        print("Table Bounds:", tableView.bounds)
-        print("Table Hidden:", tableView.isHidden)
-        print("Table Alpha:", tableView.alpha)
-        print("Superview:", tableView.superview ?? "nil")
+        
         
         self.ownerName.text = CommonFunctions.safeValue(garageModel?.owner_name)
         self.vehicleNumber.text = "\(garageModel?.vehicle_number ?? "") |  \(garageModel?.ownership_details ?? "")"

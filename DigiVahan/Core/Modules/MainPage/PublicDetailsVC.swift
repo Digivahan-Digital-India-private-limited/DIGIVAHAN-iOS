@@ -55,7 +55,7 @@ class PublicDetailsVC: BaseViewController {
             userProfileImage.clipsToBounds = true
             userProfileImage.contentMode = .scaleAspectFill
         
-        nickName.setUpField(title: "Nick Name", placeholder: "Enter your Nick name", leftIcon: UIImage(named: "fieldProfileIcon"), keyboardType: .default, inputType: .name)
+        nickName.setUpField(title: "Nickname", placeholder: "Enter your Nick name", leftIcon: UIImage(named: "fieldProfileIcon"), keyboardType: .default, inputType: .name)
         
         address.setUpField(title: "Address", placeholder: "Enter your Address", leftIcon: UIImage(named: "locationIcon"), keyboardType: .default, inputType: .name)
         

@@ -301,7 +301,7 @@ extension CustomInputFieldView {
             return isNumber && updatedText.count <= 6
 
         default:
-            return true
+            return updatedText.count <= 30
         }
     }
     

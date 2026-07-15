@@ -65,7 +65,7 @@ class UpdateEmergencyContactsVC: BaseViewController {
         
         relationField.setUpField(title: "Relation", placeholder: "Select Relation", leftIcon: UIImage(named: "calenderIcon"), keyboardType: .default, inputType: .age)
         
-        phoneNumber.setUpField(title: "Phone Number", placeholder: "Please enter contact number", leftIcon: UIImage(named: "callIcon"), keyboardType: .default, inputType: .phone)
+        phoneNumber.setUpField(title: "Phone Number", placeholder: "Enter contact number", leftIcon: UIImage(named: "callIcon"), keyboardType: .default, inputType: .phone)
         
         relationPicker.delegate = self
         relationPicker.dataSource = self

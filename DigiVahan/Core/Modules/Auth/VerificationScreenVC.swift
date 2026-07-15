@@ -39,7 +39,7 @@ class VerificationScreenVC: BaseViewController {
         enableKeyboardDismissOnTap()
         enableKeyboardAvoiding(scrollView: mainScrollView)
         
-        phoneNumberField.setUpField(title: "Phone Number", placeholder: "Enter your number", leftIcon: UIImage(named: "callIcon"), keyboardType: .numberPad, inputType: .phone)
+        phoneNumberField.setUpField(title: "Phone Number", placeholder: "Enter your phone number", leftIcon: UIImage(named: "callIcon"), keyboardType: .numberPad, inputType: .phone)
         
         phoneNumberField.fieldTitle.isHidden = true
         
@@ -120,7 +120,7 @@ class VerificationScreenVC: BaseViewController {
             if phone.isEmpty {
                 phoneNumberField.showError("Field can't be empty")
                 return
-            } else if phone.count < 10 {
+            } else if  phoneNumberField.validateField() == false{
                 phoneNumberField.showError("Invalid Number")
                 return
             }
@@ -179,13 +179,13 @@ class VerificationScreenVC: BaseViewController {
                 if verificationType == "otpLogin" || verificationType == "changePassword"{
                     self.verificationUrl = response?["verify_otp_url"] as? String ?? ""
                     
-                    self.verificationDescription.text = "Please enter the OTP received on your registered phone number. And don’t share your OTP with any one."
+                    self.verificationDescription.text = "Please enter the OTP sent to your registered phone number. Do not share your OTP with anyone."
                     
                 } else if verificationType == "create"{
                     self.user_register_id = response?["user_register_id"] as? String ?? ""
                     self.verificationUrl = response?["otp_verify_endpoint"] as? String ?? ""
                     
-                    self.verificationDescription.text = "Please enter the OTP received on your \(self.phone). And don’t share your OTP with anyone."
+                    self.verificationDescription.text = "Please enter the OTP sent to your your \(self.phone). Do not share your OTP with anyone."
                     
                     
                 }
@@ -251,6 +251,7 @@ class VerificationScreenVC: BaseViewController {
                                from: self,
                                storyboardName: "Auth",
                                viewControllerID: "RestPasswordVC",
+                               closeCurrentScreen: true,
                                data: [
                                        "userId": userId
                                    ]

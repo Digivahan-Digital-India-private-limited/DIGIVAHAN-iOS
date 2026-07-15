@@ -170,87 +170,80 @@ class CommonFunctions {
         vc.present(alert, animated: true)
     }
     
-    static func shareAppWithImage(
-            from viewController: UIViewController
-        ) {
+    static func shareAppWithImage(from viewController: UIViewController) {
 
-            DispatchQueue.global(qos: .userInitiated).async {
+        // Show loading
+        DispatchQueue.main.async {
+            LoadingManager.shared.show(on: viewController.view)
+        }
 
-                guard let image = UIImage(
-                    named: "share_image"
-                ) else {
+        DispatchQueue.global(qos: .userInitiated).async {
 
-                    print("Image not found")
-                    return
+            guard let image = UIImage(named: "share_image") else {
+
+                DispatchQueue.main.async {
+                    LoadingManager.shared.hide()
                 }
 
-                // Save image to temporary directory
-                let tempDirectory =
-                FileManager.default.temporaryDirectory
+                print("❌ Image not found")
+                return
+            }
 
-                let fileURL =
-                tempDirectory.appendingPathComponent(
-                    "share_image.png"
-                )
+            guard let imageData = compressImage(image, targetSizeKB: 500) else {
 
-                guard let imageData =
-                image.pngData() else {
-
-                    print("Unable to convert image")
-                    return
+                DispatchQueue.main.async {
+                    LoadingManager.shared.hide()
                 }
 
-                do {
+                print("❌ Failed to compress image")
+                return
+            }
 
-                    try imageData.write(
-                        to: fileURL
+            let tempURL = FileManager.default.temporaryDirectory
+                .appendingPathComponent("share_image.jpg")
+
+            do {
+
+                try imageData.write(to: tempURL)
+
+                let message = getAppSharingMessage()
+
+                DispatchQueue.main.async {
+
+                    // Hide loading before presenting share sheet
+                    LoadingManager.shared.hide()
+
+                    let activityVC = UIActivityViewController(
+                        activityItems: [
+                            message,
+                            tempURL
+                        ],
+                        applicationActivities: nil
                     )
 
-                    let message =
-                    getAppSharingMessage()
-
-                    DispatchQueue.main.async {
-
-                        let activityVC =
-                        UIActivityViewController(
-                            activityItems: [
-                                message,
-                                fileURL
-                            ],
-                            applicationActivities: nil
-                        )
-
-                        // iPad Support
-                        if let popover =
-                            activityVC.popoverPresentationController {
-
-                            popover.sourceView =
-                            viewController.view
-
-                            popover.sourceRect =
-                            CGRect(
-                                x: viewController.view.bounds.midX,
-                                y: viewController.view.bounds.midY,
-                                width: 0,
-                                height: 0
-                            )
-                        }
-
-                        viewController.present(
-                            activityVC,
-                            animated: true
+                    if let popover = activityVC.popoverPresentationController {
+                        popover.sourceView = viewController.view
+                        popover.sourceRect = CGRect(
+                            x: viewController.view.bounds.midX,
+                            y: viewController.view.bounds.midY,
+                            width: 0,
+                            height: 0
                         )
                     }
 
-                } catch {
-
-                    print(
-                        "Share Error:",
-                        error.localizedDescription
-                    )
+                    viewController.present(activityVC, animated: true)
                 }
+
+            } catch {
+
+                DispatchQueue.main.async {
+                    LoadingManager.shared.hide()
+                }
+
+                print("❌ Share Error:", error.localizedDescription)
             }
         }
+    }
     
     static func getAppSharingMessage() -> String {
         
@@ -261,7 +254,9 @@ class CommonFunctions {
         jo is app ko download na kare,
         uski gaadi ki mileage ho jaaye kam… permanently! 😜🚗!
 
-        👉 https://apps.apple.com/app/idXXXXXXXXX
+        Download 
+        App Store(Iphone)👉 https://apps.apple.com/app/id6749568671
+        Google Play Store(Android)👉 https://play.google.com/store/apps/details?id=com.digivahan&pli=1
         """
 
         let customMessage =
@@ -751,6 +746,82 @@ class CommonFunctions {
                 mapItem.openInMaps()
             }
         }
+    
+    
+    
+    static func checkForAppUpdate(
+        from viewController: UIViewController
+    ) {
+        
+        print("checkForAppUpdate Run")
+        
+        let lastCheck = PreferenceManager.shared.getDouble(key: "LAST_VERSION_CHECK")
+        let now = Date().timeIntervalSince1970
+
+        if now - lastCheck < 120 {
+            return // Checked within the last 30 minutes
+        }
+
+        PreferenceManager.shared.setDouble(value: now, key: "LAST_VERSION_CHECK")
+
+        NetworkManager.shared.callAPI(
+            url: APIEndpoints.IOS_VERSION,
+            method: "GET"
+        ) { response, status, message in
+
+            guard
+                status,
+                let data = response?["data"] as? [String: Any],
+                let latestVersion = data["version"] as? String
+            else {
+                return
+            }
+
+            guard let currentVersion =
+                    Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+            else {
+                return
+            }
+
+            if currentVersion != latestVersion {
+
+                DispatchQueue.main.async {
+
+                    let alert = UIAlertController(
+                        title: "Update Available",
+                        message: "A new version of DigiVahan is available. Please update the app to continue.",
+                        preferredStyle: .alert
+                    )
+
+                    alert.addAction(
+                        UIAlertAction(
+                            title: "Update",
+                            style: .default
+                        ) { _ in
+
+                            guard let url = URL(
+                                string: "https://apps.apple.com/app/id6749568671"
+                            ) else { return }
+
+                            UIApplication.shared.open(url)
+                        }
+                    )
+
+//                    alert.addAction(
+//                        UIAlertAction(
+//                            title: "Later",
+//                            style: .cancel
+//                        )
+//                    )
+
+                    viewController.present(
+                        alert,
+                        animated: true
+                    )
+                }
+            }
+        }
+    }
     
     static func fetchAppInfo() {
 

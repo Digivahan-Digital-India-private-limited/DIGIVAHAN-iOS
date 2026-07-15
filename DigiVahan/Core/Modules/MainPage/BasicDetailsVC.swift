@@ -80,7 +80,11 @@ class BasicDetailsVC: BaseViewController {
         
         emailAddress.setUpField(title: "Email Address", placeholder: "Enter your email", leftIcon: UIImage(named: "emailFieldIcon"), keyboardType: .default, inputType: .email)
         
+        emailAddress.txtInputField.isEnabled = false
+        
         phoneField.setUpField(title: "Phone Number", placeholder: "Enter your number", leftIcon: UIImage(named: "callIcon"), keyboardType: .numberPad, inputType: .phone)
+        
+        phoneField.txtInputField.isEnabled = false
         
         occupationSpinnerLayout.setUpField(title: "Occupation", placeholder: "Select your Occupation", leftIcon: UIImage(named: "occupationIcon"), keyboardType: .default, inputType: .name)
         

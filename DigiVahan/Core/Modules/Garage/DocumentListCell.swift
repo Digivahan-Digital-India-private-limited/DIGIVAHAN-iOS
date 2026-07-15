@@ -37,7 +37,7 @@ class DocumentListCell: UITableViewCell {
             for: .touchUpInside
         )
         
-        print("Delete Button:", deleteBtn as Any)
+//        print("Delete Button:", deleteBtn as Any)
     }
 
     @objc private func previewBtnClick() {

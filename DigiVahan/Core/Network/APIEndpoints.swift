@@ -12,6 +12,7 @@ struct APIEndpoints {
     static let apiFolder = "/api/"
     
     static let GET_APP_INFO = "/api/v1/app-info"
+    static let IOS_VERSION = "/api/v1/app-info/ios"
 
     // Auth APIs
     static let login = "/api/auth/sign-in"
@@ -41,6 +42,8 @@ struct APIEndpoints {
     static let GET_NOTIFICATION = "/api/notifications/"
     static let SET_NOTIFICATION_SEEN = "/api/notifications/user/seen-notification"
     static let DELETE_NOTIFICATION = "/api/notifications/delete"
+    static let DOC_CHECK = "/api/check/security-code"
+    static let DOC_VERIFY = "/api/verify/security-code"
     
     static let CREATE_CHAT_ROOM = "/api/create/room"
     

@@ -53,7 +53,7 @@ class LoginScreenVC: BaseViewController {
         )
         
         
-        phoneNumberField.setUpField(title: "Phone Number", placeholder: "Enter your number", leftIcon: UIImage(named: "callIcon"), keyboardType: .numberPad, inputType: .phone)
+        phoneNumberField.setUpField(title: "Phone Number", placeholder: "Enter your phone number", leftIcon: UIImage(named: "callIcon"), keyboardType: .numberPad, inputType: .phone)
         
         passwordField.setUpField(title: "Password", placeholder: "Enter your password", leftIcon: UIImage(named: "lockIocn"), keyboardType: .default, inputType: .password)
         
@@ -63,7 +63,7 @@ class LoginScreenVC: BaseViewController {
         
         rEmailAddress.setUpField(title: "Email Address", placeholder: "Enter your email", leftIcon: UIImage(named: "emailFieldIcon"), keyboardType: .default, inputType: .email)
         
-        rPhoneField.setUpField(title: "Phone Number", placeholder: "Enter your number", leftIcon: UIImage(named: "callIcon"), keyboardType: .numberPad, inputType: .phone)
+        rPhoneField.setUpField(title: "Phone Number", placeholder: "Enter your phone number", leftIcon: UIImage(named: "callIcon"), keyboardType: .numberPad, inputType: .phone)
         
         rPasswordField.setUpField(title: "Password", placeholder: "Enter your password", leftIcon: UIImage(named: "lockIocn"), keyboardType: .default, inputType: .password)
         
@@ -97,7 +97,7 @@ class LoginScreenVC: BaseViewController {
         if phone.isEmpty {
             phoneNumberField.showError("Field can't be empty")
             return
-        } else if phone.count < 10 {
+        } else if phoneNumberField.validateField() == false{
             phoneNumberField.showError("Invalid Number")
             return
         } else if !isOTPLogin && password.isEmpty {

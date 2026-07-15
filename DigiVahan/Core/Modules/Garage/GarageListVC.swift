@@ -424,7 +424,7 @@ class GarageListVC: BaseViewController {
             } else {
 
                 self.showAlert(
-                    title: "Vehicle Not Found",
+                    title: "Vehicle Alert",
                     message: message
                 )
             }
@@ -532,14 +532,20 @@ extension GarageListVC: UITableViewDelegate, UITableViewDataSource, UITextFieldD
 
         let currentText = textField.text ?? ""
 
-        if let textRange = Range(range, in: currentText) {
-
-            let updatedText = currentText
-                .replacingCharacters(in: textRange, with: string)
-                .uppercased()
-
-            textField.text = updatedText
+        guard let textRange = Range(range, in: currentText) else {
+            return false
         }
+
+        var updatedText = currentText
+            .replacingCharacters(in: textRange, with: string)
+            .uppercased()
+
+        // Limit vehicle number to 14 characters
+        if textField == vehicleNumberField && updatedText.count > 14 {
+            updatedText = String(updatedText.prefix(20))
+        }
+
+        textField.text = updatedText
 
         return false
     }

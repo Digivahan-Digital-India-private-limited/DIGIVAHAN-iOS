@@ -9,234 +9,107 @@
 //  OTPView.swift
 //
 
+// OTPView.swift
 import UIKit
 
-class OTPView: UIView {
+class OTPView: UIView, UITextFieldDelegate {
 
-    // MARK: - Public Properties
+    var otpLength = 6 { didSet { buildBoxes() } }
+    var boxSpacing: CGFloat = 12 { didSet { stack.spacing = boxSpacing } }
+    var onOtpComplete: ((String)->Void)?
 
-    var otpLength: Int = 6 {
-        didSet {
-            setupFields()
-        }
-    }
+    private let stack = UIStackView()
+    private let hiddenField = UITextField()
+    private var labels:[UILabel] = []
+    private var boxes:[UIView] = []
+    private var editable = true
 
-    var boxSpacing: CGFloat = 12 {
-        didSet {
-            stackView.spacing = boxSpacing
-        }
-    }
+    override init(frame:CGRect){ super.init(frame:frame); setup() }
+    required init?(coder:NSCoder){ super.init(coder:coder)!; setup() }
 
-    var onOtpComplete: ((String) -> Void)?
-
-    // MARK: - Private Properties
-
-    private let stackView = UIStackView()
-    private var textFields: [UITextField] = []
-
-    // MARK: - Initializers
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        commonInit()
-    }
-
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        commonInit()
-    }
-
-    // MARK: - Setup
-
-    private func commonInit() {
-
-        backgroundColor = .clear
-
-        stackView.axis = .horizontal
-        stackView.alignment = .center
-        stackView.distribution = .fill
-        stackView.spacing = boxSpacing
-
-        addSubview(stackView)
-
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-
+    private func setup(){
+        stack.axis = .horizontal
+        stack.spacing = boxSpacing
+        stack.distribution = .fillEqually
+        addSubview(stack)
+        stack.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            stackView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            stackView.centerYAnchor.constraint(equalTo: centerYAnchor)
+            stack.centerXAnchor.constraint(equalTo:centerXAnchor),
+            stack.centerYAnchor.constraint(equalTo:centerYAnchor)
         ])
 
-        setupFields()
+        hiddenField.keyboardType = .numberPad
+        hiddenField.textContentType = .oneTimeCode
+        hiddenField.tintColor = .clear
+        hiddenField.textColor = .clear
+        hiddenField.delegate = self
+        hiddenField.addTarget(self, action:#selector(changed), for:.editingChanged)
+        addSubview(hiddenField)
+
+        addGestureRecognizer(UITapGestureRecognizer(target:self, action:#selector(beginInput)))
+        buildBoxes()
     }
 
-    private func setupFields() {
-
-        textFields.removeAll()
-
-        stackView.arrangedSubviews.forEach {
-            stackView.removeArrangedSubview($0)
-            $0.removeFromSuperview()
-        }
-
-        for index in 0..<otpLength {
-
-            let textField = OTPTextField()
-
-            textField.tag = index
-            textField.delegate = self
-            textField.keyboardType = .numberPad
-            textField.textAlignment = .center
-            textField.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
-
-            textField.layer.cornerRadius = 10
-            textField.layer.borderWidth = 1
-            textField.layer.borderColor = UIColor.systemGray4.cgColor
-
-            textField.layer.shadowColor = UIColor.black.cgColor
-            textField.layer.shadowOpacity = 0.08
-            textField.layer.shadowRadius = 4
-            textField.layer.shadowOffset = CGSize(width: 0, height: 2)
-
-            textField.backgroundColor = .white
-
-            textField.translatesAutoresizingMaskIntoConstraints = false
-
+    private func buildBoxes(){
+        labels.removeAll(); boxes.removeAll()
+        stack.arrangedSubviews.forEach{$0.removeFromSuperview()}
+        for _ in 0..<otpLength{
+            let v = UIView()
+            v.layer.cornerRadius = 10
+            v.layer.borderWidth = 1
+            v.layer.borderColor = UIColor.systemGray4.cgColor
             NSLayoutConstraint.activate([
-                textField.widthAnchor.constraint(equalToConstant: 40),
-                textField.heightAnchor.constraint(equalToConstant: 40)
+                v.widthAnchor.constraint(equalToConstant:42),
+                v.heightAnchor.constraint(equalToConstant:46)
             ])
-
-            textField.addTarget(
-                self,
-                action: #selector(textDidChange(_:)),
-                for: .editingChanged
-            )
-
-            stackView.addArrangedSubview(textField)
-            textFields.append(textField)
+            let l = UILabel()
+            l.font = .systemFont(ofSize:20,weight:.semibold)
+            l.textAlignment = .center
+            v.addSubview(l)
+            l.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                l.centerXAnchor.constraint(equalTo:v.centerXAnchor),
+                l.centerYAnchor.constraint(equalTo:v.centerYAnchor)
+            ])
+            stack.addArrangedSubview(v)
+            boxes.append(v)
+            labels.append(l)
         }
+        refresh()
+    }
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.textFields.first?.becomeFirstResponder()
+    @objc private func beginInput(){ if editable { hiddenField.becomeFirstResponder() } }
+
+    @objc private func changed(){
+        hiddenField.text = String((hiddenField.text ?? "").filter{$0.isNumber}.prefix(otpLength))
+        refresh()
+        if getOTP().count == otpLength{
+            hiddenField.resignFirstResponder()
+            onOtpComplete?(getOTP())
         }
     }
 
-    // MARK: - Text Changed
-
-    @objc private func textDidChange(_ textField: UITextField) {
-
-        guard let text = textField.text else { return }
-
-        if text.count > 1 {
-            textField.text = String(text.prefix(1))
-        }
-
-        if text.count == 1 {
-
-            let nextTag = textField.tag + 1
-
-            if nextTag < otpLength {
-                textFields[nextTag].becomeFirstResponder()
-            } else {
-                textField.resignFirstResponder()
-            }
-        }
-
-        checkOTPCompletion()
-    }
-
-    // MARK: - Public Methods
-
-    func getOTP() -> String {
-
-        return textFields.compactMap {
-            $0.text
-        }.joined()
-    }
-
-    func setOTP(_ otp: String) {
-
-        for (index, char) in otp.enumerated() {
-
-            if index < textFields.count {
-                textFields[index].text = String(char)
-            }
-        }
-
-        checkOTPCompletion()
-    }
-
-    func clearOTP() {
-
-        textFields.forEach {
-            $0.text = ""
-        }
-
-        textFields.first?.becomeFirstResponder()
-    }
-
-    // MARK: - Private
-
-    private func checkOTPCompletion() {
-
-        let otp = getOTP()
-
-        if otp.count == otpLength {
-            onOtpComplete?(otp)
+    private func refresh(){
+        let chars = Array(getOTP())
+        for i in 0..<otpLength{
+            labels[i].text = i < chars.count ? String(chars[i]) : ""
+            boxes[i].layer.borderColor = (editable && i == chars.count) ? UIColor.systemBlue.cgColor : UIColor.systemGray4.cgColor
         }
     }
-}
 
-// MARK: - UITextFieldDelegate
+    func getOTP()->String{ hiddenField.text ?? "" }
+    func setOTP(_ otp:String){ hiddenField.text = String(otp.prefix(otpLength)); refresh() }
+    func clearOTP(){ hiddenField.text = ""; refresh() }
+    func enableEditing(){ editable = true; hiddenField.isEnabled = true; refresh() }
+    func disableEditing(){ editable = false; hiddenField.isEnabled = false; hiddenField.resignFirstResponder() }
 
-extension OTPView: UITextFieldDelegate {
-
-    func textField(_ textField: UITextField,
-                   shouldChangeCharactersIn range: NSRange,
-                   replacementString string: String) -> Bool {
-
-        // Backspace pressed
-        if string.isEmpty {
-
-            let currentText = textField.text ?? ""
-
-            // If current field has value, clear it and move back
-            if !currentText.isEmpty {
-
-                textField.text = ""
-
-                let previousTag = textField.tag - 1
-
-                if previousTag >= 0 {
-                    textFields[previousTag].becomeFirstResponder()
-                }
-
-                return false
-            }
-
-            // If already empty, move back
-            let previousTag = textField.tag - 1
-
-            if previousTag >= 0 {
-                textFields[previousTag].text = ""
-                textFields[previousTag].becomeFirstResponder()
-            }
-
+    func textField(_ textField:UITextField, shouldChangeCharactersIn range:NSRange, replacementString string:String)->Bool{
+        guard editable else { return false }
+        if string.count > 1{
+            hiddenField.text = String(string.filter{$0.isNumber}.prefix(otpLength))
+            changed()
             return false
         }
-
         return true
-    }
-}
-
-// MARK: - Custom TextField
-
-class OTPTextField: UITextField {
-
-    override func deleteBackward() {
-
-        super.deleteBackward()
-
-        sendActions(for: .editingChanged)
     }
 }

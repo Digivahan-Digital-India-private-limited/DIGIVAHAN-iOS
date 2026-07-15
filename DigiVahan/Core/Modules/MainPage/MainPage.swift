@@ -40,6 +40,8 @@ class MainPage: BaseViewController {
         
         navigationController?.setNavigationBarHidden(true, animated: animated)
         
+        CommonFunctions.checkForAppUpdate(from: self)
+        
         profileVC.setupUI()
         getNotificationList()
     }
@@ -101,17 +103,6 @@ class MainPage: BaseViewController {
                     self.showToast(message: "Parsing Error")
                 }
                 
-            } else {
-
-
-                if message.lowercased() == "no internet connection" {
-
-//                    self.showNoInternetDialog()
-
-                } else {
-
-                    self.showToast(message: "Vehicle not found")
-                }
             }
         }
     }

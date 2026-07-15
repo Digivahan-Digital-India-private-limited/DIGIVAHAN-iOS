@@ -28,7 +28,7 @@ class RestPasswordVC: BaseViewController {
         
         passwordField.setUpField(title: "Password", placeholder: "Enter your password", leftIcon: UIImage(named: "lockIocn"), keyboardType: .default, inputType: .password)
         
-        confirmPasswordField.setUpField(title: "Confirm password", placeholder: "Confirm your password", leftIcon: UIImage(named: "lockIocn"), keyboardType: .default, inputType: .password)
+        confirmPasswordField.setUpField(title: "Confirm Password", placeholder: "Confirm your password", leftIcon: UIImage(named: "lockIocn"), keyboardType: .default, inputType: .password)
         
     }
     

@@ -26,7 +26,7 @@ class ChangePasswordVC: BaseViewController {
         
         newPasswordField.setUpField(title: "New Password", placeholder: "Enter your New password", leftIcon: UIImage(named: "lockIocn"), keyboardType: .default, inputType: .password)
         
-        confirmPasswordField.setUpField(title: "Confirm password", placeholder: "Confirm your password", leftIcon: UIImage(named: "lockIocn"), keyboardType: .default, inputType: .password)
+        confirmPasswordField.setUpField(title: "Confirm Password", placeholder: "Confirm your password", leftIcon: UIImage(named: "lockIocn"), keyboardType: .default, inputType: .password)
         
         
     }
@@ -37,7 +37,10 @@ class ChangePasswordVC: BaseViewController {
         let confirmPassword = confirmPasswordField.txtInputField.text ?? ""
 
         if currentPassword.isEmpty {
-            confirmPasswordField.showError("Field is required")
+            currentPasswordField.showError("Field is required")
+            return
+        }else if newPassword.isEmpty {
+            newPasswordField.showError("Field is required")
             return
         }else if !newPasswordField.validateField() {
             return

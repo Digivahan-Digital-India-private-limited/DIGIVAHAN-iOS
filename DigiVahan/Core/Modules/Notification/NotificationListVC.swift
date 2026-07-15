@@ -189,7 +189,7 @@ class NotificationListVC: BaseViewController {
 
                 } else {
 
-                    self.showToast(message: "Vehicle not found")
+                    self.showToast(message: "Notification not found")
                 }
             }
         }
@@ -294,15 +294,24 @@ extension NotificationListVC: UITableViewDelegate, UITableViewDataSource {
         
         
         let sharedData: [String: Any] = [
-            "notificationListItem": notificationListItem
+            "userId": PreferenceManager.shared.getUserId(),
+            "vehicleId": notificationListItem.vehicle_id ?? "",
+            "taskType": "check"
         ]
+        
+        var viewControllerID = "ViewNotificationVC"
+        
+        if notificationListItem.notification_type == "doc_access" {
+            viewControllerID = "AccessDocVC"
+        }
 
         NavigationManager.pushScreen(
             from: self,
             storyboardName: "Main",
-            viewControllerID: "ViewNotificationVC",
+            viewControllerID: viewControllerID,
             data: sharedData
         )
+
     }
     
     func tableView(

@@ -35,7 +35,7 @@ class ImagePickerHelper: NSObject {
         })
 
         // Gallery
-        alert.addAction(UIAlertAction(title: "🖼 Choose from Gallery", style: .default) { _ in
+        alert.addAction(UIAlertAction(title: "🖼 Choose from Photos", style: .default) { _ in
             self.openGallery()
         })
 

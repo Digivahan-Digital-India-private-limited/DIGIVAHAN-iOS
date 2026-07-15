@@ -15,6 +15,7 @@ class BaseViewController: UIViewController {
             super.viewDidLoad()
 
             enableKeyboardDismissOnTap()
+        
         }
     
     func enableAutoScroll(
