@@ -293,15 +293,19 @@ extension NotificationListVC: UITableViewDelegate, UITableViewDataSource {
     func previewNotification(_ notificationListItem: NotificationItemModel) {
         
         
-        let sharedData: [String: Any] = [
-            "userId": PreferenceManager.shared.getUserId(),
-            "vehicleId": notificationListItem.vehicle_id ?? "",
-            "taskType": "check"
+        var sharedData: [String: Any] = [
+            "notificationListItem": notificationListItem
         ]
         
         var viewControllerID = "ViewNotificationVC"
         
         if notificationListItem.notification_type == "doc_access" {
+            sharedData = [
+                "userId": PreferenceManager.shared.getUserId(),
+                "vehicleId": notificationListItem.vehicle_id ?? "",
+                "taskType": "check"
+            ]
+            
             viewControllerID = "AccessDocVC"
         }
 

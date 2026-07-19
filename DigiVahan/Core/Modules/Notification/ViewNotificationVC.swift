@@ -49,6 +49,33 @@ class ViewNotificationVC: BaseViewController  {
             notificationListItem = data["notificationListItem"] as? NotificationItemModel ?? nil
         }
         
+        if let item = notificationListItem {
+                print("========== Notification Item ==========")
+                print("sender_id: \(item.sender_id ?? "nil")")
+                print("sender_pic: \(item.sender_pic ?? "nil")")
+                print("sender_name: \(item.sender_name ?? "nil")")
+                print("notification_type: \(item.notification_type ?? "nil")")
+                print("notification_title: \(item.notification_title ?? "nil")")
+                print("link: \(item.link ?? "nil")")
+                print("vehicle_id: \(item.vehicle_id ?? "nil")")
+                print("order_id: \(item.order_id ?? "nil")")
+                print("message: \(item.message ?? "nil")")
+                print("issue_type: \(item.issue_type ?? "nil")")
+                print("chat_room_id: \(item.chat_room_id ?? "nil")")
+                print("latitude: \(item.latitude ?? "nil")")
+                print("longitude: \(item.longitude ?? "nil")")
+                print("_id: \(item._id ?? "nil")")
+                print("time: \(item.time ?? "nil")")
+                print("createdAt: \(item.createdAt ?? "nil")")
+                print("updatedAt: \(item.updatedAt ?? "nil")")
+                print("seen_status: \(String(describing: item.seen_status))")
+                print("inapp_notification: \(String(describing: item.inapp_notification))")
+                print("incident_proof: \(item.incident_proof ?? [])")
+                print("=======================================")
+            } else {
+                print("notificationListItem is nil")
+            }
+        
         if notificationListItem != nil {
             
             if !(notificationListItem?.seen_status ?? true) {
