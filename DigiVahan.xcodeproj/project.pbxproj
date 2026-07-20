@@ -336,11 +336,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DigiVahan/DigiVahan.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = 6WT3748N64;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DigiVahan/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Allow access to camera to capture profile photo.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your location is used to show your current location on the map and provide navigation to vehicle locations.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Allow DigiVahan to save QR codes to your Photos.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Allow access to photo library to select profile photo.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -377,11 +378,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DigiVahan/DigiVahan.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = 6WT3748N64;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DigiVahan/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Allow access to camera to capture profile photo.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your location is used to show your current location on the map and provide navigation to vehicle locations.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Allow DigiVahan to save QR codes to your Photos.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Allow access to photo library to select profile photo.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -535,7 +537,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = 6WT3748N64;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
@@ -565,7 +567,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = OneSignalNotificationServiceExtension/OneSignalNotificationServiceExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = 6WT3748N64;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
