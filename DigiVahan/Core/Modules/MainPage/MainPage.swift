@@ -11,9 +11,26 @@ import OneSignalFramework
 class MainPage: BaseViewController {
     
     @IBOutlet weak var profileVC: ProfileVC!
+    @IBOutlet weak var DashBoardScreen: DashBoardVC!
+    
     @IBOutlet weak var notificationBtn: UIView!
     @IBOutlet weak var notificationCountView: UIView!
     @IBOutlet weak var notificationCountText: UILabel!
+    
+    @IBOutlet weak var homeBtn: UIView!
+    @IBOutlet weak var homeBtnIcon: UIImageView!
+    @IBOutlet weak var homeBtnText: UILabel!
+    
+    @IBOutlet weak var dashBoardBtn: UIView!
+    @IBOutlet weak var dashBoardIcon: UIImageView!
+    @IBOutlet weak var dashBoardText: UILabel!
+    
+    @IBOutlet weak var profileBtn: UIView!
+    @IBOutlet weak var profileIcon: UIImageView!
+    @IBOutlet weak var profileText: UILabel!
+    
+    var selectedScreen : String = "home"
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +50,36 @@ class MainPage: BaseViewController {
             )
 
         notificationBtn.addGestureRecognizer(notificationBtnTap)
+        
+        // set homeBtn
+        homeBtn.isUserInteractionEnabled = true
+
+            let homeBtnTap = UITapGestureRecognizer(
+                target: self,
+                action: #selector(onHomeBtnClick)
+            )
+
+        homeBtn.addGestureRecognizer(homeBtnTap)
+        
+        // set dashBoardBtn
+        dashBoardBtn.isUserInteractionEnabled = true
+
+            let dashBoardBtnTap = UITapGestureRecognizer(
+                target: self,
+                action: #selector(onDashBoardBtnClick)
+            )
+
+        dashBoardBtn.addGestureRecognizer(dashBoardBtnTap)
+        
+        // set profileBtn
+        profileBtn.isUserInteractionEnabled = true
+
+            let profileBtnTap = UITapGestureRecognizer(
+                target: self,
+                action: #selector(onProfileBtnClick)
+            )
+
+        profileBtn.addGestureRecognizer(profileBtnTap)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -50,6 +97,52 @@ class MainPage: BaseViewController {
         super.viewWillDisappear(animated)
 
         navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
+    @objc private func onHomeBtnClick() {
+        selectedScreen = "home"
+        setScreen()
+    }
+    
+    @objc private func onDashBoardBtnClick() {
+        selectedScreen = "dashBoard"
+        setScreen()
+    }
+    
+    @objc private func onProfileBtnClick() {
+        selectedScreen = "profile"
+        setScreen()
+    }
+    
+    func setScreen() {
+        
+        homeBtnIcon.image = UIImage(named: "homeIcon")
+        homeBtnText.textColor = UIColor(named: "colorPrimary")
+        
+        dashBoardIcon.image = UIImage(named: "dashBoardIcon")
+        dashBoardText.textColor = UIColor(named: "colorPrimary")
+        
+        profileIcon.image = UIImage(named: "profileIcon")
+        profileText.textColor = UIColor(named: "colorPrimary")
+        
+        DashBoardScreen.isHidden = true
+        profileVC.isHidden = true
+        
+        if selectedScreen == "dashBoard" {
+            DashBoardScreen.isHidden = false
+            dashBoardIcon.image = UIImage(named: "dashBoardSelectedIcon")
+            dashBoardText.textColor = UIColor(named: "secondIconColor")
+        }
+        else if selectedScreen == "profile" {
+            profileVC.isHidden = false
+            profileIcon.image = UIImage(named: "selectedProfileIcon")
+            profileText.textColor = UIColor(named: "secondIconColor")
+        }
+        else {
+            profileVC.isHidden = true
+            homeBtnIcon.image = UIImage(named: "selectedHomeIcon")
+            homeBtnText.textColor = UIColor(named: "secondIconColor")
+        }
     }
     
     @objc private func onNotificationBtnClick() {

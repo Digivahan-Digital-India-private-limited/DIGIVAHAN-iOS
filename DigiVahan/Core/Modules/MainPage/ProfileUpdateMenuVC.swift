@@ -121,6 +121,7 @@ class ProfileUpdateMenuVC: BaseViewController {
     }
     
     @objc private func onPublicDetailsLayoutBtnClick() {
+            
         NavigationManager.pushScreen(
             from: self,
             storyboardName: "Main",
@@ -136,6 +137,30 @@ class ProfileUpdateMenuVC: BaseViewController {
             viewControllerID: "ChangePasswordVC"
         )
         
+    }
+    
+    @objc private func showNavigation() {
+
+        let dialog = NavigationView(
+            frame: UIScreen.main.bounds
+        )
+
+        dialog.configure(
+            title: "Verify Owner",
+            description: "Please verify the vehicle owner before adding this vehicle.",
+            hint: "Enter owner name",
+            buttonTitle: "Verify"
+        )
+
+        dialog.onProceed = { value in
+
+            print(value)
+
+        }
+
+        view.addSubview(dialog)
+
+        dialog.showAnimated()
     }
     
     

@@ -211,7 +211,7 @@ class BasicDetailsVC: BaseViewController {
     }
     
     @IBAction func updateProfileBtnClick(_ sender: Any) {
-
+        
         if !firstName.validateField() {
             return
         } else if !lastName.validateField() {
@@ -221,16 +221,16 @@ class BasicDetailsVC: BaseViewController {
         } else if !phoneField.validateField() {
             return
         }
-
+        
         guard let user = PreferenceManager.shared.getUser() else {
             showToast(message: "User not found")
             return
         }
         
-     
+        
         // Show loader
         LoadingManager.shared.show(on: view)
-
+        
         NetworkManager.shared.updateBasicDetails(
             userId: PreferenceManager.shared.getUserId(),
             firstName: firstName.txtInputField.text ?? "",
@@ -238,29 +238,29 @@ class BasicDetailsVC: BaseViewController {
             occupation: occupationSpinnerLayout.txtInputField.text ?? "",
             profileImage: selectedImage
         ) { [weak self] success, message, updatedUser in
-
+            
             guard let self = self else { return }
-
+            
             DispatchQueue.main.async {
-
+                
                 // Hide loader
                 LoadingManager.shared.hide()
-
+                
                 // Show message
                 self.showToast(message: message)
                 
                 print(message)
-
+                
                 if success {
-
+                    
                     // Save updated user
                     if let updatedUser = updatedUser {
                         PreferenceManager.shared.saveUser(updatedUser)
                     }
-
+                    
                     // Update progress and UI
                     self.loadUserProfile()
-
+                    
                     // Go back
                     self.navigationController?.popViewController(animated: true)
                 }
@@ -268,8 +268,10 @@ class BasicDetailsVC: BaseViewController {
         }
         
     }
-    
+        
 }
+    
+
 
 
 extension BasicDetailsVC: UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {

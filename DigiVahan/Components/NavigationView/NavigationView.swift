@@ -1,5 +1,5 @@
 //
-//  AddVehicleCustomDialog.swift
+//  NavigationView.swift
 //  DigiVahan
 //
 //  Created by Mr Ash on 20/06/26.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AddVehicleCustomDialog: UIView {
+class NavigationView: UIView {
 
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var dialogView: UIView!
@@ -21,6 +21,8 @@ class AddVehicleCustomDialog: UIView {
 
     var onProceed: ((String) -> Void)?
 
+    // MARK: - Init
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         commonInit()
@@ -31,10 +33,12 @@ class AddVehicleCustomDialog: UIView {
         commonInit()
     }
 
+    // MARK: - Setup
+
     private func commonInit() {
 
         Bundle.main.loadNibNamed(
-            "AddVehicleCustomDialog",
+            "NavigationView",
             owner: self,
             options: nil
         )
@@ -47,7 +51,7 @@ class AddVehicleCustomDialog: UIView {
             .flexibleHeight
         ]
 
-        backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        backgroundColor = UIColor.black.withAlphaComponent(0)
 
         dialogView.layer.cornerRadius = 20
         dialogView.clipsToBounds = true
@@ -83,6 +87,60 @@ class AddVehicleCustomDialog: UIView {
         )
     }
 
+    // MARK: - Show Animation
+
+    func showAnimated() {
+
+        dialogView.transform = CGAffineTransform(
+            translationX: -UIScreen.main.bounds.width,
+            y: 0
+        )
+
+        dialogView.alpha = 0
+
+        UIView.animate(
+            withDuration: 0.35,
+            delay: 0,
+            usingSpringWithDamping: 0.85,
+            initialSpringVelocity: 0.5,
+            options: .curveEaseOut
+        ) {
+
+            self.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+            self.dialogView.transform = .identity
+            self.dialogView.alpha = 1
+        }
+    }
+
+    // MARK: - Hide Animation
+
+    func hideAnimated(
+        completion: (() -> Void)? = nil
+    ) {
+
+        UIView.animate(
+            withDuration: 0.25,
+            animations: {
+
+                self.backgroundColor = UIColor.black.withAlphaComponent(0)
+
+                self.dialogView.transform = CGAffineTransform(
+                    translationX: -UIScreen.main.bounds.width,
+                    y: 0
+                )
+
+                self.dialogView.alpha = 0
+
+            },
+            completion: { _ in
+
+                self.removeFromSuperview()
+
+                completion?()
+            }
+        )
+    }
+
     // MARK: - Proceed Button
 
     @IBAction func proceedBtnClicked(_ sender: UIButton) {
@@ -96,15 +154,16 @@ class AddVehicleCustomDialog: UIView {
             return
         }
 
-        removeFromSuperview()
+        hideAnimated {
 
-        onProceed?(value)
+            self.onProceed?(value)
+        }
     }
 
     // MARK: - Close Dialog
 
     @objc func closeDialog() {
 
-        removeFromSuperview()
+        hideAnimated()
     }
 }
