@@ -12,6 +12,7 @@ class MainPage: BaseViewController {
     
     @IBOutlet weak var profileVC: ProfileVC!
     @IBOutlet weak var DashBoardScreen: DashBoardVC!
+    @IBOutlet weak var homeScreen: HomeVC!
     
     @IBOutlet weak var notificationBtn: UIView!
     @IBOutlet weak var notificationCountView: UIView!
@@ -125,6 +126,7 @@ class MainPage: BaseViewController {
         profileIcon.image = UIImage(named: "profileIcon")
         profileText.textColor = UIColor(named: "colorPrimary")
         
+        homeScreen.isHidden = true
         DashBoardScreen.isHidden = true
         profileVC.isHidden = true
         
@@ -139,7 +141,7 @@ class MainPage: BaseViewController {
             profileText.textColor = UIColor(named: "secondIconColor")
         }
         else {
-            profileVC.isHidden = true
+            homeScreen.isHidden = false
             homeBtnIcon.image = UIImage(named: "selectedHomeIcon")
             homeBtnText.textColor = UIColor(named: "secondIconColor")
         }

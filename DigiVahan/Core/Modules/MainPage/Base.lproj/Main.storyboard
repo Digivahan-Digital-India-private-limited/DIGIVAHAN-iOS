@@ -46,9 +46,12 @@
                                                         <rect key="frame" x="0.0" y="0.0" width="402" height="568"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                     </view>
-                                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8oZ-Xz-VOE" userLabel="DashBoardVC" customClass="DashBoardVC" customModule="DigiVahan" customModuleProvider="target">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8oZ-Xz-VOE" userLabel="DashBoardVC" customClass="DashBoardVC" customModule="DigiVahan" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="402" height="568"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                    </view>
+                                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WDG-TB-NTT" userLabel="homeScreen" customClass="HomeVC" customModule="DigiVahan" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="0.0" width="402" height="568"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GdN-86-mkT">
@@ -97,8 +100,16 @@
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
+                                                    <constraint firstAttribute="trailing" secondItem="8oZ-Xz-VOE" secondAttribute="trailing" id="5b6-iw-pNu"/>
                                                     <constraint firstItem="GdN-86-mkT" firstAttribute="top" secondItem="EIS-7l-3dy" secondAttribute="top" constant="5" id="Igq-6b-zFI"/>
+                                                    <constraint firstItem="8oZ-Xz-VOE" firstAttribute="top" secondItem="EIS-7l-3dy" secondAttribute="top" id="M4d-o9-mlM"/>
+                                                    <constraint firstItem="WDG-TB-NTT" firstAttribute="top" secondItem="EIS-7l-3dy" secondAttribute="top" id="Ms9-1o-Gyy"/>
+                                                    <constraint firstItem="8oZ-Xz-VOE" firstAttribute="leading" secondItem="EIS-7l-3dy" secondAttribute="leading" id="PDG-2y-PCg"/>
                                                     <constraint firstItem="ulq-Q1-dbT" firstAttribute="leading" secondItem="EIS-7l-3dy" secondAttribute="leading" id="PJ5-uT-PPh"/>
+                                                    <constraint firstAttribute="trailing" secondItem="WDG-TB-NTT" secondAttribute="trailing" id="Wuk-YD-4Xx"/>
+                                                    <constraint firstAttribute="bottom" secondItem="8oZ-Xz-VOE" secondAttribute="bottom" id="apX-5W-vci"/>
+                                                    <constraint firstItem="WDG-TB-NTT" firstAttribute="leading" secondItem="EIS-7l-3dy" secondAttribute="leading" id="bVa-jr-DJ7"/>
+                                                    <constraint firstAttribute="bottom" secondItem="WDG-TB-NTT" secondAttribute="bottom" id="fl6-on-fK1"/>
                                                     <constraint firstAttribute="trailing" secondItem="ulq-Q1-dbT" secondAttribute="trailing" id="jGC-Yx-Cjz"/>
                                                     <constraint firstAttribute="bottom" secondItem="ulq-Q1-dbT" secondAttribute="bottom" id="lK6-O8-ah7"/>
                                                     <constraint firstItem="ulq-Q1-dbT" firstAttribute="top" secondItem="EIS-7l-3dy" secondAttribute="top" id="oTK-aF-e4U"/>
@@ -221,6 +232,7 @@
                         <outlet property="homeBtn" destination="NMP-vV-bee" id="zwS-Kz-yLi"/>
                         <outlet property="homeBtnIcon" destination="l50-It-xSr" id="3Ou-Bj-k1a"/>
                         <outlet property="homeBtnText" destination="tPm-xi-Qw8" id="xzM-d3-Ngc"/>
+                        <outlet property="homeScreen" destination="WDG-TB-NTT" id="C5G-vF-bD6"/>
                         <outlet property="notificationBtn" destination="GdN-86-mkT" id="N7L-IG-clJ"/>
                         <outlet property="notificationCountText" destination="KBr-RG-66N" id="WTo-KX-X6E"/>
                         <outlet property="notificationCountView" destination="Ju7-ha-xkp" id="kPX-hB-XYv"/>
@@ -2257,10 +2269,10 @@
                                                     <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KCd-2F-tbn">
                                                         <rect key="frame" x="0.0" y="296.33333333333337" width="402" height="148.33333333333337"/>
                                                         <subviews>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="usm-Yl-m0u">
+                                                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="usm-Yl-m0u">
                                                                 <rect key="frame" x="10" y="10" width="382" height="150"/>
                                                                 <subviews>
-                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4io-Up-cZc">
+                                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4io-Up-cZc">
                                                                         <rect key="frame" x="0.0" y="0.0" width="186" height="150"/>
                                                                         <subviews>
                                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="unknownIssueAlertIcon" translatesAutoresizingMaskIntoConstraints="NO" id="xhW-Bv-gjN">
@@ -2287,7 +2299,7 @@
                                                                             <constraint firstItem="ggP-wd-Frt" firstAttribute="top" secondItem="xhW-Bv-gjN" secondAttribute="bottom" constant="2" id="tc0-I5-nTv"/>
                                                                         </constraints>
                                                                     </view>
-                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kFe-y2-JTo">
+                                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kFe-y2-JTo">
                                                                         <rect key="frame" x="196" y="0.0" width="186" height="150"/>
                                                                         <subviews>
                                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="accidentAlertIcon" translatesAutoresizingMaskIntoConstraints="NO" id="mSW-aD-VJO">
@@ -2328,10 +2340,10 @@
                                                     <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W4G-hZ-oUT">
                                                         <rect key="frame" x="0.0" y="444.66666666666657" width="402" height="148.33333333333331"/>
                                                         <subviews>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="3Ly-S5-G95">
+                                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="3Ly-S5-G95">
                                                                 <rect key="frame" x="10" y="10" width="382" height="150"/>
                                                                 <subviews>
-                                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Tp9-F8-dYN">
+                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tp9-F8-dYN">
                                                                         <rect key="frame" x="0.0" y="0.0" width="186" height="150"/>
                                                                         <subviews>
                                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="vaultIcon" translatesAutoresizingMaskIntoConstraints="NO" id="mvX-77-C5F">
@@ -2358,7 +2370,7 @@
                                                                             <constraint firstItem="Upp-jY-YjV" firstAttribute="top" secondItem="mvX-77-C5F" secondAttribute="bottom" constant="5" id="gg5-H5-1R6"/>
                                                                         </constraints>
                                                                     </view>
-                                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oZ6-yc-fSd">
+                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oZ6-yc-fSd">
                                                                         <rect key="frame" x="196" y="0.0" width="186" height="150"/>
                                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                     </view>
@@ -2857,12 +2869,12 @@
         <scene sceneID="Iti-uu-CDm">
             <objects>
                 <viewController storyboardIdentifier="OwnerProfileVC" id="y9q-Od-2jF" userLabel="Owner Profile" customClass="OwnerProfileVC" customModule="DigiVahan" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" id="zJ3-oE-pOK">
+                    <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="zJ3-oE-pOK">
                         <rect key="frame" x="0.0" y="0.0" width="402" height="874"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lIE-6y-jzL">
-                                <rect key="frame" x="0.0" y="93" width="402" height="683.33333333333337"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lIE-6y-jzL">
+                                <rect key="frame" x="0.0" y="93" width="402" height="0.0"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="mTk-zh-ytj">
                                         <rect key="frame" x="0.0" y="0.0" width="402" height="444"/>

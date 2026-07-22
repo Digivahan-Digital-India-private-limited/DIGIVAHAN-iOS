@@ -206,7 +206,6 @@ class ProfileVC: UIView, UITextFieldDelegate {
                 viewControllerID: "ScanVC"
             )
         }
-        
     }
     
     @objc private func onAboutUsClick() {
