@@ -61,4 +61,8 @@ struct APIEndpoints {
     static let UPLOAD_DOCUMENT = baseURL + "/api/upload/single"
     static let DELETE_DOCUMENT = "/api/vehicle/doc-delete"
     
+    
+    // other services
+    static let GET_NEAR_BY_SERVICES = "/api/get/all-service"
+    
 }

@@ -876,4 +876,32 @@ class CommonFunctions {
         }
     }
     
+    static func openNearbyService(serviceType: String) {
+
+            let query = "\(serviceType) near me"
+                .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+
+            // Apple Maps
+            if let appleMapsURL = URL(string: "http://maps.apple.com/?q=\(query)"),
+               UIApplication.shared.canOpenURL(appleMapsURL) {
+
+                UIApplication.shared.open(appleMapsURL)
+                return
+            }
+
+            // Google Maps App (if installed)
+            if let googleMapsURL = URL(string: "comgooglemaps://?q=\(query)"),
+               UIApplication.shared.canOpenURL(googleMapsURL) {
+
+                UIApplication.shared.open(googleMapsURL)
+                return
+            }
+
+            // Google Maps Web
+            if let webURL = URL(string: "https://www.google.com/maps/search/\(query)") {
+
+                UIApplication.shared.open(webURL)
+            }
+        }
+    
 }

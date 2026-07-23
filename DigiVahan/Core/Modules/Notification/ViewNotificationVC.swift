@@ -176,7 +176,6 @@ class ViewNotificationVC: BaseViewController  {
     
     
     @IBAction func mapClicked(_ sender: Any) {
-        showToast(message: "Unable to find location")
         if (notificationListItem?.latitude != nil && notificationListItem?.latitude != "") && (notificationListItem?.longitude != nil && notificationListItem?.longitude != ""){
             showToast(message: "Unable to find location")
             CommonFunctions.openGoogleMaps(latitude: notificationListItem?.latitude, longitude: notificationListItem?.longitude)
