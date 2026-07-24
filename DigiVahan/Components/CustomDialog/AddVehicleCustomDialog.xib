@@ -99,6 +99,9 @@
                                                 </backgroundConfiguration>
                                                 <fontDescription key="titleFontDescription" name="Hind-Bold" family="Hind" pointSize="14"/>
                                             </buttonConfiguration>
+                                            <connections>
+                                                <action selector="cancelBtnClicked:" destination="-1" eventType="touchUpInside" id="qh0-CS-2pG"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                 </stackView>

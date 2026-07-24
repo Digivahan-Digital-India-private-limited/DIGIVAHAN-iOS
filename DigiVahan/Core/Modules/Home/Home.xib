@@ -18,18 +18,25 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HomeVC" customModule="DigiVahan" customModuleProvider="target">
             <connections>
+                <outlet property="activateQRBtn" destination="Uzh-rk-PUd" id="EV2-mg-akp"/>
                 <outlet property="activateQRLayout" destination="zEF-AK-Sov" id="nt5-xa-loY"/>
+                <outlet property="challanPayBtn" destination="EPc-hi-kBg" id="CvY-gH-dmF"/>
                 <outlet property="challanPayLayout" destination="PMz-tn-D2D" id="PDq-iO-oNw"/>
+                <outlet property="checkChallanBtn" destination="0aK-DM-3FI" id="zgx-L0-5AE"/>
                 <outlet property="checkChallanLayout" destination="9lg-0c-CWQ" id="hPF-Hs-3Zv"/>
                 <outlet property="checkVehicleLayout" destination="htp-or-Y85" id="q8g-zO-L8u"/>
                 <outlet property="downQRLayout" destination="aET-FA-g2A" id="qcY-Vh-YNk"/>
                 <outlet property="mainContentView" destination="iN0-l3-epB" id="F2m-lY-0bk"/>
+                <outlet property="myGarageBtn" destination="5X6-Re-fPx" id="LBD-V4-feP"/>
                 <outlet property="myGarageLayout" destination="k4s-Bq-AeJ" id="oFW-Gt-tmP"/>
+                <outlet property="myVirtualQRBtn" destination="b92-xB-HHl" id="f6I-e8-0rg"/>
                 <outlet property="navigationProfileBtn" destination="COW-F8-s8R" id="CrX-6O-ytx"/>
                 <outlet property="nearBySerCollectionView" destination="n1C-q9-97P" id="YTs-wl-74u"/>
                 <outlet property="nearByServiceLayout" destination="5Ce-dA-ADj" id="s1J-9F-TzE"/>
+                <outlet property="orderQRBtn" destination="THk-lk-9lK" id="CQb-DX-vNk"/>
                 <outlet property="orderQRLayout" destination="kZn-RI-f6p" id="EbN-jn-XFH"/>
                 <outlet property="scanBtn" destination="CvH-Ei-Ucq" id="31z-jp-lUE"/>
+                <outlet property="scanQR" destination="QTG-q7-mhM" id="fTO-Za-ae6"/>
                 <outlet property="scanQRIconLayout" destination="7ft-ew-g13" id="luf-fU-h47"/>
             </connections>
         </placeholder>
@@ -91,13 +98,13 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BVi-VM-Wdr">
                             <rect key="frame" x="0.0" y="95" width="393" height="757"/>
                             <subviews>
-                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3e7-gd-e7k">
+                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3e7-gd-e7k">
                                     <rect key="frame" x="0.0" y="0.0" width="393" height="757"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mjd-TS-RhW">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mjd-TS-RhW">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="757"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GFI-Ey-deI">
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GFI-Ey-deI">
                                                     <rect key="frame" x="0.0" y="0.0" width="393" height="757"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lrr-vx-zkr">
@@ -150,7 +157,7 @@
                                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="htp-or-Y85" userLabel="imageView">
                                                                                     <rect key="frame" x="24" y="5" width="50" height="50"/>
                                                                                     <subviews>
-                                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="homeIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Qzz-9k-Ar9">
+                                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkVehicleIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Qzz-9k-Ar9">
                                                                                             <rect key="frame" x="10.000000000000014" y="10" width="30" height="30"/>
                                                                                             <constraints>
                                                                                                 <constraint firstAttribute="height" constant="30" id="ZDE-PS-19K"/>
@@ -188,7 +195,7 @@
                                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9lg-0c-CWQ" userLabel="imageView">
                                                                                     <rect key="frame" x="24" y="5" width="50" height="50"/>
                                                                                     <subviews>
-                                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="homeIcon" translatesAutoresizingMaskIntoConstraints="NO" id="jAv-gH-gQ7">
+                                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkChallanIcon" translatesAutoresizingMaskIntoConstraints="NO" id="jAv-gH-gQ7">
                                                                                             <rect key="frame" x="10" y="10" width="30" height="30"/>
                                                                                             <constraints>
                                                                                                 <constraint firstAttribute="width" constant="30" id="erX-ea-eeK"/>
@@ -226,7 +233,7 @@
                                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PMz-tn-D2D" userLabel="imageView">
                                                                                     <rect key="frame" x="24.333333333333314" y="5" width="50" height="50"/>
                                                                                     <subviews>
-                                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="homeIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Bfx-OZ-kS2">
+                                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkChallanIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Bfx-OZ-kS2">
                                                                                             <rect key="frame" x="10" y="10" width="30" height="30"/>
                                                                                             <constraints>
                                                                                                 <constraint firstAttribute="height" constant="30" id="ewz-Hx-AbA"/>
@@ -284,7 +291,7 @@
                                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zEF-AK-Sov" userLabel="imageView">
                                                                                     <rect key="frame" x="24" y="5" width="50" height="50"/>
                                                                                     <subviews>
-                                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="homeIcon" translatesAutoresizingMaskIntoConstraints="NO" id="km1-IS-naX">
+                                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="activateQRCodeIcon" translatesAutoresizingMaskIntoConstraints="NO" id="km1-IS-naX">
                                                                                             <rect key="frame" x="10" y="10" width="30" height="30"/>
                                                                                             <constraints>
                                                                                                 <constraint firstAttribute="height" constant="30" id="o8r-BS-p8l"/>
@@ -322,7 +329,7 @@
                                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k4s-Bq-AeJ" userLabel="imageView">
                                                                                     <rect key="frame" x="24" y="5" width="50" height="50"/>
                                                                                     <subviews>
-                                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="homeIcon" translatesAutoresizingMaskIntoConstraints="NO" id="bie-r6-oyG">
+                                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="myGarageIcon" translatesAutoresizingMaskIntoConstraints="NO" id="bie-r6-oyG">
                                                                                             <rect key="frame" x="10.000000000000014" y="10" width="30" height="30"/>
                                                                                             <constraints>
                                                                                                 <constraint firstAttribute="width" constant="30" id="TWa-wS-6Xh"/>
@@ -360,7 +367,7 @@
                                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aET-FA-g2A" userLabel="imageView">
                                                                                     <rect key="frame" x="24" y="5" width="50" height="50"/>
                                                                                     <subviews>
-                                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="homeIcon" translatesAutoresizingMaskIntoConstraints="NO" id="eQf-AW-eGw">
+                                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="downloadQRIcon" translatesAutoresizingMaskIntoConstraints="NO" id="eQf-AW-eGw">
                                                                                             <rect key="frame" x="10" y="10" width="30" height="30"/>
                                                                                             <constraints>
                                                                                                 <constraint firstAttribute="width" constant="30" id="NoQ-Tg-8q7"/>
@@ -398,7 +405,7 @@
                                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kZn-RI-f6p" userLabel="imageView">
                                                                                     <rect key="frame" x="24.333333333333314" y="5" width="50" height="50"/>
                                                                                     <subviews>
-                                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="homeIcon" translatesAutoresizingMaskIntoConstraints="NO" id="irb-al-K4E">
+                                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="orderQRIcon" translatesAutoresizingMaskIntoConstraints="NO" id="irb-al-K4E">
                                                                                             <rect key="frame" x="10" y="10" width="30" height="30"/>
                                                                                             <constraints>
                                                                                                 <constraint firstAttribute="width" constant="30" id="YRj-Iv-kpi"/>
@@ -459,7 +466,7 @@
                                                                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="n1C-q9-97P">
                                                                             <rect key="frame" x="0.0" y="0.0" width="373" height="200"/>
                                                                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                                                            <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="tNq-SV-a36">
+                                                                            <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="tNq-SV-a36">
                                                                                 <size key="itemSize" width="128" height="128"/>
                                                                                 <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                                                                 <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -514,6 +521,7 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="Mjd-TS-RhW" firstAttribute="top" secondItem="3e7-gd-e7k" secondAttribute="top" id="YZc-hf-c6Y"/>
+                                        <constraint firstItem="Mjd-TS-RhW" firstAttribute="height" secondItem="3e7-gd-e7k" secondAttribute="height" id="cbD-zP-VAb"/>
                                         <constraint firstAttribute="trailing" secondItem="Mjd-TS-RhW" secondAttribute="trailing" id="dA3-tK-c7V"/>
                                         <constraint firstItem="Mjd-TS-RhW" firstAttribute="width" secondItem="3e7-gd-e7k" secondAttribute="width" id="dLX-sy-Q5z"/>
                                         <constraint firstItem="Mjd-TS-RhW" firstAttribute="leading" secondItem="3e7-gd-e7k" secondAttribute="leading" id="ehd-gu-M2G"/>
@@ -578,13 +586,18 @@
                 <constraint firstItem="Kv4-TJ-8WL" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="RsL-T0-m2d"/>
                 <constraint firstItem="Kv4-TJ-8WL" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Vmi-eJ-kxe"/>
             </constraints>
-            <point key="canvasLocation" x="-248" y="154"/>
+            <point key="canvasLocation" x="-248.09160305343511" y="153.52112676056339"/>
         </view>
     </objects>
     <resources>
+        <image name="activateQRCodeIcon" width="341.33334350585938" height="341.33334350585938"/>
+        <image name="checkChallanIcon" width="400" height="400"/>
+        <image name="checkVehicleIcon" width="418.33334350585938" height="376"/>
         <image name="defaultProfileIcon" width="64" height="64"/>
-        <image name="homeIcon" width="19" height="19"/>
+        <image name="downloadQRIcon" width="176.66667175292969" height="159"/>
         <image name="imageBgCircle" width="226.66667175292969" height="226.66667175292969"/>
+        <image name="myGarageIcon" width="400" height="333.33334350585938"/>
+        <image name="orderQRIcon" width="40" height="42.666667938232422"/>
         <image name="scan_qr_code_icon" width="889.33331298828125" height="889.33331298828125"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

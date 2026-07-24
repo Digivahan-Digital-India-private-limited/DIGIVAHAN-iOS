@@ -34,8 +34,8 @@ class NetworkManager {
             return
         }
 
-//        print("========== API REQUEST ==========")
-//        print("URL:", apiURL)
+        print("========== API REQUEST ==========")
+        print("URL:", apiURL)
 
         // Request
         var request = URLRequest(url: apiURL)
@@ -69,7 +69,7 @@ class NetworkManager {
                     options: []
                 )
 
-//                print("PARAMS:", params)
+                print("PARAMS:", params)
 
             } catch {
 
@@ -113,8 +113,8 @@ class NetworkManager {
                         options: []
                     ) as? [String: Any] {
 
-//                        print("========== API RESPONSE ==========")
-//                        print(json)
+                        print("========== API RESPONSE ==========")
+                        print(json)
 
                         // Status
                         let status =

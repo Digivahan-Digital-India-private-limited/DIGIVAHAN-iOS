@@ -42,6 +42,9 @@ class MainPage: BaseViewController {
             PreferenceManager.shared.getUserId()
         )
         
+        LocationManager.shared.requestLocationPermission()
+        LocationManager.shared.startUpdatingLocation()
+        
         // set myVirtualQRBtn
         notificationBtn.isUserInteractionEnabled = true
 

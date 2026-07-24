@@ -878,30 +878,77 @@ class CommonFunctions {
     
     static func openNearbyService(serviceType: String) {
 
-            let query = "\(serviceType) near me"
-                .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        print("======================================")
+        print("🚀 openNearbyService()")
+        print("Searching:", serviceType)
 
-            // Apple Maps
-            if let appleMapsURL = URL(string: "http://maps.apple.com/?q=\(query)"),
-               UIApplication.shared.canOpenURL(appleMapsURL) {
+        guard let lat = LocationManager.shared.latitude,
+              let lng = LocationManager.shared.longitude else {
 
-                UIApplication.shared.open(appleMapsURL)
-                return
+            print("❌ Current location unavailable")
+            return
+        }
+
+        print("📍 Latitude :", lat)
+        print("📍 Longitude:", lng)
+
+        let query = "\(serviceType) near me"
+            .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+
+        // Universal Google Maps URL
+        let universalURL = URL(
+            string: "https://www.google.com/maps/search/?api=1&query=\(query)&query_place_id=&center=\(lat),\(lng)&zoom=15"
+        )!
+
+        print("🌍 Universal URL:")
+        print(universalURL.absoluteString)
+
+        // If Google Maps is installed, this usually opens in the app.
+        if UIApplication.shared.canOpenURL(URL(string: "comgooglemaps://")!) {
+
+            print("✅ Google Maps Installed")
+            UIApplication.shared.open(
+                universalURL,
+                options: [.universalLinksOnly: true]
+            ) { success in
+
+                if success {
+
+                    print("✅ Opened in Google Maps App")
+
+                } else {
+
+                    print("⚠️ Universal Link failed, opening in browser")
+
+                    UIApplication.shared.open(universalURL)
+                }
             }
 
-            // Google Maps App (if installed)
-            if let googleMapsURL = URL(string: "comgooglemaps://?q=\(query)"),
-               UIApplication.shared.canOpenURL(googleMapsURL) {
+            return
+        }
 
-                UIApplication.shared.open(googleMapsURL)
-                return
-            }
+        print("⚠️ Google Maps not installed")
+        print("🌐 Opening in browser")
 
-            // Google Maps Web
-            if let webURL = URL(string: "https://www.google.com/maps/search/\(query)") {
+        UIApplication.shared.open(universalURL)
+    }
+    
+    static func showUnderDevelopmentDialog(from viewController: UIViewController) {
 
-                UIApplication.shared.open(webURL)
-            }
+            let alert = UIAlertController(
+                title: "Under Development",
+                message: "This service is under development and will be available in a future update.",
+                preferredStyle: .alert
+            )
+
+            alert.addAction(
+                UIAlertAction(
+                    title: "OK",
+                    style: .default
+                )
+            )
+
+            viewController.present(alert, animated: true)
         }
     
 }

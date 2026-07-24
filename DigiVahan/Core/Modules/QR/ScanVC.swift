@@ -20,6 +20,8 @@ class ScanVC: BaseViewController, UIImagePickerControllerDelegate & UINavigation
     @IBOutlet weak var galleryBtn: UIImageView!
     @IBOutlet weak var flashBtn: UIImageView!
     
+    var qrItem : QRDataModel!
+    
     private var scanType: String = "connect"
     
     override func viewDidLoad() {
@@ -259,12 +261,12 @@ extension ScanVC: AVCaptureMetadataOutputObjectsDelegate {
 
                     let jsonData = try JSONSerialization.data(withJSONObject: data)
 
-                    let qrItem = try JSONDecoder().decode(QRDataModel.self, from: jsonData)
+                    self.qrItem = try JSONDecoder().decode(QRDataModel.self, from: jsonData)
 
-                    print("🟢 QR Status = \(qrItem.qr_status)")
-                    print("🟢 Assigned To = \(qrItem.assigned_to ?? "")")
+                    print("🟢 QR Status = \(self.qrItem.qr_status)")
+                    print("🟢 Assigned To = \(self.qrItem.assigned_to ?? "")")
 
-                    self.handleQRItem(qrItem)
+                    self.handleQRItem(self.qrItem)
 
                 } catch {
 
@@ -280,8 +282,12 @@ extension ScanVC: AVCaptureMetadataOutputObjectsDelegate {
     }
     
     private func handleQRItem(_ qrItem: QRDataModel) {
-        if(scanType == "assign" && qrItem.qr_status == "assigned"){
-            self.showScannedDialog(qrItem: qrItem, vehicleNumber: "", responseType: "error");
+        if(scanType == "activate"){
+            if qrItem.qr_status == "assigned" {
+                self.showScannedDialog(qrItem: qrItem, vehicleNumber: "", responseType: "error")
+            } else {
+                checkGarageVehicle()
+            }
             
         } else if(qrItem.assigned_to != nil && qrItem.assigned_to != "" && qrItem.assigned_to == PreferenceManager.shared.getUserId()){
             self.showAlert(message: "This user already login into your device.")
@@ -298,6 +304,9 @@ extension ScanVC: AVCaptureMetadataOutputObjectsDelegate {
                         "scanType": scanType
                     ]
             )
+            
+        } else {
+            self.showAlert(message: "This qr is invalid or not active.")
             
         }
     }
@@ -345,6 +354,8 @@ extension ScanVC: AVCaptureMetadataOutputObjectsDelegate {
 
             if responseType.lowercased() == "error" {
                 self.navigationController?.popViewController(animated: true)
+            } else {
+                self.refreshScanner()
             }
         }
 
@@ -352,8 +363,8 @@ extension ScanVC: AVCaptureMetadataOutputObjectsDelegate {
 
             switch responseType.lowercased() {
 
-//            case "assign":
-//                self.assignQR(vehicleNumber: vehicleNumber, qrItem: qrItem)
+            case "assign":
+                self.assignQR(vehicleId: vehicleNumber, qrItem: qrItem)
 
             case "error":
                 self.refreshScanner()
@@ -363,7 +374,7 @@ extension ScanVC: AVCaptureMetadataOutputObjectsDelegate {
                 NavigationManager.pushScreen(
                     from: self,
                     storyboardName: "Main",
-                    viewControllerID: "MyGarageVC",
+                    viewControllerID: "GarageListVC",
                     data: [
                             "qrItem": qrItem
                         ]
@@ -425,5 +436,151 @@ extension ScanVC: AVCaptureMetadataOutputObjectsDelegate {
             }
         }
     }
+    
+    
+    private func checkGarageVehicle() {
+        
+        let dialog = AddVehicleCustomDialog(
+            frame: UIScreen.main.bounds
+        )
+        
+        dialog.configure(
+            title: "Activate QR Code",
+            description: "Please add vehicle number to activate this QR code.",
+            hint: "Vehicle Number",
+            buttonTitle: "Verify"
+        )
+        
+        dialog.onProceed = { vehicleNumber in
+            
+            var vehicleExist = false
+            
+            if vehicleNumber.isEmpty {
+                self.showToast(message: "Please enter vehicle Number")
+                return
+            }
+            
+            LoadingManager.shared.show(on: self.view)
+            
+            NetworkManager.shared.callAPI(
+                url: APIEndpoints.GET_VEHICLE_LIST + PreferenceManager.shared.getUserId(),
+                method: "GET",
+                parameters: nil
+            ) { [weak self] response, status, message in
+
+                guard let self = self else { return }
+
+                LoadingManager.shared.hide()
+
+                if status {
+
+                    do {
+
+                        guard
+                            let response = response,
+                            let data = response["data"] as? [String: Any],
+                            let vehicles = data["vehicles"] as? [[String: Any]]
+                        else {
+
+                            self.showToast(message: "Vehicle not found")
+                            return
+                        }
+
+                        _ = try JSONSerialization.data(
+                            withJSONObject: vehicles,
+                            options: []
+                        )
+
+                        for vehicle in vehicles {
+    
+                            if let vehicle_number = vehicle["vehicle_id"] as? String {
+                                if vehicle_number == vehicleNumber {
+                                    vehicleExist = true
+                                }
+                            }
+                        
+                        }
+                        
+                        if vehicleExist {
+                            self.showScannedDialog(qrItem: self.qrItem, vehicleNumber: vehicleNumber, responseType: "assign")
+                        } else {
+                            self.showScannedDialog(qrItem: self.qrItem, vehicleNumber: vehicleNumber, responseType: "novehicle")
+                        }
+
+
+                    } catch {
+
+                        print("🔥 Decode Error:", error.localizedDescription)
+                        self.showToast(message: "Parsing Error")
+                    }
+
+                } else {
+
+                    if message.lowercased() == "no internet connection" {
+
+    //                    self.showNoInternetDialog()
+
+                    } else {
+
+                        self.showToast(message: "Vehicle not found")
+                    }
+                }
+            }
+            
+        }
+        
+        dialog.onCancel = { vehicleNumber in
+            self.refreshScanner()
+        }
+        
+        
+        
+        view.addSubview(dialog)
+        
+    }
+    
+    
+    private func assignQR(vehicleId : String, qrItem: QRDataModel) {
+        
+        let params: [String: Any] = [
+            "qr_id": qrItem.qr_id ?? "empty",
+            "assign_to": PreferenceManager.shared.getUserId(),
+            "assigned_by": "user",
+            "product_type": "vehicle",
+            "vehicle_id": vehicleId
+        ]
+        
+        LoadingManager.shared.show(on: self.view)
+        
+        NetworkManager.shared.callAPI(
+            url: APIEndpoints.ASSIGN_QR_CODE,
+            method: "POST",
+            parameters: params
+        ) { [weak self] response, status, message in
+
+            guard let self = self else { return }
+
+            LoadingManager.shared.hide()
+
+            if status {
+
+                self.showToast(message: "QR Code activated successfully")
+                navigationController?.popViewController(animated: true)
+
+            } else {
+
+                if message.lowercased() == "no internet connection" {
+
+//                    self.showNoInternetDialog()
+
+                } else {
+
+                    self.showToast(message: "Vehicle not found")
+                }
+            }
+        }
+        
+    }
+    
     
  }

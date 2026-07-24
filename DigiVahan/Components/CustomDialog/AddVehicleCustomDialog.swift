@@ -20,6 +20,7 @@ class AddVehicleCustomDialog: UIView {
     @IBOutlet weak var cancelBtn: UIButton!
 
     var onProceed: ((String) -> Void)?
+    var onCancel: ((String) -> Void)?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -54,12 +55,10 @@ class AddVehicleCustomDialog: UIView {
 
         proceedBtn.layer.cornerRadius = 10
         cancelBtn.layer.cornerRadius = 10
+        
+        inputField.delegate = self
+        inputField.autocapitalizationType = .allCharacters
 
-        cancelBtn.addTarget(
-            self,
-            action: #selector(closeDialog),
-            for: .touchUpInside
-        )
     }
 
     // MARK: - Configure Dialog
@@ -92,19 +91,51 @@ class AddVehicleCustomDialog: UIView {
                 in: .whitespacesAndNewlines
             ) ?? ""
 
+        onProceed?(value)
+        
         if value.isEmpty {
             return
         }
-
+        
+        removeFromSuperview()
+    }
+    
+    // MARK: - Close Dialog
+    @IBAction func cancelBtnClicked(_ sender: UIButton) {
         removeFromSuperview()
 
-        onProceed?(value)
+        onCancel?("closeDialog")
     }
 
     // MARK: - Close Dialog
 
-    @objc func closeDialog() {
+}
 
-        removeFromSuperview()
+extension AddVehicleCustomDialog: UITextFieldDelegate {
+
+    func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool {
+
+        let currentText = textField.text ?? ""
+
+        guard let textRange = Range(range, in: currentText) else {
+            return false
+        }
+
+        var updatedText = currentText
+            .replacingCharacters(in: textRange, with: string)
+            .uppercased()
+
+        // Limit vehicle number to 14 characters
+        if textField == inputField && updatedText.count > 14 {
+            updatedText = String(updatedText.prefix(20))
+        }
+
+        textField.text = updatedText
+
+        return false
     }
 }
