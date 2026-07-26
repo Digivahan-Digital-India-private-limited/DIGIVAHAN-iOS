@@ -309,13 +309,7 @@ class NavigationView: UIView {
 
     // MARK: - Configure Dialog
 
-    func configure(
-        title: String,
-        description: String,
-        hint: String,
-        buttonTitle: String,
-        defaultValue: String = ""
-    ) {
+    func configure() {
         loadUserProfile()
     }
 

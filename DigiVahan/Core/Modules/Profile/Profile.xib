@@ -50,7 +50,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="393" height="666"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="cbG-dk-ZhG">
-                                    <rect key="frame" x="0.0" y="0.0" width="393" height="230"/>
+                                    <rect key="frame" x="0.0" y="40" width="393" height="230"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dp0-R3-H9J">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="160"/>
@@ -107,16 +107,16 @@
                                     </constraints>
                                 </stackView>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="snj-a7-LAt">
-                                    <rect key="frame" x="0.0" y="260" width="393" height="436"/>
+                                    <rect key="frame" x="0.0" y="300" width="393" height="396"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8u5-Ef-Sci">
-                                            <rect key="frame" x="0.0" y="5" width="393" height="436"/>
+                                            <rect key="frame" x="0.0" y="5" width="393" height="396"/>
                                             <subviews>
                                                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cnW-Lu-YDe">
-                                                    <rect key="frame" x="0.0" y="0.0" width="393" height="436"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="393" height="396"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Dvy-Yh-bS9">
-                                                            <rect key="frame" x="0.0" y="0.0" width="393" height="400"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="393" height="250"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Xe-e2-QD7" userLabel="updateProfileBtn">
                                                                     <rect key="frame" x="0.0" y="0.0" width="393" height="50"/>
@@ -232,7 +232,7 @@
                                                                         <constraint firstItem="pMn-2r-wDY" firstAttribute="leading" secondItem="lCz-QK-Ptm" secondAttribute="leading" id="x0i-X4-rDj"/>
                                                                     </constraints>
                                                                 </view>
-                                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Y2-X0-8R3" userLabel="aboutUsBtn">
+                                                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Y2-X0-8R3" userLabel="aboutUsBtn">
                                                                     <rect key="frame" x="0.0" y="150" width="393" height="50"/>
                                                                     <subviews>
                                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="aboutUsIcon" translatesAutoresizingMaskIntoConstraints="NO" id="xFU-Fl-iAk">
@@ -270,8 +270,8 @@
                                                                         <constraint firstAttribute="trailing" secondItem="TKK-SN-tne" secondAttribute="trailing" id="ywv-EO-kdP"/>
                                                                     </constraints>
                                                                 </view>
-                                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nk2-v3-NkR" userLabel="termConditionBtn">
-                                                                    <rect key="frame" x="0.0" y="200" width="393" height="50"/>
+                                                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nk2-v3-NkR" userLabel="termConditionBtn">
+                                                                    <rect key="frame" x="0.0" y="150" width="393" height="50"/>
                                                                     <subviews>
                                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TermConditionIcon" translatesAutoresizingMaskIntoConstraints="NO" id="ZK5-YD-PFT">
                                                                             <rect key="frame" x="20" y="10" width="30" height="30"/>
@@ -308,8 +308,8 @@
                                                                         <constraint firstAttribute="bottom" secondItem="vv9-fC-4km" secondAttribute="bottom" id="yWq-IU-frv"/>
                                                                     </constraints>
                                                                 </view>
-                                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pZ1-ma-VjE" userLabel="privacyPolicyBtn">
-                                                                    <rect key="frame" x="0.0" y="250" width="393" height="50"/>
+                                                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pZ1-ma-VjE" userLabel="privacyPolicyBtn">
+                                                                    <rect key="frame" x="0.0" y="150" width="393" height="50"/>
                                                                     <subviews>
                                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="privacyPolicyIcon" translatesAutoresizingMaskIntoConstraints="NO" id="RPy-ew-jxK">
                                                                             <rect key="frame" x="20" y="10" width="30" height="30"/>
@@ -347,7 +347,7 @@
                                                                     </constraints>
                                                                 </view>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cgz-D8-LwJ" userLabel="shareAppBtn">
-                                                                    <rect key="frame" x="0.0" y="300" width="393" height="50"/>
+                                                                    <rect key="frame" x="0.0" y="150" width="393" height="50"/>
                                                                     <subviews>
                                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="share_icon" translatesAutoresizingMaskIntoConstraints="NO" id="jpV-cH-e1V">
                                                                             <rect key="frame" x="20" y="7.6666666666666288" width="35" height="35"/>
@@ -385,7 +385,7 @@
                                                                     </constraints>
                                                                 </view>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xQb-yN-CIe" userLabel="logoutBtn">
-                                                                    <rect key="frame" x="0.0" y="350" width="393" height="50"/>
+                                                                    <rect key="frame" x="0.0" y="200" width="393" height="50"/>
                                                                     <subviews>
                                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logout_icon" translatesAutoresizingMaskIntoConstraints="NO" id="jac-yY-Efa">
                                                                             <rect key="frame" x="20" y="10" width="30" height="30"/>
@@ -473,7 +473,7 @@
                             <constraints>
                                 <constraint firstAttribute="bottom" secondItem="snj-a7-LAt" secondAttribute="bottom" constant="-30" id="AkB-Xn-rDh"/>
                                 <constraint firstItem="cbG-dk-ZhG" firstAttribute="leading" secondItem="jsf-54-CwT" secondAttribute="leading" id="MFw-ze-j9r"/>
-                                <constraint firstItem="cbG-dk-ZhG" firstAttribute="top" secondItem="jsf-54-CwT" secondAttribute="top" id="Mdv-lR-pmt"/>
+                                <constraint firstItem="cbG-dk-ZhG" firstAttribute="top" secondItem="jsf-54-CwT" secondAttribute="top" constant="40" id="Mdv-lR-pmt"/>
                                 <constraint firstAttribute="trailing" secondItem="snj-a7-LAt" secondAttribute="trailing" id="TgI-Ku-5Pi"/>
                                 <constraint firstItem="snj-a7-LAt" firstAttribute="leading" secondItem="jsf-54-CwT" secondAttribute="leading" id="Zsv-kI-poE"/>
                                 <constraint firstItem="snj-a7-LAt" firstAttribute="width" secondItem="jsf-54-CwT" secondAttribute="width" id="mPU-VO-Yi9"/>
@@ -489,7 +489,7 @@
                         <constraint firstAttribute="bottom" secondItem="jsf-54-CwT" secondAttribute="bottom" id="qot-HB-7yF"/>
                     </constraints>
                 </scrollView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6ST-SS-8XD">
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6ST-SS-8XD">
                     <rect key="frame" x="146.66666666666666" y="714" width="100" height="50"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scan QR" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vuy-r8-6dp">

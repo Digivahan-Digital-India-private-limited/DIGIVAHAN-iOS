@@ -10,15 +10,16 @@ import AVFoundation
 
 class ScanVC: BaseViewController, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
     
-        var onCodeScanned: ((String) -> Void)?
+    var onCodeScanned: ((String) -> Void)?
     
-        private let captureSession = AVCaptureSession()
-        private var previewLayer: AVCaptureVideoPreviewLayer!
-        private var isScanning = true
+    private let captureSession = AVCaptureSession()
+    private var previewLayer: AVCaptureVideoPreviewLayer!
+    private var isScanning = true
     
     @IBOutlet weak var qrScanView: UIView!
     @IBOutlet weak var galleryBtn: UIImageView!
     @IBOutlet weak var flashBtn: UIImageView!
+    @IBOutlet weak var layoutMessage: UILabel!
     
     var qrItem : QRDataModel!
     
@@ -52,6 +53,10 @@ class ScanVC: BaseViewController, UIImagePickerControllerDelegate & UINavigation
         if let data = receivedData as? [String: Any] {
 
             self.scanType = data["scanType"] as? String ?? ""
+            
+            if(scanType == "activate"){
+                layoutMessage.text = "Scan DigiVahan QR Code To Activate"
+            }
             
         }
         

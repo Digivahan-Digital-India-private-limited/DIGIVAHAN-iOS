@@ -12,6 +12,10 @@ import OneSignalFramework
 class DashBoardVC: UIView, UITextFieldDelegate {
     
     @IBOutlet var mainContentView: UIView!
+    @IBOutlet weak var navigationProfileBtn: UIView!
+    @IBOutlet weak var userProfileImage: UIImageView!
+    @IBOutlet weak var greatingText: UILabel!
+    @IBOutlet weak var userName: UILabel!
     
    
     
@@ -51,8 +55,83 @@ class DashBoardVC: UIView, UITextFieldDelegate {
             contentView.trailingAnchor.constraint(equalTo: trailingAnchor)
 
         ])
+        
+        setUI()
 
     }
+    
+    func setUI() {
+        
+        userProfileImage.layer.cornerRadius =
+                userProfileImage.frame.width / 2
 
+            userProfileImage.clipsToBounds = true
+            userProfileImage.contentMode = .scaleAspectFill
+        
+        loadUserProfile()
+    
+        // set navigationProfileBtn
+        navigationProfileBtn.isUserInteractionEnabled = true
+
+            let navigationProfileBtnTap = UITapGestureRecognizer(
+                target: self,
+                action: #selector(showNavigation)
+            )
+
+        navigationProfileBtn.addGestureRecognizer(navigationProfileBtnTap)
+        
+    }
+    
+    @objc private func showNavigation() {
+
+        let dialog = NavigationView(
+            frame: UIScreen.main.bounds
+        )
+
+        dialog.configure()
+
+        dialog.onProceed = { value in
+            print(value)
+        }
+
+        if let vc = parentViewController {
+            vc.view.addSubview(dialog)
+            dialog.showAnimated()
+        }
+    }
+
+    
    
+    
+    
+    private func loadUserProfile() {
+
+        let user = PreferenceManager.shared.getUser()
+
+        guard let user = user else {
+            userProfileImage.image =
+            UIImage(named: "defaultProfileIcon")
+            return
+        }
+
+        let imageURL = user.profilePic
+        
+        userName.text = user.firstName + " " + user.lastName
+        
+        if imageURL.isEmpty {
+            userProfileImage.image =
+            UIImage(named: "defaultProfileIcon")
+            return
+        }
+
+        userProfileImage.sd_setImage(
+            with: URL(string: imageURL),
+            placeholderImage: UIImage(
+                named: "defaultProfileIcon"
+            )
+        )
+        
+        self.greatingText.text = "Welcome, \(CommonFunctions.getTimeGreeting())"
+    }
+
 }

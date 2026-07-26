@@ -24,6 +24,7 @@
                 <outlet property="challanPayLayout" destination="PMz-tn-D2D" id="PDq-iO-oNw"/>
                 <outlet property="checkChallanBtn" destination="0aK-DM-3FI" id="zgx-L0-5AE"/>
                 <outlet property="checkChallanLayout" destination="9lg-0c-CWQ" id="hPF-Hs-3Zv"/>
+                <outlet property="checkVehicleBtn" destination="BEk-QN-1Kt" id="yE0-vQ-k5J"/>
                 <outlet property="checkVehicleLayout" destination="htp-or-Y85" id="q8g-zO-L8u"/>
                 <outlet property="downQRLayout" destination="aET-FA-g2A" id="qcY-Vh-YNk"/>
                 <outlet property="mainContentView" destination="iN0-l3-epB" id="F2m-lY-0bk"/>
@@ -38,6 +39,7 @@
                 <outlet property="scanBtn" destination="CvH-Ei-Ucq" id="31z-jp-lUE"/>
                 <outlet property="scanQR" destination="QTG-q7-mhM" id="fTO-Za-ae6"/>
                 <outlet property="scanQRIconLayout" destination="7ft-ew-g13" id="luf-fU-h47"/>
+                <outlet property="userProfileImage" destination="YUN-ks-BYM" id="rt3-qB-0tQ"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>

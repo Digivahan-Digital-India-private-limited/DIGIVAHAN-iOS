@@ -949,6 +949,41 @@ class CommonFunctions {
             )
 
             viewController.present(alert, animated: true)
+    }
+    
+    
+    static func getTimeGreeting() -> String {
+
+        let hour = Calendar.current.component(.hour, from: Date())
+
+        if hour >= 5 && hour < 12 {
+
+            return "Good Morning"
+
+        } else if hour >= 12 && hour < 17 {
+
+            return "Good Afternoon"
+
+        } else if hour >= 17 && hour < 21 {
+
+            return "Good Evening"
+
+        } else {
+
+            // return "Good Night"
+            return "Good Evening"
         }
+    }
+    
+    static func setViewBg(myView : UIView){
+        myView.layer.cornerRadius = myView.frame.width / 2
+
+           myView.layer.shadowColor = UIColor.black.cgColor
+           myView.layer.shadowOpacity = 0.25
+           myView.layer.shadowOffset = CGSize(width: 0, height: 3)
+           myView.layer.shadowRadius = 8
+
+           myView.layer.masksToBounds = false
+    }
     
 }

@@ -29,6 +29,7 @@ class MainPage: BaseViewController {
     @IBOutlet weak var profileBtn: UIView!
     @IBOutlet weak var profileIcon: UIImageView!
     @IBOutlet weak var profileText: UILabel!
+    @IBOutlet weak var bottomNavLayout: UIStackView!
     
     var selectedScreen : String = "home"
     
@@ -84,6 +85,12 @@ class MainPage: BaseViewController {
             )
 
         profileBtn.addGestureRecognizer(profileBtnTap)
+                
+        bottomNavLayout.layer.shadowColor = UIColor.black.cgColor
+        bottomNavLayout.layer.shadowOpacity = 0.25
+        bottomNavLayout.layer.shadowOffset = CGSize(width: 0, height: -4)
+        bottomNavLayout.layer.shadowRadius = 8
+        bottomNavLayout.layer.masksToBounds = false
     }
     
     override func viewWillAppear(_ animated: Bool) {

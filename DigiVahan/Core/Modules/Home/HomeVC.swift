@@ -13,6 +13,7 @@ class HomeVC: UIView, UITextFieldDelegate {
     
     @IBOutlet var mainContentView: UIView!
     @IBOutlet weak var navigationProfileBtn: UIView!
+    @IBOutlet weak var userProfileImage: UIImageView!
     @IBOutlet weak var scanBtn: UIView!
     @IBOutlet weak var nearBySerCollectionView: UICollectionView!
     @IBOutlet weak var nearByServiceLayout: UIView!
@@ -32,6 +33,7 @@ class HomeVC: UIView, UITextFieldDelegate {
     @IBOutlet weak var challanPayBtn: UIView!
     @IBOutlet weak var orderQRBtn: UIView!
     @IBOutlet weak var activateQRBtn: UIView!
+    @IBOutlet weak var checkVehicleBtn: UIView!
     
     
     
@@ -85,17 +87,16 @@ class HomeVC: UIView, UITextFieldDelegate {
     
     func setUI() {
         
-        print("user latitude:- \(LocationManager.shared.latitude)")
-        print("user latitude:- \(LocationManager.shared.longitude)")
+        loadUserProfile()
         
-        setViewBg(myView: scanQRIconLayout)
-        setViewBg(myView: checkVehicleLayout)
-        setViewBg(myView: checkChallanLayout)
-        setViewBg(myView: challanPayLayout)
-        setViewBg(myView: activateQRLayout)
-        setViewBg(myView: myGarageLayout)
-        setViewBg(myView: downQRLayout)
-        setViewBg(myView: orderQRLayout)
+        CommonFunctions.setViewBg(myView: scanQRIconLayout)
+        CommonFunctions.setViewBg(myView: checkVehicleLayout)
+        CommonFunctions.setViewBg(myView: checkChallanLayout)
+        CommonFunctions.setViewBg(myView: challanPayLayout)
+        CommonFunctions.setViewBg(myView: activateQRLayout)
+        CommonFunctions.setViewBg(myView: myGarageLayout)
+        CommonFunctions.setViewBg(myView: downQRLayout)
+        CommonFunctions.setViewBg(myView: orderQRLayout)
         
 //        nearBySerCollectionView.delegate = self
 //        nearBySerCollectionView.dataSource = self
@@ -113,7 +114,7 @@ class HomeVC: UIView, UITextFieldDelegate {
             layout.sectionInset = UIEdgeInsets( top: 10, left: 10, bottom: 10, right: 10 )
         }
         
-        // set aboutBtn
+        // set navigationProfileBtn
         navigationProfileBtn.isUserInteractionEnabled = true
 
             let navigationProfileBtnTap = UITapGestureRecognizer(
@@ -124,8 +125,16 @@ class HomeVC: UIView, UITextFieldDelegate {
         navigationProfileBtn.addGestureRecognizer(navigationProfileBtnTap)
         
         // set scanBtn
-        scanBtn.isUserInteractionEnabled = true
         scanQR.isUserInteractionEnabled = true
+
+            let scanQRTap = UITapGestureRecognizer(
+                target: self,
+                action: #selector(onScanBtnClick)
+            )
+
+        scanQR.addGestureRecognizer(scanQRTap)
+        
+        scanBtn.isUserInteractionEnabled = true
 
             let scanBtnTap = UITapGestureRecognizer(
                 target: self,
@@ -133,7 +142,6 @@ class HomeVC: UIView, UITextFieldDelegate {
             )
 
         scanBtn.addGestureRecognizer(scanBtnTap)
-        scanQR.addGestureRecognizer(scanBtnTap)
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(testTap))
         nearBySerCollectionView.addGestureRecognizer(tap)
@@ -202,13 +210,63 @@ class HomeVC: UIView, UITextFieldDelegate {
 
         activateQRBtn.addGestureRecognizer(activateQRBtnTap)
         
+        
+        // set activateQRBtn
+        checkVehicleBtn.isUserInteractionEnabled = true
+
+            let checkVehicleBtnTap = UITapGestureRecognizer(
+                target: self,
+                action: #selector(onCheckVehicleBtnClick)
+            )
+
+        checkVehicleBtn.addGestureRecognizer(checkVehicleBtnTap)
+        
         getNearByServiceList()
+    }
+    
+
+    
+    private func loadUserProfile() {
+        
+        userProfileImage.layer.cornerRadius =
+                userProfileImage.frame.width / 2
+
+            userProfileImage.clipsToBounds = true
+            userProfileImage.contentMode = .scaleAspectFill
+
+        let user = PreferenceManager.shared.getUser()
+
+        guard let user = user else {
+            userProfileImage.image =
+            UIImage(named: "defaultProfileIcon")
+            return
+        }
+
+        let imageURL = user.profilePic
+                
+        if imageURL.isEmpty {
+            userProfileImage.image =
+            UIImage(named: "defaultProfileIcon")
+            return
+        }
+
+        userProfileImage.sd_setImage(
+            with: URL(string: imageURL),
+            placeholderImage: UIImage(
+                named: "defaultProfileIcon"
+            )
+        )
+        
     }
     
     @objc private func commingSoonDialog() {
         if let vc = parentViewController {
             CommonFunctions.showUnderDevelopmentDialog(from: vc)
         }
+    }
+    
+    @objc private func onCheckVehicleBtnClick() {
+        checkVehicle()
     }
     
     @objc private func onMyVirtualQRBtnClick() {
@@ -235,16 +293,6 @@ class HomeVC: UIView, UITextFieldDelegate {
         print("🔥 CollectionView Tapped")
     }
     
-    func setViewBg(myView : UIView){
-        myView.layer.cornerRadius = myView.frame.width / 2
-
-           myView.layer.shadowColor = UIColor.black.cgColor
-           myView.layer.shadowOpacity = 0.25
-           myView.layer.shadowOffset = CGSize(width: 0, height: 3)
-           myView.layer.shadowRadius = 8
-
-           myView.layer.masksToBounds = false
-    }
     
     @objc private func onScanBtnClick() {
         if let vc = parentViewController {
@@ -281,12 +329,7 @@ class HomeVC: UIView, UITextFieldDelegate {
             frame: UIScreen.main.bounds
         )
 
-        dialog.configure(
-            title: "Verify Owner",
-            description: "Please verify the vehicle owner before adding this vehicle.",
-            hint: "Enter owner name",
-            buttonTitle: "Verify"
-        )
+        dialog.configure()
 
         dialog.onProceed = { value in
             print(value)
@@ -428,6 +471,143 @@ class HomeVC: UIView, UITextFieldDelegate {
             CommonFunctions.openNearbyService(serviceType: nearByServiceList[index].service_type ?? "")
         }
     }
+    
+    private func checkVehicle() {
+        
+        let vc = parentViewController
+        
+        let dialog = AddVehicleCustomDialog(
+            frame: UIScreen.main.bounds
+        )
+        
+        dialog.configure(
+            title: "Check Vehicle",
+            description: "Please enter vehicle number to check details.",
+            hint: "Vehicle Number",
+            buttonTitle: "Check"
+        )
+        
+        dialog.onProceed = { vehicleNumber in
+            
+            var vehicleExist = false
+            
+            if vehicleNumber.isEmpty {
+                vc?.showToast(message: "Please enter vehicle Number")
+                return
+            }
+            
+            if let vc = self.parentViewController {
+                LoadingManager.shared.show(on: vc.view)
+            }
+            
+            let params: [String: Any] = [
+                "vehicle_number": vehicleNumber
+            ]
+            
+            NetworkManager.shared.callAPI(
+                url: APIEndpoints.CHECK_VEHICLE,
+                method: "POST",
+                parameters: params
+            ) { [weak self] response, status, message in
+
+                guard let self = self else { return }
+
+                LoadingManager.shared.hide()
+
+                if status {
+
+                    do {
+
+                        if let vc = parentViewController {
+                            vc.showToast(message: message)
+                            
+                            guard
+                                let data = response?["data"] as? [String: Any],
+                                let result = (data["result"] as? [String: Any]) ??
+                                    (data["vehicle"] as? [String: Any]),
+                                let info = result["custom_vehicle_info"] as? [String: Any]
+                            else {
+                                return
+                            }
+                            
+                            var model = GarageItemModel()
+                            
+                            // Vehicle ID
+                            model.vehicle_id = vehicleNumber
+                            
+                            // Vehicle Info
+                            model.owner_name = info["owner_name"] as? String ?? ""
+                            model.vehicle_number = info["vehicle_number"] as? String ?? ""
+                            model.vehicle_name = info["vehicle_name"] as? String ?? ""
+                            model.fuel_type = info["fuel_type"] as? String ?? ""
+                            model.rc_status = info["rc_status"] as? String ?? ""
+                            model.registration_date = info["registration_date"] as? String ?? ""
+                            model.ownership_details = info["ownership_details"] as? String ?? ""
+                            model.financer_name = info["financer_name"] as? String ?? ""
+                            model.registered_rto = info["registered_rto"] as? String ?? ""
+                            model.makers_model = info["makers_model"] as? String ?? ""
+                            model.makers_name = info["makers_name"] as? String ?? ""
+                            model.vehicle_class = info["vehicle_class"] as? String ?? ""
+                            model.fuel_norms = info["fuel_norms"] as? String ?? ""
+                            model.engine = info["engine"] as? String ?? ""
+                            model.chassis_number = info["chassis_number"] as? String ?? ""
+                            model.insurer_name = info["insurer_name"] as? String ?? ""
+                            model.insurance_type = info["insurance_type"] as? String ?? ""
+                            model.insurance_expiry = info["insurance_expiry"] as? String ?? ""
+                            model.insurance_renewed_date = info["insurance_renewed_date"] as? String ?? ""
+                            
+                            if let age = info["vehicle_age"] as? Int {
+                                model.vehicle_age = String(age)
+                            } else {
+                                model.vehicle_age = ""
+                            }
+                            
+                            model.fitness_upto = info["fitness_upto"] as? String ?? ""
+                            model.pollution_renew_date = info["pollution_renew_date"] as? String ?? ""
+                            model.pollution_expiry = info["pollution_expiry"] as? String ?? ""
+                            model.color = info["color"] as? String ?? ""
+                            model.unloaded_weight = info["unloaded_weight"] as? String ?? ""
+                            model.category = info["category"] as? String ?? ""
+                            model.insurance_policy_number = info["insurance_policy_number"] as? String ?? ""
+                            
+                            NavigationManager.pushScreen(
+                                from: vc,
+                                viewControllerID: "VehicleInfoVC",
+                                data: [
+                                    "vehicleData": model,
+                                    "vehicleDataType": "check"
+                                ]
+                            )
+                            
+
+                        }
+
+                    } catch {
+
+                        print("🔥 Decode Error:", error.localizedDescription)
+                        vc?.showToast(message: "Parsing Error")
+                    }
+
+                } else {
+
+                    if message.lowercased() == "no internet connection" {
+
+    //                    self.showNoInternetDialog()
+
+                    } else {
+
+                        vc?.showToast(message: "Vehicle not found")
+                    }
+                }
+            }
+            
+        }
+        
+        
+        
+        vc?.view.addSubview(dialog)
+        
+    }
 
    
 }
@@ -494,15 +674,6 @@ extension HomeVC:
 
         return cell
     }
-
-//    func collectionView(
-//        _ collectionView: UICollectionView,
-//        didSelectItemAt indexPath: IndexPath
-//    ) {
-//        let item = nearByServiceList[indexPath.row]
-//        print("service_type:", item.service_type ?? "")
-//        CommonFunctions.openNearbyService(serviceType: item.service_type ?? "")
-//    }
     
     func collectionView( _ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath ) -> CGSize {
         

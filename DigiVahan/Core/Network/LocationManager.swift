@@ -51,8 +51,8 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         latitude = location.coordinate.latitude
         longitude = location.coordinate.longitude
 
-        print("Latitude: \(latitude ?? 0)")
-        print("Longitude: \(longitude ?? 0)")
+//        print("Latitude: \(latitude ?? 0)")
+//        print("Longitude: \(longitude ?? 0)")
     }
 
     func locationManager(
@@ -60,6 +60,6 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         didFailWithError error: Error
     ) {
 
-        print("Location error:", error.localizedDescription)
+//        print("Location error:", error.localizedDescription)
     }
 }
