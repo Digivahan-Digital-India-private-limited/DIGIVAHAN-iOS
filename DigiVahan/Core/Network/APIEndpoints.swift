@@ -62,6 +62,9 @@ struct APIEndpoints {
     static let DELETE_DOCUMENT = "/api/vehicle/doc-delete"
     
     
+    // Challan services
+    static let CHALLAN_LIST = "/api/challan-flow/direct-search"
+    
     // other services
     static let GET_NEAR_BY_SERVICES = "/api/get/all-service"
     

@@ -6,3 +6,20 @@
 //
 
 import Foundation
+
+struct ChallanModel: Codable {
+
+    var ownerName: String?
+    var ownerFatherName: String?
+    var rcNumber: String?
+    var challanNumber: String?
+    var offence: String?
+    var amountSettledAt: String?
+    var transactionStatus: String?
+    var location: String?
+    var createdAt: String?
+    var receiptLink: String?
+    var motorVehicleAct: String?
+
+    init() { }
+}

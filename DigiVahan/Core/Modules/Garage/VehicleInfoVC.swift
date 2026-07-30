@@ -24,7 +24,9 @@ class VehicleInfoVC: BaseViewController {
     @IBOutlet weak var vehicleNumber: UILabel!
     @IBOutlet weak var companyName: UILabel!
     @IBOutlet weak var addVehicleBtn: UIView!
-    @IBOutlet weak var addVehicleBtnText: UILabel!
+    @IBOutlet weak var checkChallanBtn: UIStackView!
+    @IBOutlet weak var refreshVehicleBtn: UIStackView!
+    @IBOutlet weak var challanRefreshLayout: UIView!
     
     @IBOutlet weak var ownerShipDetailsBtn: UIView!
     @IBOutlet weak var ownerShipDetailsArrow: UIImageView!
@@ -102,7 +104,7 @@ class VehicleInfoVC: BaseViewController {
             setData()
         }
         
-//         set garageBtn
+//         set addVehicleBtn
         addVehicleBtn.isUserInteractionEnabled = true
 
             let addVehicleBtnTap = UITapGestureRecognizer(
@@ -111,6 +113,17 @@ class VehicleInfoVC: BaseViewController {
             )
 
         addVehicleBtn.addGestureRecognizer(addVehicleBtnTap)
+        
+        
+        //         set addVehicleBtn
+        refreshVehicleBtn.isUserInteractionEnabled = true
+
+            let refreshVehicleBtnTap = UITapGestureRecognizer(
+                target: self,
+                action: #selector(refershVehicleData)
+            )
+
+        refreshVehicleBtn.addGestureRecognizer(refreshVehicleBtnTap)
         
 //        ownerShipDetailsBtn.isUserInteractionEnabled = true
 //
@@ -323,7 +336,6 @@ class VehicleInfoVC: BaseViewController {
         
     @objc private func onAddVehicleBtnClick() {
         
-        if vehicleDataType == "check"{
             let dialog = AddVehicleCustomDialog(
                 frame: UIScreen.main.bounds
             )
@@ -425,84 +437,85 @@ class VehicleInfoVC: BaseViewController {
             }
             
             view.addSubview(dialog)
-            
-        }
         
-        else {
-            let params: [String: Any] = [
-                "user_id": PreferenceManager.shared.getUserId(),
-                "vehicle_id": self.garageModel?.vehicle_number ?? ""
-            ]
+    }
+    
+    
+    @objc private func refershVehicleData() {
+        
+        let params: [String: Any] = [
+            "user_id": PreferenceManager.shared.getUserId(),
+            "vehicle_id": self.garageModel?.vehicle_number ?? ""
+        ]
+        
+        LoadingManager.shared.show(on: self.view)
+        
+        NetworkManager.shared.callAPI(
+            url: APIEndpoints.REFRESH_VEHICLE,
+            method: "POST",
+            parameters: params
+        ) { response, status, message in
             
-            LoadingManager.shared.show(on: self.view)
+            LoadingManager.shared.hide()
             
-            NetworkManager.shared.callAPI(
-                url: APIEndpoints.REFRESH_VEHICLE,
-                method: "POST",
-                parameters: params
-            ) { response, status, message in
-                
-                LoadingManager.shared.hide()
+            self.showToast(message: message)
+            
+            if status {
                 
                 self.showToast(message: message)
                 
-                if status {
-                    
-                    self.showToast(message: message)
-                    
-                    guard
-                        let data = response?["data"] as? [String: Any],
-                        let info = data["custom_vehicle_info"] as? [String: Any]
-                    else {
-                        return
-                    }
-                    
-                    var model = GarageItemModel()
-                    
-                    // Vehicle ID
-                    model.vehicle_id = self.garageModel?.vehicle_id
-                    
-                    // Vehicle Info
-                    model.owner_name = info["owner_name"] as? String ?? ""
-                    model.vehicle_number = info["vehicle_number"] as? String ?? ""
-                    model.vehicle_name = info["vehicle_name"] as? String ?? ""
-                    model.fuel_type = info["fuel_type"] as? String ?? ""
-                    model.rc_status = info["rc_status"] as? String ?? ""
-                    model.registration_date = info["registration_date"] as? String ?? ""
-                    model.ownership_details = info["ownership_details"] as? String ?? ""
-                    model.financer_name = info["financer_name"] as? String ?? ""
-                    model.registered_rto = info["registered_rto"] as? String ?? ""
-                    model.makers_model = info["makers_model"] as? String ?? ""
-                    model.makers_name = info["makers_name"] as? String ?? ""
-                    model.vehicle_class = info["vehicle_class"] as? String ?? ""
-                    model.fuel_norms = info["fuel_norms"] as? String ?? ""
-                    model.engine = info["engine"] as? String ?? ""
-                    model.chassis_number = info["chassis_number"] as? String ?? ""
-                    model.insurer_name = info["insurer_name"] as? String ?? ""
-                    model.insurance_type = info["insurance_type"] as? String ?? ""
-                    model.insurance_expiry = info["insurance_expiry"] as? String ?? ""
-                    model.insurance_renewed_date = info["insurance_renewed_date"] as? String ?? ""
-                    
-                    if let age = info["vehicle_age"] as? Int {
-                        model.vehicle_age = String(age)
-                    } else {
-                        model.vehicle_age = ""
-                    }
-                    
-                    model.fitness_upto = info["fitness_upto"] as? String ?? ""
-                    model.pollution_renew_date = info["pollution_renew_date"] as? String ?? ""
-                    model.pollution_expiry = info["pollution_expiry"] as? String ?? ""
-                    model.color = info["color"] as? String ?? ""
-                    model.unloaded_weight = info["unloaded_weight"] as? String ?? ""
-                    model.category = info["category"] as? String ?? ""
-                    model.insurance_policy_number = info["insurance_policy_number"] as? String ?? ""
-                    
-                    
-                    self.garageModel = model
-                    
-                    self.setData()
-                    
+                guard
+                    let data = response?["data"] as? [String: Any],
+                    let info = data["custom_vehicle_info"] as? [String: Any]
+                else {
+                    return
                 }
+                
+                var model = GarageItemModel()
+                
+                // Vehicle ID
+                model.vehicle_id = self.garageModel?.vehicle_id
+                
+                // Vehicle Info
+                model.owner_name = info["owner_name"] as? String ?? ""
+                model.vehicle_number = info["vehicle_number"] as? String ?? ""
+                model.vehicle_name = info["vehicle_name"] as? String ?? ""
+                model.fuel_type = info["fuel_type"] as? String ?? ""
+                model.rc_status = info["rc_status"] as? String ?? ""
+                model.registration_date = info["registration_date"] as? String ?? ""
+                model.ownership_details = info["ownership_details"] as? String ?? ""
+                model.financer_name = info["financer_name"] as? String ?? ""
+                model.registered_rto = info["registered_rto"] as? String ?? ""
+                model.makers_model = info["makers_model"] as? String ?? ""
+                model.makers_name = info["makers_name"] as? String ?? ""
+                model.vehicle_class = info["vehicle_class"] as? String ?? ""
+                model.fuel_norms = info["fuel_norms"] as? String ?? ""
+                model.engine = info["engine"] as? String ?? ""
+                model.chassis_number = info["chassis_number"] as? String ?? ""
+                model.insurer_name = info["insurer_name"] as? String ?? ""
+                model.insurance_type = info["insurance_type"] as? String ?? ""
+                model.insurance_expiry = info["insurance_expiry"] as? String ?? ""
+                model.insurance_renewed_date = info["insurance_renewed_date"] as? String ?? ""
+                
+                if let age = info["vehicle_age"] as? Int {
+                    model.vehicle_age = String(age)
+                } else {
+                    model.vehicle_age = ""
+                }
+                
+                model.fitness_upto = info["fitness_upto"] as? String ?? ""
+                model.pollution_renew_date = info["pollution_renew_date"] as? String ?? ""
+                model.pollution_expiry = info["pollution_expiry"] as? String ?? ""
+                model.color = info["color"] as? String ?? ""
+                model.unloaded_weight = info["unloaded_weight"] as? String ?? ""
+                model.category = info["category"] as? String ?? ""
+                model.insurance_policy_number = info["insurance_policy_number"] as? String ?? ""
+                
+                
+                self.garageModel = model
+                
+                self.setData()
+                
             }
         }
         
@@ -524,8 +537,6 @@ class VehicleInfoVC: BaseViewController {
         self.ownerName.text = CommonFunctions.safeValue(garageModel?.owner_name)
         self.vehicleNumber.text = "\(garageModel?.vehicle_number ?? "") |  \(garageModel?.ownership_details ?? "")"
         self.companyName.text = garageModel?.vehicle_name
-        
-        self.addVehicleBtnText.text = vehicleDataType == "check" ? "Add It in My Garage" : "Refresh Data"
         
         self.ownerShipName.text = CommonFunctions.safeValue(garageModel?.owner_name)
         self.ownerShipCount.text = CommonFunctions.getFormattedOwner(CommonFunctions.safeValue(garageModel?.ownership_details))
@@ -582,6 +593,15 @@ class VehicleInfoVC: BaseViewController {
         self.vehicleColor.text = CommonFunctions.safeValue(garageModel?.color)
         self.unloadedWeight.text = CommonFunctions.safeValue(garageModel?.unloaded_weight)
         self.RCStatus.text = CommonFunctions.safeValue(garageModel?.rc_status)
+        
+        if vehicleDataType == "check" {
+            addVehicleBtn.isHidden = false
+            challanRefreshLayout.isHidden = true
+        } else {
+            addVehicleBtn.isHidden = true
+            challanRefreshLayout.isHidden = false
+        }
+        
         
     }
     

@@ -7,19 +7,24 @@
 
 import UIKit
 
-class NotificationListCell: UITableViewCell {
+class ChallanListCell: UITableViewCell {
 
     @IBOutlet weak var cardView: UIView!
-    @IBOutlet weak var seenUnseenDot: UIView!
     
-    @IBOutlet weak var ownerImage: UIImageView!
-    @IBOutlet weak var ownerName: UILabel!
-    @IBOutlet weak var notificationMessage: UILabel!
-    @IBOutlet weak var notificationDate: UILabel!
+    @IBOutlet weak var vehicleNumber: UILabel!
+    @IBOutlet weak var accusedText: UILabel!
+    @IBOutlet weak var fatherName: UILabel!
+    @IBOutlet weak var challanNo: UILabel!
+    @IBOutlet weak var challanDate: UILabel!
+    @IBOutlet weak var challanStatus: UILabel!
+    @IBOutlet weak var challanAmount: UILabel!
+    @IBOutlet weak var challanPlace: UILabel!
+    @IBOutlet weak var challanOffence: UILabel!
+    
+    @IBOutlet weak var payBtnLayout: UIView!
+    @IBOutlet weak var payBtn: UIButton!
 
-    @IBOutlet weak var previewBtn: UIButton!
-
-    var previewAction: (() -> Void)?
+    var payAction: (() -> Void)?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -30,17 +35,15 @@ class NotificationListCell: UITableViewCell {
         cardView.layer.borderColor = UIColor.black.cgColor
         cardView.clipsToBounds = true
 
-        ownerImage.layer.cornerRadius = 25
-        ownerImage.clipsToBounds = true
 
-        previewBtn.addTarget(
+        payBtn.addTarget(
             self,
-            action: #selector(previewBtnClick),
+            action: #selector(payBtnClick),
             for: .touchUpInside
         )
     }
 
-    @objc private func previewBtnClick() {
-        previewAction?()
+    @objc private func payBtnClick() {
+        payAction?()
     }
 }
