@@ -2072,10 +2072,10 @@
                                                     <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9j0-Ej-M6x">
                                                         <rect key="frame" x="0.0" y="0.0" width="402" height="148.33333333333334"/>
                                                         <subviews>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="4xT-JM-lrp">
+                                                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="4xT-JM-lrp">
                                                                 <rect key="frame" x="10" y="10" width="382" height="150"/>
                                                                 <subviews>
-                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fw9-X6-Mgc">
+                                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fw9-X6-Mgc">
                                                                         <rect key="frame" x="0.0" y="0.0" width="186" height="150"/>
                                                                         <subviews>
                                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="parkingIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Zvk-ve-4j9">
@@ -2102,7 +2102,7 @@
                                                                             <constraint firstAttribute="height" constant="150" id="v09-GS-hZ3"/>
                                                                         </constraints>
                                                                     </view>
-                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KOX-Cn-4Ur">
+                                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KOX-Cn-4Ur">
                                                                         <rect key="frame" x="196" y="0.0" width="186" height="150"/>
                                                                         <subviews>
                                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="congestedparkingIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Ka3-kJ-EVo">
@@ -2214,10 +2214,10 @@
                                                     <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="SgL-A4-9Qa">
                                                         <rect key="frame" x="0.0" y="148.33333333333337" width="402" height="148"/>
                                                         <subviews>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="xT3-Jk-xEP">
+                                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="xT3-Jk-xEP">
                                                                 <rect key="frame" x="10" y="10" width="382" height="150"/>
                                                                 <subviews>
-                                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7ts-AC-zzv">
+                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7ts-AC-zzv">
                                                                         <rect key="frame" x="0.0" y="0.0" width="186" height="150"/>
                                                                         <subviews>
                                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="carLightsWindowsLeftOpenIcon" translatesAutoresizingMaskIntoConstraints="NO" id="dT7-t7-5E1">
@@ -2244,7 +2244,7 @@
                                                                             <constraint firstAttribute="trailing" secondItem="zdY-pB-760" secondAttribute="trailing" constant="5" id="zaJ-Rz-W4S"/>
                                                                         </constraints>
                                                                     </view>
-                                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mai-Pd-kfq">
+                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mai-Pd-kfq">
                                                                         <rect key="frame" x="196" y="0.0" width="186" height="150"/>
                                                                         <subviews>
                                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="carHornOrAlarmGoingOnIcon" translatesAutoresizingMaskIntoConstraints="NO" id="H3y-um-bKZ">
@@ -6608,16 +6608,16 @@ and experience the luxury of digivahan.</string>
                                                 <rect key="frame" x="0.0" y="0.0" width="402" height="50"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hMB-Ba-74e">
-                                                        <rect key="frame" x="0.0" y="0.0" width="201" height="50"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="134" height="50"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Details" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I67-NV-b35">
-                                                                <rect key="frame" x="0.0" y="10" width="201" height="32.333333333333336"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="All" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I67-NV-b35">
+                                                                <rect key="frame" x="0.0" y="10" width="134" height="32.333333333333336"/>
                                                                 <fontDescription key="fontDescription" name="Hind-Bold" family="Hind" pointSize="20"/>
                                                                 <color key="textColor" name="iconColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NBc-YH-j7K">
-                                                                <rect key="frame" x="0.0" y="45" width="201" height="5"/>
+                                                                <rect key="frame" x="0.0" y="45" width="134" height="5"/>
                                                                 <color key="backgroundColor" name="colorPrimary"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="5" id="EFi-GS-MxN"/>
@@ -6635,16 +6635,16 @@ and experience the luxury of digivahan.</string>
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w0F-35-bRE">
-                                                        <rect key="frame" x="201" y="0.0" width="201" height="50"/>
+                                                        <rect key="frame" x="134" y="0.0" width="134" height="50"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Documents" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ylt-tm-qAH">
-                                                                <rect key="frame" x="0.0" y="10" width="201" height="32.333333333333336"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pending" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ylt-tm-qAH">
+                                                                <rect key="frame" x="0.0" y="10" width="134" height="32.333333333333336"/>
                                                                 <fontDescription key="fontDescription" name="Hind-Bold" family="Hind" pointSize="20"/>
                                                                 <color key="textColor" name="textDescription"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2yI-vc-Q7n">
-                                                                <rect key="frame" x="0.0" y="45" width="201" height="5"/>
+                                                                <rect key="frame" x="0.0" y="45" width="134" height="5"/>
                                                                 <color key="backgroundColor" name="unselected"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="5" id="R3O-MG-XPB"/>
@@ -6661,6 +6661,33 @@ and experience the luxury of digivahan.</string>
                                                             <constraint firstItem="ylt-tm-qAH" firstAttribute="top" secondItem="w0F-35-bRE" secondAttribute="top" constant="10" id="h1H-5o-QrV"/>
                                                         </constraints>
                                                     </view>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QQB-Ll-WdI">
+                                                        <rect key="frame" x="268" y="0.0" width="134" height="50"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Paid" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vI9-Uu-XPL">
+                                                                <rect key="frame" x="0.0" y="10" width="134" height="32.333333333333336"/>
+                                                                <fontDescription key="fontDescription" name="Hind-Bold" family="Hind" pointSize="20"/>
+                                                                <color key="textColor" name="textDescription"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QMz-2z-Cbu">
+                                                                <rect key="frame" x="0.0" y="45" width="134" height="5"/>
+                                                                <color key="backgroundColor" name="unselected"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="5" id="Nzn-nw-36L"/>
+                                                                </constraints>
+                                                            </view>
+                                                        </subviews>
+                                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                        <constraints>
+                                                            <constraint firstItem="vI9-Uu-XPL" firstAttribute="leading" secondItem="QQB-Ll-WdI" secondAttribute="leading" id="BeO-Ap-1DV"/>
+                                                            <constraint firstItem="vI9-Uu-XPL" firstAttribute="top" secondItem="QQB-Ll-WdI" secondAttribute="top" constant="10" id="CyO-lL-x4e"/>
+                                                            <constraint firstAttribute="bottom" secondItem="QMz-2z-Cbu" secondAttribute="bottom" id="TeT-5w-4xS"/>
+                                                            <constraint firstAttribute="trailing" secondItem="vI9-Uu-XPL" secondAttribute="trailing" id="U9E-2m-idq"/>
+                                                            <constraint firstAttribute="trailing" secondItem="QMz-2z-Cbu" secondAttribute="trailing" id="XLE-ZK-8yi"/>
+                                                            <constraint firstItem="QMz-2z-Cbu" firstAttribute="leading" secondItem="QQB-Ll-WdI" secondAttribute="leading" id="x7L-Ca-qLV"/>
+                                                        </constraints>
+                                                    </view>
                                                 </subviews>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="RwW-kd-k7i"/>
@@ -6671,21 +6698,21 @@ and experience the luxury of digivahan.</string>
                                                 <color key="backgroundColor" name="bgColor1"/>
                                                 <color key="separatorColor" name="bgColor1"/>
                                                 <prototypes>
-                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="NotificationListCell" id="usm-sH-DaK" customClass="ChallanListCell" customModule="DigiVahan" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="50" width="402" height="361"/>
+                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ChallanListCell" id="usm-sH-DaK" customClass="ChallanListCell" customModule="DigiVahan" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="50" width="402" height="406"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="usm-sH-DaK" id="LVo-JU-yjr">
-                                                            <rect key="frame" x="0.0" y="0.0" width="402" height="361"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="402" height="406"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sMP-fP-9If">
-                                                                    <rect key="frame" x="20" y="10" width="362" height="341"/>
+                                                                    <rect key="frame" x="20" y="10" width="362" height="386"/>
                                                                     <subviews>
                                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7IS-su-o9e">
-                                                                            <rect key="frame" x="5" y="0.0" width="352" height="341"/>
+                                                                            <rect key="frame" x="5" y="0.0" width="352" height="386"/>
                                                                             <subviews>
                                                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="vhm-s7-Ei4">
-                                                                                    <rect key="frame" x="0.0" y="0.0" width="352" height="341"/>
+                                                                                    <rect key="frame" x="0.0" y="0.0" width="352" height="386"/>
                                                                                     <subviews>
                                                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TDg-Ia-dhh">
                                                                                             <rect key="frame" x="0.0" y="0.0" width="352" height="40"/>
@@ -6911,51 +6938,48 @@ and experience the luxury of digivahan.</string>
                                                                                                 <constraint firstAttribute="height" constant="25" id="yu2-bc-kN1"/>
                                                                                             </constraints>
                                                                                         </view>
-                                                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i0f-4f-MlG">
-                                                                                            <rect key="frame" x="0.0" y="215" width="352" height="25"/>
+                                                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vjt-Mh-cw4">
+                                                                                            <rect key="frame" x="0.0" y="215" width="352" height="60"/>
                                                                                             <subviews>
-                                                                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dDS-UV-hqk">
-                                                                                                    <rect key="frame" x="10" y="-2" width="332" height="29"/>
-                                                                                                    <subviews>
-                                                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Place" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yps-6L-Dxz">
-                                                                                                            <rect key="frame" x="0.0" y="0.0" width="80" height="29"/>
-                                                                                                            <constraints>
-                                                                                                                <constraint firstAttribute="width" constant="80" id="jbc-JD-Lpv"/>
-                                                                                                            </constraints>
-                                                                                                            <fontDescription key="fontDescription" name="Hind-Medium" family="Hind" pointSize="18"/>
-                                                                                                            <nil key="textColor"/>
-                                                                                                            <nil key="highlightedColor"/>
-                                                                                                        </label>
-                                                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not defined" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1gF-UB-V76">
-                                                                                                            <rect key="frame" x="80" y="0.0" width="252" height="29"/>
-                                                                                                            <fontDescription key="fontDescription" name="Hind-Regular" family="Hind" pointSize="16"/>
-                                                                                                            <nil key="textColor"/>
-                                                                                                            <nil key="highlightedColor"/>
-                                                                                                        </label>
-                                                                                                    </subviews>
-                                                                                                </stackView>
+                                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Place" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0q1-Lq-xtJ">
+                                                                                                    <rect key="frame" x="10" y="15.666666666666657" width="80" height="29"/>
+                                                                                                    <constraints>
+                                                                                                        <constraint firstAttribute="width" constant="80" id="cqG-Gn-Fyw"/>
+                                                                                                    </constraints>
+                                                                                                    <fontDescription key="fontDescription" name="Hind-Medium" family="Hind" pointSize="18"/>
+                                                                                                    <nil key="textColor"/>
+                                                                                                    <nil key="highlightedColor"/>
+                                                                                                </label>
+                                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not defined" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HSA-qg-IdY" userLabel="Challan Place">
+                                                                                                    <rect key="frame" x="100" y="17.333333333333343" width="242" height="25.666666666666671"/>
+                                                                                                    <fontDescription key="fontDescription" name="Hind-Regular" family="Hind" pointSize="16"/>
+                                                                                                    <nil key="textColor"/>
+                                                                                                    <nil key="highlightedColor"/>
+                                                                                                </label>
                                                                                             </subviews>
                                                                                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                                             <constraints>
-                                                                                                <constraint firstAttribute="height" constant="25" id="WIw-Dn-0aJ"/>
-                                                                                                <constraint firstAttribute="trailing" secondItem="dDS-UV-hqk" secondAttribute="trailing" constant="10" id="Zeh-ky-YxG"/>
-                                                                                                <constraint firstItem="dDS-UV-hqk" firstAttribute="leading" secondItem="i0f-4f-MlG" secondAttribute="leading" constant="10" id="oBo-L5-c6j"/>
-                                                                                                <constraint firstItem="dDS-UV-hqk" firstAttribute="centerY" secondItem="i0f-4f-MlG" secondAttribute="centerY" id="znm-2n-FY8"/>
+                                                                                                <constraint firstItem="0q1-Lq-xtJ" firstAttribute="leading" secondItem="Vjt-Mh-cw4" secondAttribute="leading" constant="10" id="H39-O1-nZt"/>
+                                                                                                <constraint firstItem="HSA-qg-IdY" firstAttribute="leading" secondItem="0q1-Lq-xtJ" secondAttribute="trailing" constant="10" id="H3j-T9-5P9"/>
+                                                                                                <constraint firstItem="0q1-Lq-xtJ" firstAttribute="centerY" secondItem="Vjt-Mh-cw4" secondAttribute="centerY" id="KR3-UZ-S45"/>
+                                                                                                <constraint firstAttribute="trailing" secondItem="HSA-qg-IdY" secondAttribute="trailing" constant="10" id="nP2-Pm-bVn"/>
+                                                                                                <constraint firstAttribute="height" constant="60" id="qkk-uL-Yv6"/>
+                                                                                                <constraint firstItem="HSA-qg-IdY" firstAttribute="centerY" secondItem="Vjt-Mh-cw4" secondAttribute="centerY" id="tDl-Hs-ttJ"/>
                                                                                             </constraints>
                                                                                         </view>
-                                                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vjt-Mh-cw4">
-                                                                                            <rect key="frame" x="0.0" y="240" width="352" height="61"/>
+                                                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FUz-Cx-reT">
+                                                                                            <rect key="frame" x="0.0" y="275" width="352" height="61"/>
                                                                                             <subviews>
-                                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Offences" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X97-JO-nQH">
+                                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Offences" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xEi-QV-CEB">
                                                                                                     <rect key="frame" x="10" y="16" width="80" height="29"/>
                                                                                                     <constraints>
-                                                                                                        <constraint firstAttribute="width" constant="80" id="KQ4-7k-XK7"/>
+                                                                                                        <constraint firstAttribute="width" constant="80" id="jg6-sC-xNO"/>
                                                                                                     </constraints>
                                                                                                     <fontDescription key="fontDescription" name="Hind-Bold" family="Hind" pointSize="18"/>
                                                                                                     <nil key="textColor"/>
                                                                                                     <nil key="highlightedColor"/>
                                                                                                 </label>
-                                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not defined" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HSA-qg-IdY">
+                                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not defined" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PGY-c0-JH0">
                                                                                                     <rect key="frame" x="100" y="17.666666666666686" width="242" height="25.666666666666671"/>
                                                                                                     <fontDescription key="fontDescription" name="Hind-Regular" family="Hind" pointSize="16"/>
                                                                                                     <nil key="textColor"/>
@@ -6964,21 +6988,21 @@ and experience the luxury of digivahan.</string>
                                                                                             </subviews>
                                                                                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                                             <constraints>
-                                                                                                <constraint firstItem="HSA-qg-IdY" firstAttribute="leading" secondItem="X97-JO-nQH" secondAttribute="trailing" constant="10" id="Bf7-AC-qSX"/>
-                                                                                                <constraint firstItem="X97-JO-nQH" firstAttribute="centerY" secondItem="Vjt-Mh-cw4" secondAttribute="centerY" id="Qgm-Bh-mPI"/>
-                                                                                                <constraint firstItem="X97-JO-nQH" firstAttribute="leading" secondItem="Vjt-Mh-cw4" secondAttribute="leading" constant="10" id="W2F-do-2Qm"/>
-                                                                                                <constraint firstAttribute="trailing" secondItem="HSA-qg-IdY" secondAttribute="trailing" constant="10" id="nP2-Pm-bVn"/>
-                                                                                                <constraint firstAttribute="height" constant="60" id="qkk-uL-Yv6"/>
-                                                                                                <constraint firstItem="HSA-qg-IdY" firstAttribute="centerY" secondItem="Vjt-Mh-cw4" secondAttribute="centerY" id="tDl-Hs-ttJ"/>
+                                                                                                <constraint firstItem="PGY-c0-JH0" firstAttribute="leading" secondItem="xEi-QV-CEB" secondAttribute="trailing" constant="10" id="0p1-hA-X5F"/>
+                                                                                                <constraint firstAttribute="trailing" secondItem="PGY-c0-JH0" secondAttribute="trailing" constant="10" id="2bX-JZ-bZF"/>
+                                                                                                <constraint firstItem="xEi-QV-CEB" firstAttribute="centerY" secondItem="FUz-Cx-reT" secondAttribute="centerY" id="TUQ-0M-Enc"/>
+                                                                                                <constraint firstItem="PGY-c0-JH0" firstAttribute="centerY" secondItem="FUz-Cx-reT" secondAttribute="centerY" id="iHk-hG-swf"/>
+                                                                                                <constraint firstAttribute="height" constant="60" id="jU5-m1-PnX"/>
+                                                                                                <constraint firstItem="xEi-QV-CEB" firstAttribute="leading" secondItem="FUz-Cx-reT" secondAttribute="leading" constant="10" id="jwj-4T-1Ed"/>
                                                                                             </constraints>
                                                                                         </view>
                                                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wcA-Na-dZ7">
-                                                                                            <rect key="frame" x="0.0" y="301" width="352" height="40"/>
+                                                                                            <rect key="frame" x="0.0" y="336" width="352" height="50"/>
                                                                                             <subviews>
                                                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Tz-J1-bVO">
-                                                                                                    <rect key="frame" x="277" y="5" width="70" height="30"/>
+                                                                                                    <rect key="frame" x="252" y="10" width="90" height="30"/>
                                                                                                     <constraints>
-                                                                                                        <constraint firstAttribute="width" constant="70" id="EDx-mI-kgo"/>
+                                                                                                        <constraint firstAttribute="width" constant="90" id="EDx-mI-kgo"/>
                                                                                                         <constraint firstAttribute="height" constant="30" id="JvG-uE-Oz6"/>
                                                                                                     </constraints>
                                                                                                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -6996,9 +7020,9 @@ and experience the luxury of digivahan.</string>
                                                                                             </subviews>
                                                                                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                                             <constraints>
-                                                                                                <constraint firstAttribute="height" constant="40" id="DbP-WF-WpJ"/>
+                                                                                                <constraint firstAttribute="height" constant="50" id="DbP-WF-WpJ"/>
                                                                                                 <constraint firstItem="5Tz-J1-bVO" firstAttribute="centerY" secondItem="wcA-Na-dZ7" secondAttribute="centerY" id="nRu-kt-tsO"/>
-                                                                                                <constraint firstAttribute="trailing" secondItem="5Tz-J1-bVO" secondAttribute="trailing" constant="5" id="ooi-Tm-tyR"/>
+                                                                                                <constraint firstAttribute="trailing" secondItem="5Tz-J1-bVO" secondAttribute="trailing" constant="10" id="ooi-Tm-tyR"/>
                                                                                             </constraints>
                                                                                         </view>
                                                                                     </subviews>
@@ -7042,8 +7066,8 @@ and experience the luxury of digivahan.</string>
                                                             <outlet property="challanAmount" destination="xW0-Mb-5eC" id="h0R-8l-Wc6"/>
                                                             <outlet property="challanDate" destination="MHj-JC-QrU" id="Tq9-OO-l9y"/>
                                                             <outlet property="challanNo" destination="XXn-gn-rME" id="VfN-aV-X19"/>
-                                                            <outlet property="challanOffence" destination="HSA-qg-IdY" id="G48-q9-wW3"/>
-                                                            <outlet property="challanPlace" destination="1gF-UB-V76" id="Q4A-Hb-scJ"/>
+                                                            <outlet property="challanOffence" destination="PGY-c0-JH0" id="Eq6-m9-qGn"/>
+                                                            <outlet property="challanPlace" destination="HSA-qg-IdY" id="xf5-KQ-G5B"/>
                                                             <outlet property="challanStatus" destination="Obb-tu-YqI" id="Fkt-Vp-kv6"/>
                                                             <outlet property="fatherName" destination="tcx-fQ-JIp" id="dS8-7D-1uM"/>
                                                             <outlet property="payBtn" destination="5Tz-J1-bVO" id="TxF-kW-9er"/>
@@ -7112,9 +7136,18 @@ and experience the luxury of digivahan.</string>
                     </view>
                     <navigationItem key="navigationItem" id="1a3-Uy-2hJ"/>
                     <connections>
+                        <outlet property="allChallanBtn" destination="hMB-Ba-74e" id="qhi-TC-Sq8"/>
+                        <outlet property="allChallanBtnText" destination="I67-NV-b35" id="KP1-dj-IUC"/>
+                        <outlet property="allChallanDevider" destination="NBc-YH-j7K" id="DnB-Lb-CCH"/>
                         <outlet property="emptyView" destination="4Bp-1E-3jf" id="whq-OO-l1B"/>
                         <outlet property="listView" destination="1Xp-vg-78d" id="9CA-LD-uyN"/>
                         <outlet property="minView" destination="DQH-jf-K0m" id="xQx-Hy-4Ic"/>
+                        <outlet property="paidChallanBtn" destination="QQB-Ll-WdI" id="IGw-Y1-wy0"/>
+                        <outlet property="paidChallanBtnText" destination="vI9-Uu-XPL" id="1pd-Wi-WXo"/>
+                        <outlet property="paidChallanDevider" destination="QMz-2z-Cbu" id="9nY-nW-TRl"/>
+                        <outlet property="pendingChallanBtn" destination="w0F-35-bRE" id="6iT-gS-LNd"/>
+                        <outlet property="pendingChallanBtnText" destination="ylt-tm-qAH" id="CxF-M8-0L9"/>
+                        <outlet property="pendingChallanDevider" destination="2yI-vc-Q7n" id="dYc-oL-Y45"/>
                         <outlet property="tableView" destination="3iL-hZ-KDb" id="74R-MR-j1T"/>
                     </connections>
                 </viewController>
@@ -7208,10 +7241,10 @@ and experience the luxury of digivahan.</string>
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.21960784310000001" blue="0.23529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.2196078431372549" blue="0.23529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="tertiarySystemGroupedBackgroundColor">
-            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

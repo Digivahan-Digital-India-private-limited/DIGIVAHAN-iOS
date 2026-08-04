@@ -16,12 +16,33 @@ class ChallanListVC: BaseViewController {
     @IBOutlet weak var emptyView: UIView!
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var allChallanBtn: UIView!
+    @IBOutlet weak var allChallanDevider: UIView!
+    @IBOutlet weak var allChallanBtnText: UILabel!
+    
+    @IBOutlet weak var pendingChallanBtn: UIView!
+    @IBOutlet weak var pendingChallanDevider: UIView!
+    @IBOutlet weak var pendingChallanBtnText: UILabel!
+    
+    @IBOutlet weak var paidChallanBtn: UIView!
+    @IBOutlet weak var paidChallanDevider: UIView!
+    @IBOutlet weak var paidChallanBtnText: UILabel!
+    
     var challanList: [ChallanModel] = []
+    
+    private var garageModel: GarageItemModel?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         enableKeyboardDismissOnTap()
+        
+        if let data = receivedData as? [String: Any] {
+
+            self.garageModel = data["vehicleData"] as? GarageItemModel ?? nil
+            
+        }
+        
         setUI()
 
     }
@@ -52,27 +73,30 @@ class ChallanListVC: BaseViewController {
 
         tableView.separatorStyle = .none
 
-        
-//        nextArrowBtn.isUserInteractionEnabled = true
-//
-//        let nextArrowBtnTap = UITapGestureRecognizer(
-//            target: self,
-//            action: #selector(nextArrowBtnClicked(_:))
-//        )
-//        nextArrowBtn.addGestureRecognizer(nextArrowBtnTap)
+
+        pendingChallanBtn.isUserInteractionEnabled = true
+
+            let pendingChallanBtnTap = UITapGestureRecognizer(
+                target: self,
+                action: #selector(onPendingChallanBtnClick)
+            )
+
+        pendingChallanBtn.addGestureRecognizer(pendingChallanBtnTap)
         
       
     }
     
-//    @objc func nextArrowBtnClicked(_ sender: UITapGestureRecognizer) {
-//        if currentPage == totalPage{
-//            showToast(message: "No Data Left")
-//        } else {
-//            currentPage += 1
-//            getNotificationList()
-//        }
-//        
-//    }
+    @objc private func onPendingChallanBtnClick() {
+        
+        allChallanDevider.backgroundColor = UIColor(named: "textDescription")
+        allChallanBtnText.textColor = UIColor(named: "textDescription")
+        
+        pendingChallanDevider.backgroundColor = UIColor(named: "colorPrimary")
+        pendingChallanBtnText.textColor = UIColor(named: "colorPrimary")
+        
+        paidChallanDevider.backgroundColor = UIColor(named: "textDescription")
+        paidChallanBtnText.textColor = UIColor(named: "textDescription")
+    }
     
     
     func getChallanList() {
@@ -83,7 +107,7 @@ class ChallanListVC: BaseViewController {
         let url = APIEndpoints.CHALLAN_LIST
         
         let params: [String: Any] = [
-            "rcNumber": "UK17H8487"
+            "rcNumber": garageModel?.vehicle_id ?? ""
         ]
 
         LoadingManager.shared.show(on: view)
@@ -115,7 +139,8 @@ class ChallanListVC: BaseViewController {
                         model.rcNumber = data["rcNumber"] as? String ?? ""
                         model.challanNumber = data["challanNumber"] as? String ?? ""
                         model.offence = data["offence"] as? String ?? ""
-                        model.amountSettledAt = data["amountSettledAt"] as? String ?? ""
+                        
+                        model.amountSettledAt = data["amountSettledAt"] as? Int ?? 0
                         model.transactionStatus = data["transactionStatus"] as? String ?? ""
                         model.location = data["location"] as? String ?? ""
                         model.createdAt = data["createdAt"] as? String ?? ""
@@ -197,7 +222,20 @@ extension ChallanListVC: UITableViewDelegate, UITableViewDataSource {
         
         cell.challanDate.text = TimeUtils.convertDateFormat(TimeUtils.convertUtcToDeviceTime(challanListItem.createdAt), outputFormat: "dd MMM yyyy")
         
-       
+        cell.accusedText.text = challanListItem.ownerName == "" ? "Not Defined" : challanListItem.ownerName
+        cell.fatherName.text = challanListItem.ownerFatherName == "" ? "Not Defined" : challanListItem.ownerFatherName
+        cell.challanStatus.text = challanListItem.transactionStatus == "" ? "Not Defined" : challanListItem.transactionStatus
+        
+        cell.challanAmount.text = challanListItem.amountSettledAt != nil
+            ? "₹ \(challanListItem.amountSettledAt!)"
+            : "Not Defined"
+        
+        cell.challanPlace.text = challanListItem.location == "" ? "Not Defined" : challanListItem.location
+        cell.challanOffence.text = challanListItem.offence == "" ? "Not Defined" : challanListItem.offence
+        
+       if challanListItem.transactionStatus == "UNPAID" {
+           cell.payBtnLayout.isHidden = false
+       } else {cell.payBtnLayout.isHidden = true}
 
         // Preview button click
         cell.payAction = { [weak self] in
@@ -216,7 +254,7 @@ extension ChallanListVC: UITableViewDelegate, UITableViewDataSource {
         
         
         var sharedData: [String: Any] = [
-            "notificationListItem": challanListItem
+            "challanListItem": challanListItem
         ]
         
 //        var viewControllerID = "ViewNotificationVC"

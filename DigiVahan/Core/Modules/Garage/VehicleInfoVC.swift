@@ -168,7 +168,7 @@ class VehicleInfoVC: BaseViewController {
 
             let vehicleInfoLayoutBtnTap = UITapGestureRecognizer(
                 target: self,
-                action: #selector(onVehicleInfoLayoutBtnnClick)
+                action: #selector(onVehicleInfoLayoutBtnClick)
             )
 
         vehicleInfoLayoutBtn.addGestureRecognizer(vehicleInfoLayoutBtnTap)
@@ -177,7 +177,7 @@ class VehicleInfoVC: BaseViewController {
 
             let documentInfoLayoutBtnTap = UITapGestureRecognizer(
                 target: self,
-                action: #selector(onDocumentInfoLayoutBtnnClick)
+                action: #selector(onDocumentInfoLayoutBtnClick)
             )
 
         documentInfoLayoutBtn.addGestureRecognizer(documentInfoLayoutBtnTap)
@@ -189,6 +189,15 @@ class VehicleInfoVC: BaseViewController {
             action: #selector(closeViewImageBtnClicked(_:))
         )
         viewImageCloseIcon.addGestureRecognizer(tap)
+        
+        
+        checkChallanBtn.isUserInteractionEnabled = true
+
+        let checkChallanBtnTap = UITapGestureRecognizer(
+            target: self,
+            action: #selector(checkChallanBtnClick)
+        )
+        checkChallanBtn.addGestureRecognizer(checkChallanBtnTap)
         
     }
     
@@ -279,7 +288,7 @@ class VehicleInfoVC: BaseViewController {
             ]
         )
     }
-    @objc private func onVehicleInfoLayoutBtnnClick() {
+    @objc private func onVehicleInfoLayoutBtnClick() {
         vehicleInfoLayout.isHidden = false
         documentInfoLayout.isHidden = true
         
@@ -290,7 +299,7 @@ class VehicleInfoVC: BaseViewController {
         documentInfoBtnText.textColor = UIColor(named: "textDescription")
     }
     
-    @objc private func onDocumentInfoLayoutBtnnClick() {
+    @objc private func onDocumentInfoLayoutBtnClick() {
         vehicleInfoLayout.isHidden = true
         documentInfoLayout.isHidden = false
         
@@ -330,6 +339,17 @@ class VehicleInfoVC: BaseViewController {
 
         otherInfoArrow.image = UIImage(
             named: otherInfoLayout.isHidden ? "arrow2" : "arrow1"
+        )
+    }
+    
+    
+    @objc private func checkChallanBtnClick() {
+        NavigationManager.pushScreen(
+            from: self,
+            viewControllerID: "ChallanListVC",
+            data: [
+                "vehicleData": garageModel
+            ]
         )
     }
         

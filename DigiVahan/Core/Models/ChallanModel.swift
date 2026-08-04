@@ -14,7 +14,7 @@ struct ChallanModel: Codable {
     var rcNumber: String?
     var challanNumber: String?
     var offence: String?
-    var amountSettledAt: String?
+    var amountSettledAt: Int?
     var transactionStatus: String?
     var location: String?
     var createdAt: String?
