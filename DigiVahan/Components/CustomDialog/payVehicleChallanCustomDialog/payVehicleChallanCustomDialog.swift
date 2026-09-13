@@ -15,6 +15,7 @@ class AddVehicleCustomDialog: UIView {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var inputField: UITextField!
+    @IBOutlet weak var challanNumberField: UITextField!
 
     @IBOutlet weak var proceedBtn: UIButton!
     @IBOutlet weak var cancelBtn: UIButton!
@@ -75,6 +76,9 @@ class AddVehicleCustomDialog: UIView {
         subTitleLabel.text = description
         inputField.placeholder = hint
         inputField.text = defaultValue
+        
+        challanNumberField.placeholder = "Enter challan number"
+        challanNumberField.text = defaultValue
 
         proceedBtn.setTitle(
             buttonTitle,
