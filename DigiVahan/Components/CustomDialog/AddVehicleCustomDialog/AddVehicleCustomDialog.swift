@@ -7,7 +7,7 @@
 
 import UIKit
 
-class payVehicleChallanCustomDialog: UIView {
+class AddVehicleCustomDialog: UIView {
 
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var dialogView: UIView!
@@ -15,13 +15,11 @@ class payVehicleChallanCustomDialog: UIView {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subTitleLabel: UILabel!
     @IBOutlet weak var inputField: UITextField!
-    @IBOutlet weak var challanNumberField: UITextField!
-   
 
     @IBOutlet weak var proceedBtn: UIButton!
     @IBOutlet weak var cancelBtn: UIButton!
 
-    var onProceed: ((String, String) -> Void)?
+    var onProceed: ((String) -> Void)?
     var onCancel: ((String) -> Void)?
 
     override init(frame: CGRect) {
@@ -37,7 +35,7 @@ class payVehicleChallanCustomDialog: UIView {
     private func commonInit() {
 
         Bundle.main.loadNibNamed(
-            "payVehicleChallanCustomDialog",
+            "AddVehicleCustomDialog",
             owner: self,
             options: nil
         )
@@ -68,8 +66,9 @@ class payVehicleChallanCustomDialog: UIView {
     func configure(
         title: String,
         description: String,
-        hint: String,
+        hint: String = "",
         buttonTitle: String,
+        cancelButtonTitle: String = "Cancel",
         defaultValue: String = ""
     ) {
 
@@ -78,11 +77,14 @@ class payVehicleChallanCustomDialog: UIView {
         inputField.placeholder = hint
         inputField.text = defaultValue
         
-        challanNumberField.placeholder = "Enter challan number"
-        challanNumberField.text = defaultValue
 
         proceedBtn.setTitle(
             buttonTitle,
+            for: .normal
+        )
+        
+        cancelBtn.setTitle(
+            cancelButtonTitle,
             for: .normal
         )
     }
@@ -91,23 +93,14 @@ class payVehicleChallanCustomDialog: UIView {
 
     @IBAction func proceedBtnClicked(_ sender: UIButton) {
 
-        let vehicleNumber = inputField.text?
-            .trimmingCharacters(
-                in: .whitespacesAndNewlines
-            ) ?? ""
-        
-        let challanNumber = challanNumberField.text?
+        let value = inputField.text?
             .trimmingCharacters(
                 in: .whitespacesAndNewlines
             ) ?? ""
 
-        onProceed?(vehicleNumber, challanNumber)
+        onProceed?(value)
         
-        if vehicleNumber.isEmpty {
-            return
-        }
-        
-        if challanNumber.isEmpty {
+        if value.isEmpty {
             return
         }
         
@@ -125,7 +118,7 @@ class payVehicleChallanCustomDialog: UIView {
 
 }
 
-extension payVehicleChallanCustomDialog: UITextFieldDelegate {
+extension AddVehicleCustomDialog: UITextFieldDelegate {
 
     func textField(
         _ textField: UITextField,

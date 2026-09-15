@@ -149,10 +149,7 @@ class LoginScreenVC: BaseViewController {
                         // Save Token
                         PreferenceManager.shared.setAuthToken(token)
                         PreferenceManager.shared.setUserId(JWTUtils.getUserIdFromToken(token))
-                        
-                        print(JWTUtils.getUserIdFromToken(token))
-                        
-                        PreferenceManager.shared.setLoggedIn(true)
+
                             
                         PreferenceManager.shared.saveUser(CommonFunctions.parseUserFromJson(user))
                         
@@ -168,13 +165,27 @@ class LoginScreenVC: BaseViewController {
                             )
                         }
                         
+                        // Check Account Deletion Status
+                            if let deletionRequestData = user["deletionRequestData"] as? [String: Any] {
+
+                                let deleteStatus =
+                                    deletionRequestData["deleteStatus"] as? Bool ?? false
+
+                                if deleteStatus {
+                                    // Account deletion request already exists
+                                    self.cancelDeleteAccountRequest(deletionRequestData: deletionRequestData)
+                                    return
+                                }
+                            }
+                        
+                        PreferenceManager.shared.setLoggedIn(true)
+                        
                         // Move Next Screen
                         NavigationManager.moveToNavigationController(
                             from: self,
                             storyboardName: "Main",
                             navigationControllerID: "MainNavigationController"
                         )
-                        
                         
                     }
                     
@@ -199,6 +210,72 @@ class LoginScreenVC: BaseViewController {
         }
          
     }
+    
+    func cancelDeleteAccountRequest(
+        deletionRequestData: [String: Any]
+    ){
+                
+        let dialog = AddVehicleCustomDialog(
+            frame: UIScreen.main.bounds
+        )
+        
+        let processDate = deletionRequestData["deleteRequestProcessDate"] as? String ?? ""
+        let daysRemaining = deletionRequestData["deleteRequestProcessDays"] as? Int ?? 0
+
+        let dayText = daysRemaining == 1 ? "day" : "days"
+
+        let description = """
+        You have requested to delete your account. Your account will be permanently deleted on \(processDate). You have \(daysRemaining) \(dayText) remaining to recover your account.
+
+        Would you like to cancel the deletion request?
+        """
+        
+        dialog.configure(
+            title: "Account Deletion Requested",
+            description: description,
+            buttonTitle: "Recover My Account"
+        )
+                
+        dialog.inputField.isHidden = true
+        
+        
+        dialog.onProceed = { reason in
+            LoadingManager.shared.show(on: self.view)
+
+            NetworkManager.shared.callAPI(
+                url: APIEndpoints.CANCEL_DELETE_USER_ACCOUNT,
+                method: "POST",
+                parameters: nil
+            ) { [weak self] response, status, message in
+
+                guard let self = self else { return }
+
+                LoadingManager.shared.hide()
+
+                if status {
+
+                    PreferenceManager.shared.setLoggedIn(true)
+                    
+                    // Move Next Screen
+                    NavigationManager.moveToNavigationController(
+                        from: self,
+                        storyboardName: "Main",
+                        navigationControllerID: "MainNavigationController"
+                    )
+
+                } else {
+
+                    self.showToast(message: "Unable to recover your account. Please try again later.")
+                   
+                }
+            }
+        }
+        
+        
+        self.view.addSubview(dialog)
+
+    }
+    
     
     @IBAction func createAccount(_ sender: Any) {
         

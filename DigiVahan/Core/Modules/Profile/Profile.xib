@@ -23,6 +23,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProfileVC">
             <connections>
                 <outlet property="aboutUsBtn" destination="6Y2-X0-8R3" id="4HA-jM-iCz"/>
+                <outlet property="deleteAccountBtn" destination="d42-3H-mlN" id="HRv-gx-Oyq"/>
                 <outlet property="garageBtn" destination="6SA-ew-Qql" id="yyF-8k-8Ta"/>
                 <outlet property="logoutBtn" destination="xQb-yN-CIe" id="HsW-1J-keK"/>
                 <outlet property="mainContentView" destination="iN0-l3-epB" id="W9u-uc-Qxm"/>
@@ -116,7 +117,7 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="393" height="396"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Dvy-Yh-bS9">
-                                                            <rect key="frame" x="0.0" y="0.0" width="393" height="250"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="393" height="300"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Xe-e2-QD7" userLabel="updateProfileBtn">
                                                                     <rect key="frame" x="0.0" y="0.0" width="393" height="50"/>
@@ -384,8 +385,46 @@
                                                                         <constraint firstItem="HlW-zd-Evb" firstAttribute="centerY" secondItem="Cgz-D8-LwJ" secondAttribute="centerY" id="uKl-Rw-dYK"/>
                                                                     </constraints>
                                                                 </view>
-                                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xQb-yN-CIe" userLabel="logoutBtn">
+                                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d42-3H-mlN" userLabel="deleteAccountBtn">
                                                                     <rect key="frame" x="0.0" y="200" width="393" height="50"/>
+                                                                    <subviews>
+                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="deleteIcon" translatesAutoresizingMaskIntoConstraints="NO" id="ADf-rk-4k1">
+                                                                            <rect key="frame" x="20" y="7.6666666666666288" width="35" height="35"/>
+                                                                            <constraints>
+                                                                                <constraint firstAttribute="width" constant="35" id="ovP-V6-oPN"/>
+                                                                                <constraint firstAttribute="height" constant="35" id="x5w-kU-m8R"/>
+                                                                            </constraints>
+                                                                        </imageView>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delete Account" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="24F-cG-u4h">
+                                                                            <rect key="frame" x="70" y="0.0" width="323" height="50"/>
+                                                                            <fontDescription key="fontDescription" name="Hind-SemiBold" family="Hind" pointSize="18"/>
+                                                                            <nil key="textColor"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GSX-Vn-G1E" userLabel="divider">
+                                                                            <rect key="frame" x="0.0" y="48" width="393" height="2"/>
+                                                                            <color key="backgroundColor" red="0.6000976562" green="0.6000976562" blue="0.6000976562" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                            <constraints>
+                                                                                <constraint firstAttribute="height" constant="2" id="J5M-Ny-Ech"/>
+                                                                            </constraints>
+                                                                        </view>
+                                                                    </subviews>
+                                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" constant="50" id="BG0-1r-FCd"/>
+                                                                        <constraint firstAttribute="trailing" secondItem="GSX-Vn-G1E" secondAttribute="trailing" id="Iuv-Ud-Y39"/>
+                                                                        <constraint firstItem="GSX-Vn-G1E" firstAttribute="leading" secondItem="d42-3H-mlN" secondAttribute="leading" id="IxP-0h-J94"/>
+                                                                        <constraint firstAttribute="bottom" secondItem="GSX-Vn-G1E" secondAttribute="bottom" id="OEa-wL-fg4"/>
+                                                                        <constraint firstItem="ADf-rk-4k1" firstAttribute="leading" secondItem="d42-3H-mlN" secondAttribute="leading" constant="20" id="OsR-hT-afm"/>
+                                                                        <constraint firstItem="ADf-rk-4k1" firstAttribute="centerY" secondItem="d42-3H-mlN" secondAttribute="centerY" id="QlY-3Q-9Bz"/>
+                                                                        <constraint firstItem="24F-cG-u4h" firstAttribute="top" secondItem="d42-3H-mlN" secondAttribute="top" id="XIJ-mW-1rD"/>
+                                                                        <constraint firstItem="24F-cG-u4h" firstAttribute="centerY" secondItem="d42-3H-mlN" secondAttribute="centerY" id="YVO-e6-Tb7"/>
+                                                                        <constraint firstAttribute="trailing" secondItem="24F-cG-u4h" secondAttribute="trailing" id="gL5-Nt-WKJ"/>
+                                                                        <constraint firstItem="24F-cG-u4h" firstAttribute="leading" secondItem="ADf-rk-4k1" secondAttribute="trailing" constant="15" id="md3-Jy-ntX"/>
+                                                                    </constraints>
+                                                                </view>
+                                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xQb-yN-CIe" userLabel="logoutBtn">
+                                                                    <rect key="frame" x="0.0" y="250" width="393" height="50"/>
                                                                     <subviews>
                                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logout_icon" translatesAutoresizingMaskIntoConstraints="NO" id="jac-yY-Efa">
                                                                             <rect key="frame" x="20" y="10" width="30" height="30"/>
@@ -534,6 +573,7 @@
         <image name="TermConditionIcon" width="34.333332061767578" height="34.333332061767578"/>
         <image name="aboutUsIcon" width="34.333332061767578" height="31"/>
         <image name="defaultProfileIcon" width="64" height="64"/>
+        <image name="deleteIcon" width="32" height="32"/>
         <image name="fieldProfileIcon" width="32" height="32"/>
         <image name="garageIcon" width="1066.6666259765625" height="826.66668701171875"/>
         <image name="logout_icon" width="32" height="32"/>

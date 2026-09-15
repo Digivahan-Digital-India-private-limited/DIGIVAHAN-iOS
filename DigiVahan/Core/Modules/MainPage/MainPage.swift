@@ -46,6 +46,8 @@ class MainPage: BaseViewController {
         LocationManager.shared.requestLocationPermission()
         LocationManager.shared.startUpdatingLocation()
         
+        checkDeleteAccount(userId: PreferenceManager.shared.getUserId())
+        
         // set myVirtualQRBtn
         notificationBtn.isUserInteractionEnabled = true
 
@@ -223,6 +225,45 @@ class MainPage: BaseViewController {
                 onNotificationBtnClick()
             }
             
+        }
+    }
+    
+    private func checkDeleteAccount(userId: String) {
+
+        let params: [String: Any] = [
+            "user_id": userId,
+            "details_type": "all"
+        ]
+
+        NetworkManager.shared.callAPI(
+            url: APIEndpoints.GET_USER_DETAILS,
+            method: "POST",
+            parameters: params
+        ) { response, status, message in
+
+            print("STATUS:", status)
+            print("MESSAGE:", message)
+            print("FULL RESPONSE:", response ?? [:])
+
+            if status {
+
+                if let data = response?["data"] as? [String: Any] {
+                    
+                    // Check Account Deletion Status
+                        if let deletionRequestData = data["deletionRequestData"] as? [String: Any] {
+
+                            let deleteStatus =
+                                deletionRequestData["deleteStatus"] as? Bool ?? false
+
+                            if deleteStatus {
+                                // Account deletion request already exists
+                                CommonFunctions.performLogout(from: self)
+                                return
+                            }
+                        }
+
+                }
+            }
         }
     }
     

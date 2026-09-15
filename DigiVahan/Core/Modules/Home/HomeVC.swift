@@ -58,8 +58,6 @@ class HomeVC: UIView, UITextFieldDelegate {
             owner: self,
             options: nil
         )
-
-        print("CollectionView:", nearBySerCollectionView) 
         
         guard let contentView = mainContentView else { return }
 
@@ -172,7 +170,7 @@ class HomeVC: UIView, UITextFieldDelegate {
 
             let checkChallanBtnTap = UITapGestureRecognizer(
                 target: self,
-                action: #selector(commingSoonDialog)
+                action: #selector(onCheckVehicleChallanBtnClick)
             )
 
         checkChallanBtn.addGestureRecognizer(checkChallanBtnTap)
@@ -183,7 +181,7 @@ class HomeVC: UIView, UITextFieldDelegate {
 
             let challanPayBtnTap = UITapGestureRecognizer(
                 target: self,
-                action: #selector(commingSoonDialog)
+                action: #selector(onPayVehicleChallanBtnClick)
             )
 
         challanPayBtn.addGestureRecognizer(challanPayBtnTap)
@@ -267,6 +265,14 @@ class HomeVC: UIView, UITextFieldDelegate {
     
     @objc private func onCheckVehicleBtnClick() {
         checkVehicle()
+    }
+    
+    @objc private func onCheckVehicleChallanBtnClick() {
+        checkVehicleChallan()
+    }
+    
+    @objc private func onPayVehicleChallanBtnClick() {
+        payVehicleChallan()
     }
     
     @objc private func onMyVirtualQRBtnClick() {
@@ -414,16 +420,7 @@ class HomeVC: UIView, UITextFieldDelegate {
                         model.updatedAt = item["updatedAt"] as? String ?? ""
                         model.__v = item["__v"] as? Int ?? 0
 
-                        print("🆔 ID:", model._id)
-                        print("📛 Title:", model.title)
-                        print("🖼 Icon:", model.icon)
-                        print("🛠 Service Type:", model.service_type)
-                        print("📌 Status:", model.status)
-
                         if model.status == "true" {
-
-                            print("✅ Added to List")
-
                             self.nearByServiceList.append(model)
 
                         } else {
@@ -433,16 +430,11 @@ class HomeVC: UIView, UITextFieldDelegate {
                     }
 
                     print("========================================")
-                    print("📋 Final List Count:", self.nearByServiceList.count)
 
                     self.nearBySerCollectionView.reloadData()
-
-                    print("🔄 CollectionView Reloaded")
-
                     self.nearByServiceLayout.isHidden =
                         self.nearByServiceList.isEmpty
 
-                    print("👁 Layout Hidden:", self.nearByServiceLayout.isHidden)
 
                 } else {
 
@@ -584,8 +576,12 @@ class HomeVC: UIView, UITextFieldDelegate {
 
                     } catch {
 
-                        print("🔥 Decode Error:", error.localizedDescription)
-                        vc?.showToast(message: "Parsing Error")
+                        if let vc = self.parentViewController {
+                            NavigationManager.moveToScreen(
+                                from: vc,
+                                viewControllerID: "EmptyLayoutVC"
+                            )
+                        }
                     }
 
                 } else {
@@ -597,6 +593,12 @@ class HomeVC: UIView, UITextFieldDelegate {
                     } else {
 
                         vc?.showToast(message: "Vehicle not found")
+                        if let vc = self.parentViewController {
+                            NavigationManager.moveToScreen(
+                                from: vc,
+                                viewControllerID: "EmptyLayoutVC"
+                            )
+                        }
                     }
                 }
             }
@@ -607,6 +609,177 @@ class HomeVC: UIView, UITextFieldDelegate {
         
         vc?.view.addSubview(dialog)
         
+    }
+
+    
+    private func checkVehicleChallan() {
+        
+        let vc = parentViewController
+        
+        let dialog = AddVehicleCustomDialog(
+            frame: UIScreen.main.bounds
+        )
+        
+        dialog.configure(
+            title: "Check Challan",
+            description: "Please enter vehicle number to check Challan details.",
+            hint: "Vehicle Number",
+            buttonTitle: "Check"
+        )
+        
+        dialog.onProceed = { vehicleNumber in
+                        
+            if vehicleNumber.isEmpty {
+                vc?.showToast(message: "Please enter vehicle Number")
+                return
+            }
+            
+            if let vc = self.parentViewController {
+                
+                NavigationManager.pushScreen(
+                    from: vc,
+                    viewControllerID: "ChallanListVC",
+                    data: [
+                        "vehicleId": vehicleNumber,
+                        "garage": "true"
+                    ]
+                )
+                   
+            }
+            
+            
+        }
+        
+        vc?.view.addSubview(dialog)
+        
+    }
+    
+    
+    private func payVehicleChallan() {
+        
+        let vc = parentViewController
+        
+        let dialog = payVehicleChallanCustomDialog(
+            frame: UIScreen.main.bounds
+        )
+        
+        dialog.configure(
+            title: "Pay Challan",
+            description: "Please enter your vehicle & challan number to Pay the challan.\nNote: Please make sure that your challan is unpaid.",
+            hint: "Vehicle Number",
+            buttonTitle: "Pay"
+        )
+                
+        
+        dialog.onProceed = { vehicleNumber, challanNumber in
+                        
+            if vehicleNumber.isEmpty {
+                vc?.showToast(message: "Please enter vehicle Number")
+                return
+            } else if challanNumber.isEmpty {
+                vc?.showToast(message: "Please enter challan Number")
+                return
+            }
+            
+            self.payChallan(vehicleNumber: vehicleNumber, challanNumbers: challanNumber)
+            
+            
+        }
+        
+        vc?.view.addSubview(dialog)
+        
+    }
+    
+    func payChallan(vehicleNumber : String, challanNumbers : String) {
+        
+        let vc = parentViewController
+        
+        let params: [String: Any] = [
+            "vehicleNumber": vehicleNumber,
+            "challanNumbers": [
+                challanNumbers
+            ]
+        ]
+
+        if let vc = self.parentViewController {
+            LoadingManager.shared.show(on: vc.view)
+        }
+
+        NetworkManager.shared.callAPI(
+            url: APIEndpoints.PAY_CHALLAN,
+            method: "POST",
+            parameters: params
+        ) { [weak self] response, status, message in
+
+            guard let self = self else { return }
+
+            LoadingManager.shared.hide()
+
+            if status {
+
+                do {
+                    
+                    let paymentUrl = response?["paymentUrl"] as? String ?? ""
+                    
+                    if !paymentUrl.isEmpty {
+                        
+                        if let vc = self.parentViewController {
+                            
+                            NavigationManager.pushScreen(
+                                from: vc,
+                                storyboardName: "Main",
+                                viewControllerID: "WebViewVC",
+                                data: [
+                                    "policyType": "challanPay",
+                                    "paymentUrl": paymentUrl
+                                ]
+                            )
+                               
+                        }
+
+                    } else {
+
+                        vc?.showToast(message: "Unable to make a payment")
+                        if let vc = self.parentViewController {
+                            NavigationManager.moveToScreen(
+                                from: vc,
+                                viewControllerID: "EmptyLayoutVC"
+                            )
+                        }
+                    }
+
+                    
+
+                } catch {
+                    vc?.showToast(message: "Unable to make a payment")
+                    if let vc = self.parentViewController {
+                        NavigationManager.moveToScreen(
+                            from: vc,
+                            viewControllerID: "EmptyLayoutVC"
+                        )
+                    }
+                }
+
+            } else {
+
+                if message.lowercased() == "no internet connection" {
+
+//                    self.showNoInternetDialog()
+
+                } else {
+
+                    vc?.showToast(message: "No Challan found")
+                    if let vc = self.parentViewController {
+                        NavigationManager.moveToScreen(
+                            from: vc,
+                            viewControllerID: "EmptyLayoutVC"
+                        )
+                    }
+                   
+                }
+            }
+        }
+
     }
 
    

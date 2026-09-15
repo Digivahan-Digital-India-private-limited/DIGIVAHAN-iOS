@@ -349,10 +349,15 @@ class GarageListVC: BaseViewController {
 
             if let httpCode = response?["http_code"] as? Int,
                httpCode == 503 {
+                
+//                self.showAlert(
+//                    title: "Under Maintenance",
+//                    message: "RTO under maintenance, Vehicle not found in RTO database, please check the vehicle number or try after some time"
+//                )
 
-                self.showAlert(
-                    title: "Under Maintenance",
-                    message: "RTO under maintenance, Vehicle not found in RTO database, please check the vehicle number or try after some time"
+                NavigationManager.moveToScreen(
+                    from: self,
+                    viewControllerID: "EmptyLayoutVC"
                 )
 
                 return
@@ -423,9 +428,14 @@ class GarageListVC: BaseViewController {
 
             } else {
 
-                self.showAlert(
-                    title: "Vehicle Alert",
-                    message: message
+//                self.showAlert(
+//                    title: "Vehicle Alert",
+//                    message: message
+//                )
+                
+                NavigationManager.moveToScreen(
+                    from: self,
+                    viewControllerID: "EmptyLayoutVC"
                 )
             }
         }

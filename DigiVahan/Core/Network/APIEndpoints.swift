@@ -21,6 +21,8 @@ struct APIEndpoints {
     static let register = "/api/auth/register/init"
     static let NEW_PASSWORD = "/api/auth/check/new-password"
     static let CHANGE_PASSWORD = "/api/auth/change-password"
+    static let DELETE_USER_ACCOUNT = "/api/user-account/delete"
+    static let CANCEL_DELETE_USER_ACCOUNT = "/api/user-account/cancel-delete"
     static let GET_USER_DETAILS = "/api/get_user_details"
     static let UPDATE_USER_DATA = baseURL + "/api/update_user"
     static let ADD_EMERGENCY_CONTACT = baseURL + "/api/v1/add/emergency-contact"
@@ -64,6 +66,8 @@ struct APIEndpoints {
     
     // Challan services
     static let CHALLAN_LIST = "/api/challan-flow/direct-search"
+    static let REFRESH_CHALLAN_LIST = "/api/challan-flow/refresh"
+    static let PAY_CHALLAN = "/api/challan-flow/payment-url"
     
     // other services
     static let GET_NEAR_BY_SERVICES = "/api/get/all-service"

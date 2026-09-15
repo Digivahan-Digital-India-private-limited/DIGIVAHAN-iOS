@@ -20,6 +20,7 @@ struct ChallanModel: Codable {
     var createdAt: String?
     var receiptLink: String?
     var motorVehicleAct: String?
+    var court_name: String?
 
     init() { }
 }

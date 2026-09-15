@@ -275,6 +275,19 @@ class VerificationScreenVC: BaseViewController {
                         
                         if verificationType == "otpLogin" || verificationType == "create"{
                             
+                            // Check Account Deletion Status
+                                if let deletionRequestData = userJson["deletionRequestData"] as? [String: Any] {
+
+                                    let deleteStatus =
+                                        deletionRequestData["deleteStatus"] as? Bool ?? false
+
+                                    if deleteStatus {
+                                        // Account deletion request already exists
+                                        self.cancelDeleteAccountRequest(deletionRequestData: deletionRequestData)
+                                        return
+                                    }
+                                }
+                            
                             PreferenceManager.shared.setLoggedIn(true)
                             
                             // Move Next Screen
@@ -295,6 +308,83 @@ class VerificationScreenVC: BaseViewController {
                 LoadingManager.shared.hide()
             }
         }
+    }
+    
+    func cancelDeleteAccountRequest(
+        deletionRequestData: [String: Any]
+    ){
+                
+        let dialog = AddVehicleCustomDialog(
+            frame: UIScreen.main.bounds
+        )
+        
+        let processDate = deletionRequestData["deleteRequestProcessDate"] as? String ?? ""
+        let daysRemaining = deletionRequestData["deleteRequestProcessDays"] as? Int ?? 0
+
+        let dayText = daysRemaining == 1 ? "day" : "days"
+
+        let description = """
+        You have requested to delete your account. Your account will be permanently deleted on \(processDate). You have \(daysRemaining) \(dayText) remaining to recover your account.
+
+        Would you like to cancel the deletion request?
+        """
+        
+        dialog.configure(
+            title: "Account Deletion Requested",
+            description: description,
+            buttonTitle: "Recover My Account",
+            cancelButtonTitle: "Login",
+        )
+                
+        dialog.inputField.isHidden = true
+        
+        // Change Cancel button text
+        dialog.cancelBtn.setTitle("Login", for: .normal)
+        
+        dialog.onProceed = { reason in
+            LoadingManager.shared.show(on: self.view)
+
+            NetworkManager.shared.callAPI(
+                url: APIEndpoints.CANCEL_DELETE_USER_ACCOUNT,
+                method: "POST",
+                parameters: nil
+            ) { [weak self] response, status, message in
+
+                guard let self = self else { return }
+
+                LoadingManager.shared.hide()
+
+                if status {
+
+                    PreferenceManager.shared.setLoggedIn(true)
+                    
+                    // Move Next Screen
+                    NavigationManager.moveToNavigationController(
+                        from: self,
+                        storyboardName: "Main",
+                        navigationControllerID: "MainNavigationController"
+                    )
+
+                } else {
+
+                    self.showToast(message: "Unable to recover your account. Please try again later.")
+                   
+                }
+            }
+        }
+        
+        dialog.onCancel = { reason in
+            // Move Next Screen
+            NavigationManager.moveToNavigationController(
+                from: self,
+                storyboardName: "Main",
+                navigationControllerID: "MainNavigationController"
+            )
+        }
+        
+        
+        self.view.addSubview(dialog)
+
     }
     
     

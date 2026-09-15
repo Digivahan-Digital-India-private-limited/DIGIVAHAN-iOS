@@ -348,7 +348,7 @@ class VehicleInfoVC: BaseViewController {
             from: self,
             viewControllerID: "ChallanListVC",
             data: [
-                "vehicleData": garageModel
+                "vehicleId": garageModel?.vehicle_id
             ]
         )
     }

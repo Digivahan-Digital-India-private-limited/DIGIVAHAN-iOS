@@ -305,5 +305,33 @@ class TimeUtils {
         return formatter.string(from: date)
     }
     
+    // MARK: - Parse Server Date & Time To Milliseconds
+
+    static func parseServerDateTimeToMillis(
+        date: String,
+        time: String
+    ) -> Int64 {
+
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = .current
+
+        let dateTime = "\(date) \(time)"
+
+        guard let parsedDate = formatter.date(from: dateTime) else {
+
+            print("""
+            ❌ Failed to parse server date
+            Date: \(date)
+            Time: \(time)
+            """)
+
+            return Int64(Date().timeIntervalSince1970 * 1000)
+        }
+
+        return Int64(parsedDate.timeIntervalSince1970 * 1000)
+    }
+    
     
 }

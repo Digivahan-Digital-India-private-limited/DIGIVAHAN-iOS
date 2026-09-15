@@ -29,8 +29,13 @@ class ChallanListVC: BaseViewController {
     @IBOutlet weak var paidChallanBtnText: UILabel!
     
     var challanList: [ChallanModel] = []
+    var challanFilteredList: [ChallanModel] = []
     
-    private var garageModel: GarageItemModel?
+    private var vehicleId: String?
+    private var isVehicleFromGarage: String = ""
+    
+    let REFRESH_INTERVAL: Int64 =
+    24 * 60 * 60 * 1000
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,32 +43,45 @@ class ChallanListVC: BaseViewController {
         enableKeyboardDismissOnTap()
         
         if let data = receivedData as? [String: Any] {
-
-            self.garageModel = data["vehicleData"] as? GarageItemModel ?? nil
+            
+            self.vehicleId = data["vehicleId"] as? String ?? ""
+            self.isVehicleFromGarage = data["garage"] as? String ?? ""
             
         }
         
         setUI()
+        
+        getChallanList(vehicleNumber: vehicleId ?? "")
 
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+   /* override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        getChallanList()
-        
     }
+    */
 
     private func setUI() {
 
         title = "Challan List"
-        navigationController?.navigationBar.prefersLargeTitles = false
-        navigationItem.largeTitleDisplayMode = .never
-        
-        navigationController?.navigationBar.titleTextAttributes = [
+
+            navigationController?.navigationBar.prefersLargeTitles = false
+            navigationItem.largeTitleDisplayMode = .never
+
+            navigationController?.navigationBar.titleTextAttributes = [
                 .font: UIFont(name: "Hind-Medium", size: 20)!,
                 .foregroundColor: UIColor.black
             ]
+
+        if isVehicleFromGarage != "true" {
+            navigationController?.navigationBar.tintColor = .black
+            
+            navigationItem.rightBarButtonItem = UIBarButtonItem(
+                image: UIImage(systemName: "arrow.clockwise"),
+                style: .plain,
+                target: self,
+                action: #selector(refreshClicked)
+            )
+        }
 
         tableView.delegate = self
         tableView.dataSource = self
@@ -74,6 +92,16 @@ class ChallanListVC: BaseViewController {
         tableView.separatorStyle = .none
 
 
+        allChallanBtn.isUserInteractionEnabled = true
+
+            let allChallanBtnTap = UITapGestureRecognizer(
+                target: self,
+                action: #selector(onAllChallanBtnClick)
+            )
+
+        allChallanBtn.addGestureRecognizer(allChallanBtnTap)
+        
+        
         pendingChallanBtn.isUserInteractionEnabled = true
 
             let pendingChallanBtnTap = UITapGestureRecognizer(
@@ -83,7 +111,38 @@ class ChallanListVC: BaseViewController {
 
         pendingChallanBtn.addGestureRecognizer(pendingChallanBtnTap)
         
+        paidChallanBtn.isUserInteractionEnabled = true
+
+            let paidChallanBtnTap = UITapGestureRecognizer(
+                target: self,
+                action: #selector(onPaidChallanBtnClick)
+            )
+
+        paidChallanBtn.addGestureRecognizer(paidChallanBtnTap)
+        
       
+    }
+    
+    @objc func refreshClicked() {
+        ChallanRefreshManager.shared.checkVehicleChallanOncePerDay(
+            vehicleNumber: vehicleId ?? "",
+            viewController: self
+        )
+    }
+    
+    @objc private func onAllChallanBtnClick() {
+        
+        allChallanDevider.backgroundColor = UIColor(named: "colorPrimary")
+        allChallanBtnText.textColor = UIColor(named: "colorPrimary")
+        
+        pendingChallanDevider.backgroundColor = UIColor(named: "textDescription")
+        pendingChallanBtnText.textColor = UIColor(named: "textDescription")
+        
+        paidChallanDevider.backgroundColor = UIColor(named: "textDescription")
+        paidChallanBtnText.textColor = UIColor(named: "textDescription")
+        
+        challanFilteredList = challanList
+        tableView.reloadData()
     }
     
     @objc private func onPendingChallanBtnClick() {
@@ -96,18 +155,41 @@ class ChallanListVC: BaseViewController {
         
         paidChallanDevider.backgroundColor = UIColor(named: "textDescription")
         paidChallanBtnText.textColor = UIColor(named: "textDescription")
+        
+        challanFilteredList = filterChallanList(by: ["Pending", "pending", "unpaid", "partially paid"])
+        tableView.reloadData()
+    }
+    
+    @objc private func onPaidChallanBtnClick() {
+        
+        allChallanDevider.backgroundColor = UIColor(named: "textDescription")
+        allChallanBtnText.textColor = UIColor(named: "textDescription")
+        
+        pendingChallanDevider.backgroundColor = UIColor(named: "textDescription")
+        pendingChallanBtnText.textColor = UIColor(named: "textDescription")
+        
+        paidChallanDevider.backgroundColor = UIColor(named: "colorPrimary")
+        paidChallanBtnText.textColor = UIColor(named: "colorPrimary")
+        
+        challanFilteredList = filterChallanList(by: ["Paid", "paid", "cash", "disposed"])
+        tableView.reloadData()
     }
     
     
-    func getChallanList() {
+    func getChallanList(vehicleNumber: String, isRefresh: Bool = false) {
 
         challanList.removeAll()
+        challanFilteredList.removeAll()
         tableView.reloadData()
 
-        let url = APIEndpoints.CHALLAN_LIST
+        var url = APIEndpoints.CHALLAN_LIST
+        
+        if isRefresh || isVehicleFromGarage == "true"{
+            url = APIEndpoints.REFRESH_CHALLAN_LIST
+        }
         
         let params: [String: Any] = [
-            "rcNumber": garageModel?.vehicle_id ?? ""
+            "rcNumber": vehicleNumber
         ]
 
         LoadingManager.shared.show(on: view)
@@ -121,6 +203,7 @@ class ChallanListVC: BaseViewController {
             guard let self = self else { return }
 
             LoadingManager.shared.hide()
+
 
             if status {
 
@@ -146,15 +229,34 @@ class ChallanListVC: BaseViewController {
                         model.createdAt = data["createdAt"] as? String ?? ""
                         model.receiptLink = data["receiptLink"] as? String ?? ""
                         model.motorVehicleAct = data["motorVehicleAct"] as? String ?? ""
+                        model.court_name = data["court_name"] as? String ?? ""
                         
 
                         self.challanList.append(model)
                     }
+                    
+                    self.challanFilteredList = self.challanList
+                    showToast(message: message)
+                    
+                    var entity = VehicleChallanEntity()
 
+                        entity.vehicleNumber = vehicleNumber
+
+                        entity.lastHitServerDate = TimeUtils.getCurrentDate("yyyy-MM-dd")
+                        entity.lastHitServerTime = TimeUtils.getCurrentDate("HH:mm:ss")
+                        entity.lastHitServerMillis = Int64(Date().timeIntervalSince1970 * 1000)
+
+                        VehicleChallanDatabase.shared.save(entity)
+
+                    
                 } catch {
                     print("🔥 Decode Error:", error.localizedDescription)
                     self.setEmptyLayout(true)
-                    self.showToast(message: "Parsing Error")
+                    self.showToast(message: "No Challan found")
+                    NavigationManager.moveToScreen(
+                        from: self,
+                        viewControllerID: "EmptyLayoutVC"
+                    )
                 }
                 
                 updateGarageUI()
@@ -169,7 +271,30 @@ class ChallanListVC: BaseViewController {
 
                 } else {
 
-                    self.showToast(message: "Notification not found")
+                    self.showToast(message: "No Challan found")
+                    NavigationManager.moveToScreen(
+                        from: self,
+                        viewControllerID: "EmptyLayoutVC"
+                    )
+                }
+                
+                do {
+                    guard
+                        let challan_credits = response?["error_type"] as? String
+                    else {return}
+                            
+                            if challan_credits == "no_credits" {
+                                CommonFunctions.showAlertDialog(
+                                    on: self,
+                                    title: "No credits left",
+                                    message: message
+                                )
+                            } else{
+                                NavigationManager.moveToScreen(
+                                    from: self,
+                                    viewControllerID: "EmptyLayoutVC"
+                                )
+                            }
                 }
             }
         }
@@ -177,12 +302,23 @@ class ChallanListVC: BaseViewController {
 
     
     
+    func filterChallanList(by transactionStatuses: [String]) -> [ChallanModel] {
 
+        return challanList.filter { item in
+
+            guard let status = item.transactionStatus else {
+                return false
+            }
+
+            return transactionStatuses.contains {
+                $0.caseInsensitiveCompare(status) == .orderedSame
+            }
+        }
+    }
+    
     
     func updateGarageUI() {
-
         tableView.reloadData()
-
         listView.isHidden = challanList.isEmpty
         emptyView.isHidden = !challanList.isEmpty
     }
@@ -201,7 +337,7 @@ extension ChallanListVC: UITableViewDelegate, UITableViewDataSource {
         numberOfRowsInSection section: Int
     ) -> Int {
 
-        return challanList.count
+        return challanFilteredList.count
     }
 
     func tableView(
@@ -209,7 +345,7 @@ extension ChallanListVC: UITableViewDelegate, UITableViewDataSource {
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
 
-        let challanListItem = challanList[indexPath.row]
+        let challanListItem = challanFilteredList[indexPath.row]
 
         let cell = tableView.dequeueReusableCell(
             withIdentifier: "ChallanListCell",
@@ -233,7 +369,7 @@ extension ChallanListVC: UITableViewDelegate, UITableViewDataSource {
         cell.challanPlace.text = challanListItem.location == "" ? "Not Defined" : challanListItem.location
         cell.challanOffence.text = challanListItem.offence == "" ? "Not Defined" : challanListItem.offence
         
-       if challanListItem.transactionStatus == "UNPAID" {
+        if challanListItem.transactionStatus == "UNPAID" && ((challanListItem.court_name?.isEmpty) != nil){
            cell.payBtnLayout.isHidden = false
        } else {cell.payBtnLayout.isHidden = true}
 
@@ -251,30 +387,80 @@ extension ChallanListVC: UITableViewDelegate, UITableViewDataSource {
 
     
     func payChallan(_ challanListItem: ChallanModel) {
+
         
-        
-        var sharedData: [String: Any] = [
-            "challanListItem": challanListItem
+        let params: [String: Any] = [
+            "vehicleNumber": vehicleId ?? "",
+            "challanNumbers": [
+                challanListItem.challanNumber ?? ""
+            ]
         ]
-        
-//        var viewControllerID = "ViewNotificationVC"
-//        
-//        if notificationListItem.notification_type == "doc_access" {
-//            sharedData = [
-//                "userId": PreferenceManager.shared.getUserId(),
-//                "vehicleId": notificationListItem.vehicle_id ?? "",
-//                "taskType": "check"
-//            ]
-//            
-//            viewControllerID = "AccessDocVC"
-//        }
-//
-//        NavigationManager.pushScreen(
-//            from: self,
-//            storyboardName: "Main",
-//            viewControllerID: viewControllerID,
-//            data: sharedData
-//        )
+
+        LoadingManager.shared.show(on: view)
+
+        NetworkManager.shared.callAPI(
+            url: APIEndpoints.PAY_CHALLAN,
+            method: "POST",
+            parameters: params
+        ) { [weak self] response, status, message in
+
+            guard let self = self else { return }
+
+            LoadingManager.shared.hide()
+
+            if status {
+
+                do {
+                    
+                    let paymentUrl = response?["paymentUrl"] as? String ?? ""
+                    
+                    if !paymentUrl.isEmpty {
+
+                        NavigationManager.pushScreen(
+                            from: self,
+                            storyboardName: "Main",
+                            viewControllerID: "WebViewVC",
+                            data: [
+                                "policyType": "challanPay",
+                                "paymentUrl": paymentUrl
+                            ]
+                        )
+
+                    } else {
+
+                        self.showToast(message: "Unable to make a payment")
+                    }
+
+                    
+
+                } catch {
+                    showToast(message: "Unable to make a payment")
+                    NavigationManager.moveToScreen(
+                        from: self,
+                        viewControllerID: "EmptyLayoutVC"
+                    )
+                }
+                
+                updateGarageUI()
+
+            } else {
+
+                self.setEmptyLayout(true)
+
+                if message.lowercased() == "no internet connection" {
+
+//                    self.showNoInternetDialog()
+
+                } else {
+                    self.showToast(message: "No Challan found")
+                }
+                
+                NavigationManager.moveToScreen(
+                    from: self,
+                    viewControllerID: "EmptyLayoutVC"
+                )
+            }
+        }
 
     }
     

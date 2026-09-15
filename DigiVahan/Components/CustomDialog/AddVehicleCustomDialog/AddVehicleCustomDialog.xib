@@ -31,7 +31,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pIq-of-pUm">
-                    <rect key="frame" x="20" y="114" width="350" height="430"/>
+                    <rect key="frame" x="20" y="114" width="350" height="460"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="app_logo" translatesAutoresizingMaskIntoConstraints="NO" id="QL6-Wx-jGP">
                             <rect key="frame" x="90" y="20" width="170" height="170"/>
@@ -41,25 +41,25 @@
                             </constraints>
                         </imageView>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="oUp-X3-aXZ">
-                            <rect key="frame" x="20" y="210" width="310" height="200"/>
+                            <rect key="frame" x="20" y="200" width="310" height="206.66666666666663"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Incomplete Profile" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WeO-kY-t1b">
-                                    <rect key="frame" x="0.0" y="0.0" width="310" height="24"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="310" height="40"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="40" id="xVZ-cx-ddh"/>
+                                    </constraints>
                                     <fontDescription key="fontDescription" name="Hind-Bold" family="Hind" pointSize="20"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please Compete the Incomplete Profile, to use our services properly." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sqf-Fh-7wi">
-                                    <rect key="frame" x="0.0" y="34" width="310" height="50"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="50" id="Tqv-mA-DKi"/>
-                                    </constraints>
+                                    <rect key="frame" x="0.0" y="50" width="310" height="40.666666666666657"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8CW-ac-xsF">
-                                    <rect key="frame" x="0.0" y="94" width="310" height="48"/>
+                                    <rect key="frame" x="0.0" y="100.66666666666669" width="310" height="48"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="48" id="e5o-m5-vlR"/>
                                     </constraints>
@@ -67,12 +67,12 @@
                                     <textInputTraits key="textInputTraits"/>
                                 </textField>
                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="0in-yd-bDv">
-                                    <rect key="frame" x="0.0" y="152" width="310" height="48"/>
+                                    <rect key="frame" x="0.0" y="158.66666666666669" width="310" height="48"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ovv-HX-LNr">
                                             <rect key="frame" x="0.0" y="0.0" width="150" height="48"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="48" id="eL4-UD-9GF"/>
+                                                <constraint firstAttribute="height" constant="48" id="GBx-hL-76k"/>
                                             </constraints>
                                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <state key="normal" title="Button"/>
@@ -89,7 +89,7 @@
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Kv-6y-jr4">
                                             <rect key="frame" x="160" y="0.0" width="150" height="48"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="48" id="WqY-wP-o09"/>
+                                                <constraint firstAttribute="height" constant="48" id="uqa-Un-sBc"/>
                                             </constraints>
                                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <state key="normal" title="Button"/>
@@ -104,21 +104,21 @@
                                             </connections>
                                         </button>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="48" id="wCj-4U-k3M"/>
+                                    </constraints>
                                 </stackView>
                             </subviews>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="200" id="rhb-dH-Mx4"/>
-                            </constraints>
                         </stackView>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstItem="oUp-X3-aXZ" firstAttribute="top" secondItem="QL6-Wx-jGP" secondAttribute="bottom" constant="10" id="6tt-Qa-Wf3"/>
                         <constraint firstItem="oUp-X3-aXZ" firstAttribute="leading" secondItem="pIq-of-pUm" secondAttribute="leading" constant="20" id="DPL-6j-zke"/>
                         <constraint firstAttribute="trailing" secondItem="oUp-X3-aXZ" secondAttribute="trailing" constant="20" id="Kqt-hy-oZb"/>
                         <constraint firstItem="QL6-Wx-jGP" firstAttribute="centerX" secondItem="pIq-of-pUm" secondAttribute="centerX" id="UK1-7p-o0W"/>
                         <constraint firstItem="QL6-Wx-jGP" firstAttribute="top" secondItem="pIq-of-pUm" secondAttribute="top" constant="20" id="oXy-Gf-ktE"/>
-                        <constraint firstItem="oUp-X3-aXZ" firstAttribute="bottom" secondItem="QL6-Wx-jGP" secondAttribute="bottom" constant="220" id="pr8-i9-Oe3"/>
-                        <constraint firstAttribute="height" constant="430" id="yHJ-le-2bx"/>
+                        <constraint firstAttribute="height" constant="460" id="yHJ-le-2bx"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">

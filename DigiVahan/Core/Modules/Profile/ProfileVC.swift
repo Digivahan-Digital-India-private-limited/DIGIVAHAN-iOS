@@ -24,6 +24,7 @@ class ProfileVC: UIView, UITextFieldDelegate {
     @IBOutlet weak var scanBtn: UIView!
     @IBOutlet weak var garageBtn: UIView!
     @IBOutlet weak var myVirtualQRBtn: UIView!
+    @IBOutlet weak var deleteAccountBtn: UIView!
     
     @IBOutlet weak var profileProgress: CircularProgressView!
 
@@ -166,6 +167,17 @@ class ProfileVC: UIView, UITextFieldDelegate {
             )
 
         myVirtualQRBtn.addGestureRecognizer(myVirtualQRBtnTap)
+        
+        
+        // set myVirtualQRBtn
+        deleteAccountBtn.isUserInteractionEnabled = true
+
+            let deleteAccountBtnTap = UITapGestureRecognizer(
+                target: self,
+                action: #selector(onDeleteAccountBtnClicked)
+            )
+
+        deleteAccountBtn.addGestureRecognizer(deleteAccountBtnTap)
     }
     
     @objc private func onMyVirtualQRBtnClick() {
@@ -208,6 +220,29 @@ class ProfileVC: UIView, UITextFieldDelegate {
         }
     }
     
+    @objc private func onDeleteAccountBtnClicked() {
+        let vc = parentViewController
+        
+        let dialog = AddVehicleCustomDialog(
+            frame: UIScreen.main.bounds
+        )
+        
+        dialog.configure(
+            title: "Delete Account",
+            description: "You can recover your account within 30 days. Are you sure you want to continue with account deletion?",
+            hint: "Reason (optional)",
+            buttonTitle: "Yes, Delete"
+        )
+        
+        
+        dialog.onProceed = { reason in
+            self.deleteUserAccount(reason: reason)
+        }
+        
+        
+        vc?.view.addSubview(dialog)
+    }
+    
     @objc private func onAboutUsClick() {
         openPolicyPage(policyType: "about_page")
     }
@@ -229,7 +264,6 @@ class ProfileVC: UIView, UITextFieldDelegate {
     }
     
     @objc private func onLogoutBtnClick() {
-        
         OneSignal.logout()
         
         if let vc = parentViewController {
@@ -256,6 +290,50 @@ class ProfileVC: UIView, UITextFieldDelegate {
                 "policyType": policyType
             ]
         )
+    }
+    
+    func deleteUserAccount(reason : String) {
+        
+        let params: [String: Any] = [
+            "id": PreferenceManager.shared.getUserId(),
+            "duration": 30,
+            "reason": reason,
+            "deviceType": "ios"
+        ]
+
+        if let vc = self.parentViewController {
+            LoadingManager.shared.show(on: vc.view)
+        }
+
+        NetworkManager.shared.callAPI(
+            url: APIEndpoints.DELETE_USER_ACCOUNT,
+            method: "POST",
+            parameters: params
+        ) { [weak self] response, status, message in
+
+            guard let self = self else { return }
+
+            LoadingManager.shared.hide()
+
+            if status {
+
+                OneSignal.logout()
+                
+                if let vc = parentViewController {
+                    CommonFunctions.performLogout(
+                        from: vc
+                    )
+                }
+
+            } else {
+
+                if let vc = self.parentViewController {
+                    vc.showToast(message: "Unable to submit your account deletion request. Please check your internet connection and try again later.")
+                }
+               
+            }
+        }
+
     }
     
     private func loadUserProfile() {

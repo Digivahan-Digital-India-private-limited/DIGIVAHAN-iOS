@@ -50,6 +50,7 @@ class WebViewVC: BaseViewController {
     /// - about_page
     /// - pay_challan
     private var policyType = ""
+    private var paymentUrl = ""
     
     // MARK: - Lifecycle
     
@@ -63,11 +64,26 @@ class WebViewVC: BaseViewController {
         // Receive Data
         if let data = receivedData as? [String: Any] {
             
-            policyType =
-            data["policyType"] as? String ?? ""
+            policyType = data["policyType"] as? String ?? ""
+            
+            if policyType == "challanPay" {
+                paymentUrl = data["paymentUrl"] as? String ?? ""
+                self.title = "Pay Challan"
+                print("paymentUrl: \(paymentUrl)")
+                guard let payUrl = URL(string: paymentUrl) else {
+                    
+                    self.showToast(message: "Invalid URL")
+                    return
+                }
+                let request = URLRequest(url: payUrl)
+                self.webView.load(request)
+            }
+            
         }
         
-        fetchPolicyAndLoad()
+        if policyType != "challanPay" {
+            fetchPolicyAndLoad()
+        }
     }
     
     // MARK: - WebView Setup

@@ -356,7 +356,7 @@ class CommonFunctions {
         /// Clears local data
         /// Logs out from OneSignal
         /// Opens Login Screen
-        private static func performLogout(
+        static func performLogout(
             from viewController: UIViewController
         ) {
 
@@ -783,7 +783,7 @@ class CommonFunctions {
                 return
             }
 
-            if currentVersion != latestVersion {
+            if latestVersion != "0" && currentVersion != latestVersion {
 
                 DispatchQueue.main.async {
 
@@ -985,5 +985,24 @@ class CommonFunctions {
 
            myView.layer.masksToBounds = false
     }
+    
+    static func showAlertDialog(
+            on viewController: UIViewController,
+            title: String,
+            message: String
+        ) {
+
+            let alert = UIAlertController(
+                title: title,
+                message: message,
+                preferredStyle: .alert
+            )
+
+            let okAction = UIAlertAction(title: "OK", style: .default)
+
+            alert.addAction(okAction)
+
+            viewController.present(alert, animated: true)
+        }
     
 }
