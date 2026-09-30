@@ -360,22 +360,21 @@ class VehicleInfoVC: BaseViewController {
                 frame: UIScreen.main.bounds
             )
             
+            let vehicleNumber = garageModel?.vehicle_number ?? ""
+
             dialog.configure(
-                title: "Verify Owner",
-                description: "Please verify the vehicle owner \(garageModel?.owner_name ?? "") before adding this vehicle.",
-                hint: "Enter owner name",
-                buttonTitle: "Verify"
+                title: "Please Confirm",
+                description: "Are you sure you want to add this vehicle(\(vehicleNumber)) to your garage?",
+                buttonTitle: "Add Vehicle",
+                cancelButtonTitle: "Cancel",
+                isInputFieldHidden: true
             )
             
-            dialog.onProceed = { value in
-                
-                if value.isEmpty {
-                    self.showToast(message: "Please enter owner name")
-                }
+            dialog.onProceed = { [weak self] _ in
+                guard let self = self else { return }
                 
                 let params: [String: Any] = [
                     "user_id": PreferenceManager.shared.getUserId(),
-                    "owner_name": value,
                     "vehicle_number": self.garageModel?.vehicle_number ?? ""
                 ]
                 
@@ -385,7 +384,8 @@ class VehicleInfoVC: BaseViewController {
                     url: APIEndpoints.ADD_VEHICLE,
                     method: "POST",
                     parameters: params
-                ) { response, status, message in
+                ) { [weak self] response, status, message in
+                    guard let self = self else { return }
                     
                     LoadingManager.shared.hide()
                     

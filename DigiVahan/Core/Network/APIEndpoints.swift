@@ -21,6 +21,7 @@ struct APIEndpoints {
     static let register = "/api/auth/register/init"
     static let NEW_PASSWORD = "/api/auth/check/new-password"
     static let CHANGE_PASSWORD = "/api/auth/change-password"
+    static let REFRESH_TOKEN = "/api/auth/refresh-token"
     static let DELETE_USER_ACCOUNT = "/api/user-account/delete"
     static let CANCEL_DELETE_USER_ACCOUNT = "/api/user-account/cancel-delete"
     static let GET_USER_DETAILS = "/api/get_user_details"

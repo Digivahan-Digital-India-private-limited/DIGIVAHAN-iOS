@@ -23,6 +23,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate,
         
         CommonFunctions.fetchAppInfo()
 
+        // Refresh auth token on launch if user is logged in
+        if PreferenceManager.shared.isLoggedIn() {
+            let userId = PreferenceManager.shared.getUserId()
+            if !userId.isEmpty {
+                NetworkManager.shared.refreshToken(userId: userId)
+            }
+        }
+
         OneSignal.Debug.setLogLevel(.LL_VERBOSE)
         
         UNUserNotificationCenter.current().delegate = self

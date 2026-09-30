@@ -59,6 +59,25 @@ class AddVehicleCustomDialog: UIView {
         inputField.delegate = self
         inputField.autocapitalizationType = .allCharacters
 
+        // Close Button (top-right)
+        let closeIconView = UIImageView()
+        closeIconView.image = UIImage(named: "closeIcon")
+        closeIconView.contentMode = .scaleAspectFit
+        closeIconView.isUserInteractionEnabled = true
+        closeIconView.translatesAutoresizingMaskIntoConstraints = false
+
+        dialogView.addSubview(closeIconView)
+
+        NSLayoutConstraint.activate([
+            closeIconView.topAnchor.constraint(equalTo: dialogView.topAnchor, constant: 16),
+            closeIconView.trailingAnchor.constraint(equalTo: dialogView.trailingAnchor, constant: -16),
+            closeIconView.widthAnchor.constraint(equalToConstant: 26),
+            closeIconView.heightAnchor.constraint(equalToConstant: 26)
+        ])
+
+        let closeTap = UITapGestureRecognizer(target: self, action: #selector(cancelBtnClicked(_:)))
+        closeIconView.addGestureRecognizer(closeTap)
+
     }
 
     // MARK: - Configure Dialog
@@ -69,14 +88,15 @@ class AddVehicleCustomDialog: UIView {
         hint: String = "",
         buttonTitle: String,
         cancelButtonTitle: String = "Cancel",
-        defaultValue: String = ""
+        defaultValue: String = "",
+        isInputFieldHidden: Bool = false
     ) {
 
         titleLabel.text = title
         subTitleLabel.text = description
         inputField.placeholder = hint
         inputField.text = defaultValue
-        
+        inputField.isHidden = isInputFieldHidden
 
         proceedBtn.setTitle(
             buttonTitle,
@@ -87,6 +107,22 @@ class AddVehicleCustomDialog: UIView {
             cancelButtonTitle,
             for: .normal
         )
+
+        if isInputFieldHidden {
+            // Remove top constraint and center vertically
+            if let topConstraint = contentView.constraints.first(where: {
+                ($0.firstItem as? UIView == dialogView && $0.firstAttribute == .top) ||
+                ($0.secondItem as? UIView == dialogView && $0.secondAttribute == .top)
+            }) {
+                topConstraint.isActive = false
+            }
+            dialogView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+
+            // Adjust height constraint when input field is hidden
+            if let heightConstraint = dialogView.constraints.first(where: { $0.firstAttribute == .height }) {
+                heightConstraint.constant = 390
+            }
+        }
     }
 
     // MARK: - Proceed Button
@@ -98,11 +134,11 @@ class AddVehicleCustomDialog: UIView {
                 in: .whitespacesAndNewlines
             ) ?? ""
 
-        onProceed?(value)
-        
-        if value.isEmpty {
+        if !inputField.isHidden && value.isEmpty {
             return
         }
+
+        onProceed?(value)
         
         removeFromSuperview()
     }

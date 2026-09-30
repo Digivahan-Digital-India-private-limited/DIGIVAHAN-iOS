@@ -35,10 +35,59 @@ class HomeVC: UIView, UITextFieldDelegate {
     @IBOutlet weak var activateQRBtn: UIView!
     @IBOutlet weak var checkVehicleBtn: UIView!
     
+    @IBOutlet weak var mainContainerView: UIView!
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var nearByServiceHeightConstraint: NSLayoutConstraint?
     
+    @IBOutlet weak var actionCardsCollectionView: UICollectionView!
+    @IBOutlet weak var actionCardsPageControl: UIPageControl!
+    @IBOutlet weak var scanBtnWidthConstraint: NSLayoutConstraint?
+    @IBOutlet weak var scanBtnLabel: UILabel?
+    @IBOutlet weak var scanBtnIcon: UIImageView?
+    
+    struct ActionCardItem {
+        let title: String
+        let subtitle: String
+        let buttonTitle: String
+        let imageName: String
+        let actionType: ActionCardType
+    }
+
+    enum ActionCardType {
+        case scanQR
+        case addVehicle
+        case activateQR
+    }
+
+    let actionCardList: [ActionCardItem] = [
+        ActionCardItem(
+            title: "Scan QR Code",
+            subtitle: "Scan Digivahan QR code to contact the vehicle owner.",
+            buttonTitle: "Scan Now",
+            imageName: "banner_scan_qr",
+            actionType: .scanQR
+        ),
+        ActionCardItem(
+            title: "Add Vehicle",
+            subtitle: "Add your vehicle to the garage",
+            buttonTitle: "Add Vehicle",
+            imageName: "banner_add_vehicle",
+            actionType: .addVehicle
+        ),
+        ActionCardItem(
+            title: "Activate QR Code",
+            subtitle: "Scan Digivahan QR code to activate it.",
+            buttonTitle: "Scan Now",
+            imageName: "banner_activate_qr",
+            actionType: .activateQR
+        )
+    ]
+    
+    private var actionCardTimer: Timer?
+    private var isScanBtnShrunk: Bool = false
+    private var lastScrollOffsetY: CGFloat = 0
     
     var nearByServiceList: [NearByServiceItem] = []
-    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -48,6 +97,21 @@ class HomeVC: UIView, UITextFieldDelegate {
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         commonInit()
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        actionCardsCollectionView?.collectionViewLayout.invalidateLayout()
+    }
+    
+    override func willMove(toSuperview newSuperview: UIView?) {
+        super.willMove(toSuperview: newSuperview)
+        // Auto scroll timer commented out
+        // if newSuperview == nil {
+        //     stopActionCardTimer()
+        // } else {
+        //     startActionCardTimer()
+        // }
     }
     
     // MARK: - Common Init
@@ -84,6 +148,16 @@ class HomeVC: UIView, UITextFieldDelegate {
     }
     
     func setUI() {
+        
+        setupBackgroundBalls()
+        
+        scrollView?.backgroundColor = .clear
+        scrollView?.showsVerticalScrollIndicator = false
+        scrollView?.alwaysBounceVertical = true
+        scrollView?.delegate = self
+        
+        setupScanButton()
+        setupActionCards()
         
         loadUserProfile()
         
@@ -223,6 +297,156 @@ class HomeVC: UIView, UITextFieldDelegate {
     }
     
 
+    
+    // MARK: - Background Design Balls (Constant / Non-Scrolling)
+    private func setupBackgroundBalls() {
+        guard let container = mainContainerView ?? mainContentView else { return }
+        
+        container.backgroundColor = UIColor(named: "bgColor") ?? UIColor(red: 245/255, green: 245/255, blue: 245/255, alpha: 1.0)
+        container.clipsToBounds = true
+        
+        // 1. Top-Right Peach Ball
+        let peachBall = UIView()
+        peachBall.backgroundColor = UIColor(red: 247/255, green: 228/255, blue: 194/255, alpha: 1.0) // #F7E4C2
+        peachBall.layer.cornerRadius = 95
+        peachBall.clipsToBounds = true
+        peachBall.isUserInteractionEnabled = false
+        peachBall.translatesAutoresizingMaskIntoConstraints = false
+        
+        // 2. Middle-Left Pastel Green Ball
+        let greenBall = UIView()
+        greenBall.backgroundColor = UIColor(red: 188/255, green: 226/255, blue: 185/255, alpha: 1.0) // #BCE2B9
+        greenBall.layer.cornerRadius = 95
+        greenBall.clipsToBounds = true
+        greenBall.isUserInteractionEnabled = false
+        greenBall.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Insert behind all scrollable content so they remain fixed during scrolling
+        container.insertSubview(peachBall, at: 0)
+        container.insertSubview(greenBall, at: 1)
+        
+        NSLayoutConstraint.activate([
+            // Top-right peach ball: partial circle in top right
+            peachBall.topAnchor.constraint(equalTo: container.topAnchor, constant: -20),
+            peachBall.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: 35),
+            peachBall.widthAnchor.constraint(equalToConstant: 190),
+            peachBall.heightAnchor.constraint(equalToConstant: 190),
+            
+            // Middle-left pastel green ball: semicircle protruding from the left edge
+            greenBall.centerYAnchor.constraint(equalTo: container.centerYAnchor, constant: -40),
+            greenBall.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: -95),
+            greenBall.widthAnchor.constraint(equalToConstant: 190),
+            greenBall.heightAnchor.constraint(equalToConstant: 190)
+        ])
+    }
+    
+    // MARK: - Action Cards Setup & Auto-Scroll
+    private func setupActionCards() {
+        guard let cv = actionCardsCollectionView else { return }
+        
+        cv.delegate = self
+        cv.dataSource = self
+        cv.isPagingEnabled = true
+        cv.showsHorizontalScrollIndicator = false
+        cv.backgroundColor = .clear
+        cv.register(ActionCardCell.self, forCellWithReuseIdentifier: ActionCardCell.identifier)
+        
+        if let layout = cv.collectionViewLayout as? UICollectionViewFlowLayout {
+            layout.scrollDirection = .horizontal
+            layout.minimumLineSpacing = 0
+            layout.minimumInteritemSpacing = 0
+            layout.sectionInset = .zero
+        }
+        
+        actionCardsPageControl?.numberOfPages = actionCardList.count
+        actionCardsPageControl?.currentPage = 0
+        actionCardsPageControl?.pageIndicatorTintColor = UIColor(red: 196/255, green: 232/255, blue: 194/255, alpha: 1.0)
+        actionCardsPageControl?.currentPageIndicatorTintColor = UIColor(red: 54/255, green: 183/255, blue: 46/255, alpha: 1.0)
+        actionCardsPageControl?.addTarget(self, action: #selector(onPageControlChanged(_:)), for: .valueChanged)
+        
+        cv.reloadData()
+        // startActionCardTimer() // Auto-scroll commented out
+    }
+    
+    @objc private func onPageControlChanged(_ sender: UIPageControl) {
+        let page = sender.currentPage
+        guard page < actionCardList.count else { return }
+        let indexPath = IndexPath(item: page, section: 0)
+        actionCardsCollectionView?.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+    }
+    
+    /*
+    // MARK: - Auto Scroll Timer (Commented Out)
+    private func startActionCardTimer() {
+        stopActionCardTimer()
+        guard !actionCardList.isEmpty else { return }
+        actionCardTimer = Timer.scheduledTimer(withTimeInterval: 4.0, repeats: true) { [weak self] _ in
+            guard let self = self, !self.actionCardList.isEmpty, let cv = self.actionCardsCollectionView else { return }
+            let currentPage = self.actionCardsPageControl?.currentPage ?? 0
+            let nextPage = (currentPage + 1) % self.actionCardList.count
+            let indexPath = IndexPath(item: nextPage, section: 0)
+            cv.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+            self.actionCardsPageControl?.currentPage = nextPage
+        }
+    }
+    
+    private func stopActionCardTimer() {
+        actionCardTimer?.invalidate()
+        actionCardTimer = nil
+    }
+    */
+    
+    private func handleActionCardTap(_ type: ActionCardType) {
+        switch type {
+        case .scanQR:
+            onScanBtnClick()
+        case .addVehicle:
+            onMyGarageBtnClick()
+        case .activateQR:
+            onActivateQRBtnClick()
+        }
+    }
+    
+    // MARK: - Floating Scan Button Setup & Animation
+    private func setupScanButton() {
+        guard let btn = scanBtn else { return }
+        btn.layer.cornerRadius = 25
+        btn.clipsToBounds = true
+        btn.backgroundColor = UIColor(red: 54/255, green: 183/255, blue: 46/255, alpha: 1.0)
+        
+        scanBtnWidthConstraint?.constant = 135
+        scanBtnLabel?.isHidden = false
+        scanBtnLabel?.alpha = 1.0
+        isScanBtnShrunk = false
+    }
+    
+    private func shrinkScanButton() {
+        guard !isScanBtnShrunk else { return }
+        isScanBtnShrunk = true
+        
+        scanBtnWidthConstraint?.constant = 50
+        UIView.animate(withDuration: 0.25, delay: 0, options: [.curveEaseInOut], animations: {
+            self.scanBtnLabel?.alpha = 0
+            self.scanBtnLabel?.isHidden = true
+            self.scanBtn?.layer.cornerRadius = 25
+            self.scanBtn?.layoutIfNeeded()
+            self.layoutIfNeeded()
+        }, completion: nil)
+    }
+
+    private func expandScanButton() {
+        guard isScanBtnShrunk else { return }
+        isScanBtnShrunk = false
+        
+        scanBtnWidthConstraint?.constant = 135
+        self.scanBtnLabel?.isHidden = false
+        UIView.animate(withDuration: 0.25, delay: 0, options: [.curveEaseInOut], animations: {
+            self.scanBtnLabel?.alpha = 1.0
+            self.scanBtn?.layer.cornerRadius = 25
+            self.scanBtn?.layoutIfNeeded()
+            self.layoutIfNeeded()
+        }, completion: nil)
+    }
     
     private func loadUserProfile() {
         
@@ -395,6 +619,7 @@ class HomeVC: UIView, UITextFieldDelegate {
 
                         print("❌ 'data' array not found")
                         self.nearByServiceLayout.isHidden = true
+                        self.nearByServiceHeightConstraint?.constant = 0
                         return
                     }
 
@@ -432,9 +657,9 @@ class HomeVC: UIView, UITextFieldDelegate {
                     print("========================================")
 
                     self.nearBySerCollectionView.reloadData()
-                    self.nearByServiceLayout.isHidden =
-                        self.nearByServiceList.isEmpty
-
+                    let isServicesEmpty = self.nearByServiceList.isEmpty
+                    self.nearByServiceLayout.isHidden = isServicesEmpty
+                    self.nearByServiceHeightConstraint?.constant = isServicesEmpty ? 0 : 265.67
 
                 } else {
 
@@ -442,6 +667,7 @@ class HomeVC: UIView, UITextFieldDelegate {
                     print("💬 Error:", message)
 
                     self.nearByServiceLayout.isHidden = true
+                    self.nearByServiceHeightConstraint?.constant = 0
                 }
 
                 print("========================================")
@@ -790,18 +1016,37 @@ extension HomeVC:
     UICollectionViewDataSource,
     UICollectionViewDelegateFlowLayout {
 
-        func collectionView(
-            _ collectionView: UICollectionView,
-            numberOfItemsInSection section: Int
-        ) -> Int {
-
-            return nearByServiceList.count
+    func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int
+    ) -> Int {
+        if collectionView == actionCardsCollectionView {
+            return actionCardList.count
         }
+        return nearByServiceList.count
+    }
 
     func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
+        if collectionView == actionCardsCollectionView {
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: ActionCardCell.identifier,
+                for: indexPath
+            ) as! ActionCardCell
+            
+            let item = actionCardList[indexPath.item]
+            cell.configure(
+                title: item.title,
+                subtitle: item.subtitle,
+                buttonTitle: item.buttonTitle,
+                imageName: item.imageName
+            ) { [weak self] in
+                self?.handleActionCardTap(item.actionType)
+            }
+            return cell
+        }
 
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: "NearByServiceCell",
@@ -815,6 +1060,8 @@ extension HomeVC:
 
         cell.serviceBtn.tag = indexPath.row
         cell.serviceBtn.isUserInteractionEnabled = true
+        
+        CommonFunctions.setViewBg(myView: cell.serviceImageBg)
 
         let tap = UITapGestureRecognizer(
             target: self,
@@ -826,21 +1073,16 @@ extension HomeVC:
         
         cell.serviceTitle.text = nearByServiceList[indexPath.row].title
 
-
         if let imageUrl = nearByServiceList[indexPath.row].icon {
-
             cell.serviceImage.sd_setImage(
                 with: URL(string: imageUrl),
                 placeholderImage: UIImage(named: "emptyImage")
             )
-
         } else {
-
             cell.serviceImage.image = UIImage(named: "emptyImage")
         }
         
         DispatchQueue.main.async {
-
             print("Collection Frame:", self.nearBySerCollectionView.frame)
             print("Collection Bounds:", self.nearBySerCollectionView.bounds)
         }
@@ -848,29 +1090,108 @@ extension HomeVC:
         return cell
     }
     
-    func collectionView( _ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath ) -> CGSize {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        if collectionView == actionCardsCollectionView {
+            let width = collectionView.bounds.width > 0 ? collectionView.bounds.width : UIScreen.main.bounds.width
+            return CGSize(width: width, height: 160)
+        }
         
         let itemsPerRow: CGFloat = 4
         let padding: CGFloat = 10
-        
         let totalPadding = padding * (itemsPerRow + 1)
         let width = (collectionView.bounds.width - totalPadding) / itemsPerRow
-        
         return CGSize(width: width, height: 90)
     }
     
-    func collectionView( _ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int ) -> CGFloat {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        minimumLineSpacingForSectionAt section: Int
+    ) -> CGFloat {
+        if collectionView == actionCardsCollectionView {
+            return 0
+        }
         return 10
     }
     
-    func collectionView( _ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int ) -> CGFloat
-    {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        minimumInteritemSpacingForSectionAt section: Int
+    ) -> CGFloat {
+        if collectionView == actionCardsCollectionView {
+            return 0
+        }
         return 10
     }
     
-    func collectionView( _ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int ) -> UIEdgeInsets {
-        return UIEdgeInsets( top: 10, left: 10, bottom: 10, right: 10 )
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
+        if collectionView == actionCardsCollectionView {
+            return .zero
+        }
+        return UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     }
     
+    // MARK: - UIScrollViewDelegate (Shrink/Expand Scan Button & Carousel Paging)
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView == self.scrollView {
+            let currentOffset = scrollView.contentOffset.y
+            let delta = currentOffset - lastScrollOffsetY
+            
+            // If near top, always expand
+            if currentOffset <= 20 {
+                expandScanButton()
+            } else if delta > 6 && currentOffset > 30 {
+                // Scrolling down -> shrink to circle
+                shrinkScanButton()
+            } else if delta < -6 {
+                // Scrolling up -> expand to pill
+                expandScanButton()
+            }
+            
+            lastScrollOffsetY = currentOffset
+        } else if scrollView == actionCardsCollectionView {
+            guard scrollView.bounds.width > 0 else { return }
+            let page = Int(round(scrollView.contentOffset.x / scrollView.bounds.width))
+            if page >= 0 && page < actionCardList.count {
+                actionCardsPageControl?.currentPage = page
+            }
+        }
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        // if scrollView == actionCardsCollectionView {
+        //     stopActionCardTimer()
+        // }
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if scrollView == actionCardsCollectionView {
+            guard scrollView.bounds.width > 0 else { return }
+            let page = Int(round(scrollView.contentOffset.x / scrollView.bounds.width))
+            if page >= 0 && page < actionCardList.count {
+                actionCardsPageControl?.currentPage = page
+            }
+            // startActionCardTimer() // Auto-scroll commented out
+        }
+    }
+    
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        if scrollView == actionCardsCollectionView {
+            guard scrollView.bounds.width > 0 else { return }
+            let page = Int(round(scrollView.contentOffset.x / scrollView.bounds.width))
+            if page >= 0 && page < actionCardList.count {
+                actionCardsPageControl?.currentPage = page
+            }
+        }
+    }
 }
 

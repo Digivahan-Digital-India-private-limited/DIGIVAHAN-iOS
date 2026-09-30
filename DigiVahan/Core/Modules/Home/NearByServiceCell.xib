@@ -52,7 +52,6 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="4Ra-Cs-xGa" firstAttribute="centerX" secondItem="xia-fX-WxP" secondAttribute="centerX" id="Lg3-pM-hja"/>
                             <constraint firstItem="F8y-QO-z0s" firstAttribute="top" secondItem="4Ra-Cs-xGa" secondAttribute="bottom" constant="5" id="NA2-QP-Nml"/>

@@ -882,5 +882,40 @@ class NetworkManager {
             print("========================================")
         }
     }
+
+    // MARK: - Refresh Token
+    func refreshToken(
+        userId: String? = nil,
+        completion: ((_ status: Bool, _ message: String, _ token: String?) -> Void)? = nil
+    ) {
+        let targetUserId = (userId != nil && !userId!.isEmpty) ? userId! : PreferenceManager.shared.getUserId()
+
+        guard !targetUserId.isEmpty else {
+            print("⚠️ [RefreshToken] User ID is empty. Skipping refresh.")
+            completion?(false, "User ID is empty", nil)
+            return
+        }
+
+        let parameters: [String: Any] = [
+            "user_id": targetUserId
+        ]
+
+        print("🔄 [RefreshToken] Requesting token refresh for user: \(targetUserId)")
+
+        callAPI(
+            url: APIEndpoints.REFRESH_TOKEN,
+            method: "POST",
+            parameters: parameters
+        ) { response, status, message in
+            if status, let newToken = response?["token"] as? String, !newToken.isEmpty {
+                PreferenceManager.shared.setAuthToken(newToken)
+                print("✅ [RefreshToken] Token refreshed successfully and updated in PreferenceManager")
+                completion?(true, message, newToken)
+            } else {
+                print("❌ [RefreshToken] Token refresh failed: \(message)")
+                completion?(false, message, nil)
+            }
+        }
+    }
     
 }
