@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct AddressBookModel: Codable {
+struct AddressBookModel: Codable, Equatable {
     var _id: String?
     var name: String?
     var contact_no: String?
@@ -20,10 +20,15 @@ struct AddressBookModel: Codable {
     var pincode: String?
     var default_status: Bool?
 
+    var isDefault: Bool {
+        return default_status == true
+    }
+
     var formattedAddress: String {
         let parts = [
             house_no_building,
-            road_or_area ?? street_name,
+            street_name,
+            road_or_area,
             landmark,
             city,
             state,

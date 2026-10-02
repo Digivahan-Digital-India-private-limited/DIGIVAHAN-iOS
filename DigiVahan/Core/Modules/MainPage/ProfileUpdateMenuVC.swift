@@ -31,6 +31,9 @@ class ProfileUpdateMenuVC: BaseViewController {
     @IBOutlet weak var publicDetailsFCL: UILabel!
     @IBOutlet weak var publicDetailsCompletionIcon: UIImageView!
     
+    @IBOutlet weak var addressBookLayoutBtn: UIView!
+    @IBOutlet weak var defaultAddressLayoutBtn: UIView!
+    
     @IBOutlet weak var emergencyContactLayoutBtn: UIView!
     @IBOutlet weak var emergencyContactFCL: UILabel!
     @IBOutlet weak var emergencyContactCompletionIcon: UIImageView!
@@ -78,6 +81,21 @@ class ProfileUpdateMenuVC: BaseViewController {
 
         publicDetailsLayoutBtn.addGestureRecognizer(publicDetailsLayoutBtnTap)
         
+        // set addressBookLayoutBtn
+        addressBookLayoutBtn?.isUserInteractionEnabled = true
+        let addressBookLayoutBtnTap = UITapGestureRecognizer(
+            target: self,
+            action: #selector(onAddressBookLayoutBtnClick)
+        )
+        addressBookLayoutBtn?.addGestureRecognizer(addressBookLayoutBtnTap)
+
+        // set defaultAddressLayoutBtn
+        defaultAddressLayoutBtn?.isUserInteractionEnabled = true
+        let defaultAddressLayoutBtnTap = UITapGestureRecognizer(
+            target: self,
+            action: #selector(onDefaultAddressLayoutBtnClick)
+        )
+        defaultAddressLayoutBtn?.addGestureRecognizer(defaultAddressLayoutBtnTap)
         
         // set emergencyContactLayoutBtn
         emergencyContactLayoutBtn.isUserInteractionEnabled = true
@@ -102,6 +120,22 @@ class ProfileUpdateMenuVC: BaseViewController {
     }
     
     
+    @objc private func onAddressBookLayoutBtnClick() {
+        let vc = AddressBookListVC()
+        NavigationManager.pushScreen(
+            from: self,
+            targetVC: vc
+        )
+    }
+
+    @objc private func onDefaultAddressLayoutBtnClick() {
+        let vc = SetDefaultAddressVC()
+        NavigationManager.pushScreen(
+            from: self,
+            targetVC: vc
+        )
+    }
+
     @objc private func onEmergencyContactLayoutBtnClick() {
         NavigationManager.pushScreen(
             from: self,

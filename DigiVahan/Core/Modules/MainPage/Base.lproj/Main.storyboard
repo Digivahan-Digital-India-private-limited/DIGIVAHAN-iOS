@@ -515,6 +515,82 @@
                                                                                     <constraint firstItem="Pb8-qo-NZn" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="mEl-Ck-3h4" secondAttribute="leading" constant="20" symbolic="YES" id="zNX-HL-J36"/>
                                                                                 </constraints>
                                                                             </view>
+                                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AdB-ok-Btn" userLabel="addressBookBtn">
+                                                                                <rect key="frame" x="0.0" y="100" width="402" height="50"/>
+                                                                                <subviews>
+                                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="address_icon" translatesAutoresizingMaskIntoConstraints="NO" id="AdB-ok-Img">
+                                                                                        <rect key="frame" x="20" y="10" width="30" height="30"/>
+                                                                                        <constraints>
+                                                                                            <constraint firstAttribute="width" constant="30" id="abk-cst-001"/>
+                                                                                            <constraint firstAttribute="height" constant="30" id="abk-cst-002"/>
+                                                                                        </constraints>
+                                                                                    </imageView>
+                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address Book" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AdB-ok-Lbl">
+                                                                                        <rect key="frame" x="65" y="0.0" width="337" height="50"/>
+                                                                                        <fontDescription key="fontDescription" name="Hind-SemiBold" family="Hind" pointSize="18"/>
+                                                                                        <nil key="textColor"/>
+                                                                                        <nil key="highlightedColor"/>
+                                                                                    </label>
+                                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AdB-ok-Div" userLabel="divider">
+                                                                                        <rect key="frame" x="0.0" y="48" width="402" height="2"/>
+                                                                                        <color key="backgroundColor" red="0.6000976562" green="0.6000976562" blue="0.6000976562" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                                        <constraints>
+                                                                                            <constraint firstAttribute="height" constant="2" id="abk-cst-003"/>
+                                                                                        </constraints>
+                                                                                    </view>
+                                                                                </subviews>
+                                                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                                                <constraints>
+                                                                                    <constraint firstAttribute="bottom" secondItem="AdB-ok-Div" secondAttribute="bottom" id="abk-cst-004"/>
+                                                                                    <constraint firstAttribute="trailing" secondItem="AdB-ok-Div" secondAttribute="trailing" id="abk-cst-005"/>
+                                                                                    <constraint firstItem="AdB-ok-Div" firstAttribute="leading" secondItem="AdB-ok-Btn" secondAttribute="leading" id="abk-cst-006"/>
+                                                                                    <constraint firstItem="AdB-ok-Img" firstAttribute="leading" secondItem="AdB-ok-Btn" secondAttribute="leading" constant="20" id="abk-cst-007"/>
+                                                                                    <constraint firstItem="AdB-ok-Lbl" firstAttribute="centerY" secondItem="AdB-ok-Btn" secondAttribute="centerY" id="abk-cst-008"/>
+                                                                                    <constraint firstItem="AdB-ok-Img" firstAttribute="centerY" secondItem="AdB-ok-Btn" secondAttribute="centerY" id="abk-cst-009"/>
+                                                                                    <constraint firstAttribute="height" constant="50" id="abk-cst-010"/>
+                                                                                    <constraint firstItem="AdB-ok-Lbl" firstAttribute="top" secondItem="AdB-ok-Btn" secondAttribute="top" id="abk-cst-011"/>
+                                                                                    <constraint firstAttribute="trailing" secondItem="AdB-ok-Lbl" secondAttribute="trailing" id="abk-cst-012"/>
+                                                                                    <constraint firstItem="AdB-ok-Lbl" firstAttribute="leading" secondItem="AdB-ok-Img" secondAttribute="trailing" constant="15" id="abk-cst-013"/>
+                                                                                </constraints>
+                                                                            </view>
+                                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DfA-dd-Btn" userLabel="defaultAddressBtn">
+                                                                                <rect key="frame" x="0.0" y="150" width="402" height="50"/>
+                                                                                <subviews>
+                                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="address_icon" translatesAutoresizingMaskIntoConstraints="NO" id="DfA-dd-Img">
+                                                                                        <rect key="frame" x="20" y="10" width="30" height="30"/>
+                                                                                        <constraints>
+                                                                                            <constraint firstAttribute="width" constant="30" id="dfa-cst-001"/>
+                                                                                            <constraint firstAttribute="height" constant="30" id="dfa-cst-002"/>
+                                                                                        </constraints>
+                                                                                    </imageView>
+                                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Default Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DfA-dd-Lbl">
+                                                                                        <rect key="frame" x="65" y="0.0" width="337" height="50"/>
+                                                                                        <fontDescription key="fontDescription" name="Hind-SemiBold" family="Hind" pointSize="18"/>
+                                                                                        <nil key="textColor"/>
+                                                                                        <nil key="highlightedColor"/>
+                                                                                    </label>
+                                                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DfA-dd-Div" userLabel="divider">
+                                                                                        <rect key="frame" x="0.0" y="48" width="402" height="2"/>
+                                                                                        <color key="backgroundColor" red="0.6000976562" green="0.6000976562" blue="0.6000976562" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                                        <constraints>
+                                                                                            <constraint firstAttribute="height" constant="2" id="dfa-cst-003"/>
+                                                                                        </constraints>
+                                                                                    </view>
+                                                                                </subviews>
+                                                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                                                <constraints>
+                                                                                    <constraint firstAttribute="bottom" secondItem="DfA-dd-Div" secondAttribute="bottom" id="dfa-cst-004"/>
+                                                                                    <constraint firstAttribute="trailing" secondItem="DfA-dd-Div" secondAttribute="trailing" id="dfa-cst-005"/>
+                                                                                    <constraint firstItem="DfA-dd-Div" firstAttribute="leading" secondItem="DfA-dd-Btn" secondAttribute="leading" id="dfa-cst-006"/>
+                                                                                    <constraint firstItem="DfA-dd-Img" firstAttribute="leading" secondItem="DfA-dd-Btn" secondAttribute="leading" constant="20" id="dfa-cst-007"/>
+                                                                                    <constraint firstItem="DfA-dd-Lbl" firstAttribute="centerY" secondItem="DfA-dd-Btn" secondAttribute="centerY" id="dfa-cst-008"/>
+                                                                                    <constraint firstItem="DfA-dd-Img" firstAttribute="centerY" secondItem="DfA-dd-Btn" secondAttribute="centerY" id="dfa-cst-009"/>
+                                                                                    <constraint firstAttribute="height" constant="50" id="dfa-cst-010"/>
+                                                                                    <constraint firstItem="DfA-dd-Lbl" firstAttribute="top" secondItem="DfA-dd-Btn" secondAttribute="top" id="dfa-cst-011"/>
+                                                                                    <constraint firstAttribute="trailing" secondItem="DfA-dd-Lbl" secondAttribute="trailing" id="dfa-cst-012"/>
+                                                                                    <constraint firstItem="DfA-dd-Lbl" firstAttribute="leading" secondItem="DfA-dd-Img" secondAttribute="trailing" constant="15" id="dfa-cst-013"/>
+                                                                                </constraints>
+                                                                            </view>
                                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XNO-vz-AkS" userLabel="emergencyContactBtn">
                                                                                 <rect key="frame" x="0.0" y="100" width="402" height="50"/>
                                                                                 <subviews>
@@ -688,10 +764,12 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="addressBookLayoutBtn" destination="AdB-ok-Btn" id="abk-out-let"/>
                         <outlet property="basicDetailsCompletionIcon" destination="c0N-fs-WIh" id="4sT-2x-05K"/>
                         <outlet property="basicDetailsFCL" destination="p99-sG-yZi" id="bCa-Gv-hdS"/>
                         <outlet property="basicDetailsLayoutBtn" destination="GEw-kF-uWo" id="Xej-o1-Wj5"/>
                         <outlet property="changePasswordLayoutBtn" destination="c3l-lA-kSr" id="gNw-FO-nlW"/>
+                        <outlet property="defaultAddressLayoutBtn" destination="DfA-dd-Btn" id="dfa-out-let"/>
                         <outlet property="emergencyContactCompletionIcon" destination="uUq-qQ-hCp" id="dyi-6B-oJ6"/>
                         <outlet property="emergencyContactFCL" destination="Yww-Rz-ysv" id="COL-aV-0Xu"/>
                         <outlet property="emergencyContactLayoutBtn" destination="XNO-vz-AkS" id="gFH-KA-MIp"/>
@@ -7307,6 +7385,7 @@ LIVE database.</string>
         <image name="arrow1" width="21.333333969116211" height="21.333333969116211"/>
         <image name="arrow2" width="21.333333969116211" height="21.333333969116211"/>
         <image name="back_arrow" width="30" height="30"/>
+        <image name="address_icon" width="30" height="30"/>
         <image name="basicDetailsIcon" width="33" height="33"/>
         <image name="blockedVehicleAlertIcon" width="131" height="102.33333587646484"/>
         <image name="calenderIcon" width="32" height="32"/>
