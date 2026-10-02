@@ -23,6 +23,7 @@ class ProfileVC: UIView, UITextFieldDelegate {
     @IBOutlet weak var profileCompletionPercent: UILabel!
     @IBOutlet weak var scanBtn: UIView!
     @IBOutlet weak var garageBtn: UIView!
+    @IBOutlet weak var myOrderBtn: UIView!
     @IBOutlet weak var myVirtualQRBtn: UIView!
     @IBOutlet weak var deleteAccountBtn: UIView!
     
@@ -158,6 +159,16 @@ class ProfileVC: UIView, UITextFieldDelegate {
 
         garageBtn.addGestureRecognizer(garageBtnTap)
         
+        // set myOrderBtn
+        myOrderBtn.isUserInteractionEnabled = true
+
+        let myOrderBtnTap = UITapGestureRecognizer(
+            target: self,
+            action: #selector(onMyOrderBtnClick)
+        )
+
+        myOrderBtn.addGestureRecognizer(myOrderBtnTap)
+        
         // set myVirtualQRBtn
         myVirtualQRBtn.isUserInteractionEnabled = true
 
@@ -178,6 +189,15 @@ class ProfileVC: UIView, UITextFieldDelegate {
             )
 
         deleteAccountBtn.addGestureRecognizer(deleteAccountBtnTap)
+    }
+    
+    @objc private func onMyOrderBtnClick() {
+        if let vc = parentViewController {
+            NavigationManager.pushScreen(
+                from: vc,
+                targetVC: OrderListVC()
+            )
+        }
     }
     
     @objc private func onMyVirtualQRBtnClick() {

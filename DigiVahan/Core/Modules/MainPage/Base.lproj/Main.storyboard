@@ -3517,7 +3517,7 @@
                                                                                     <constraint firstAttribute="height" constant="160" id="nPM-a6-8vt"/>
                                                                                 </constraints>
                                                                             </view>
-                                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_vehicle_default" translatesAutoresizingMaskIntoConstraints="NO" id="d14-1x-i40">
+                                                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="8801" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_vehicle_default" translatesAutoresizingMaskIntoConstraints="NO" id="d14-1x-i40">
                                                                                 <rect key="frame" x="262" y="0.0" width="100" height="160"/>
                                                                                 <constraints>
                                                                                     <constraint firstAttribute="width" constant="100" id="QwE-Ce-7ef"/>
@@ -4984,6 +4984,7 @@
                         <outlet property="vehicleInfoLayout" destination="ick-EF-Mqr" id="c3Y-U3-gwW"/>
                         <outlet property="vehicleInfoLayoutBtn" destination="Z5h-8u-rFt" id="I1I-xA-Htt"/>
                         <outlet property="vehicleNumber" destination="0pd-ED-8Pi" id="bqx-L5-58H"/>
+                        <outlet property="vehicleImage" destination="d14-1x-i40" id="vhI-mg-001"/>
                         <outlet property="viewImage" destination="INb-UN-65X" id="cpL-vT-hTh"/>
                         <outlet property="viewImageCloseIcon" destination="v6i-dT-e7I" id="TaK-Qx-qRu"/>
                         <outlet property="viewImageLayout" destination="KJh-FR-RaV" id="nap-V6-oZg"/>

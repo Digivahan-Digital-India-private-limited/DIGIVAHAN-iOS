@@ -15,10 +15,18 @@ class VirtualQRListVC: BaseViewController {
     @IBOutlet weak var tableView: UITableView!
     
     var garageItemList: [GarageItemModel] = []
+    
+    enum ScreenMode: String {
+        case virtualQR = "virtualQR"
+        case orderQR = "orderQR"
+    }
+    
+    var screenMode: ScreenMode = .virtualQR
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        updateModeFromReceivedData()
         enableKeyboardDismissOnTap()
         setUI()
 
@@ -27,17 +35,36 @@ class VirtualQRListVC: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        updateModeFromReceivedData()
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+        updateHeaderTitle()
         getGarageVehicleList()
+    }
+
+    private func updateModeFromReceivedData() {
+        if let data = receivedData as? [String: Any], let modeStr = data["mode"] as? String {
+            screenMode = (modeStr == "orderQR") ? .orderQR : .virtualQR
+        }
+    }
+
+    private func updateHeaderTitle() {
+        switch screenMode {
+        case .orderQR:
+            title = "Order QR"
+        case .virtualQR:
+            title = "My Virtual QRs"
+        }
     }
 
     private func setUI() {
 
-        title = "My Virtual QR Code"
+        updateHeaderTitle()
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationItem.largeTitleDisplayMode = .never
+        navigationController?.navigationBar.tintColor = .black
         
         navigationController?.navigationBar.titleTextAttributes = [
-                .font: UIFont(name: "Hind-Medium", size: 20)!,
+                .font: UIFont(name: "Hind-SemiBold", size: 18) ?? UIFont.boldSystemFont(ofSize: 18),
                 .foregroundColor: UIColor.black
             ]
 
@@ -208,24 +235,34 @@ extension VirtualQRListVC: UITableViewDelegate, UITableViewDataSource {
 
         cell.selectionStyle = .none
 
-        // Name
-        cell.vehicleName.text = garageListItem.vehicle_name
-        cell.ownerName.text = garageListItem.owner_name
+        // Subtitle (makers_model preferred, vehicle_name fallback)
+        let subtitle: String
+        if let model = garageListItem.makers_model, !model.isEmpty {
+            subtitle = model
+        } else if let vName = garageListItem.vehicle_name, !vName.isEmpty {
+            subtitle = vName
+        } else {
+            subtitle = garageListItem.vehicle_number ?? ""
+        }
+        cell.vehicleName.text = subtitle
+        cell.ownerName.text = garageListItem.owner_name ?? ""
 
         // Number
-        cell.vehicleNumber.text = garageListItem.vehicle_number
+        cell.vehicleNumber.text = garageListItem.vehicle_number ?? ""
+        cell.vehicleNumber.textAlignment = .right
 
         // Image
-        cell.vehicleImage.image = UIImage(
-            named: "ic_vehicle_default"
-        )
+        cell.vehicleImage.image = CommonFunctions.getVehiclePlaceholder(for: garageListItem)
+        cell.vehicleImage.contentMode = .scaleAspectFit
 
-        // Preview button click
+        // Button title
+        let buttonTitle = (screenMode == .orderQR) ? "Order Now" : "Preview"
+        cell.configureButton(title: buttonTitle)
+
+        // Action button click
         cell.previewAction = { [weak self] in
-
             guard let self = self else { return }
-
-            self.previewGarage(garageListItem)
+            self.handleItemAction(garageListItem)
         }
 
         return cell
@@ -237,10 +274,17 @@ extension VirtualQRListVC: UITableViewDelegate, UITableViewDataSource {
     ) {
 
         let garageListItem = garageItemList[indexPath.row]
-
-        previewGarage(garageListItem)
+        handleItemAction(garageListItem)
     }
-    
+
+    private func handleItemAction(_ garageListItem: GarageItemModel) {
+        switch screenMode {
+        case .virtualQR:
+            previewGarage(garageListItem)
+        case .orderQR:
+            orderQR(for: garageListItem)
+        }
+    }
     
     func previewGarage(_ garageListItem: GarageItemModel) {
         
@@ -256,5 +300,18 @@ extension VirtualQRListVC: UITableViewDelegate, UITableViewDataSource {
             viewControllerID: "VirtualQRInfoVC",
             data: sharedData
         )
+    }
+
+    func orderQR(for garageListItem: GarageItemModel) {
+        let vNumber = garageListItem.vehicle_number ?? ""
+        print("Order QR action called for vehicle: \(vNumber)")
+        let vc = OrderQRPageVC()
+        vc.vehicleDetails = garageListItem
+        vc.receivedData = [
+            "vehicleDetails": garageListItem,
+            "orderType": "vehicle",
+            "qrFor": "vehicle: \(garageListItem.vehicle_name ?? "")"
+        ]
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

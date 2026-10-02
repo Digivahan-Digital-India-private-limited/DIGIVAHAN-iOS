@@ -26,6 +26,9 @@ struct APIEndpoints {
     static let CANCEL_DELETE_USER_ACCOUNT = "/api/user-account/cancel-delete"
     static let GET_USER_DETAILS = "/api/get_user_details"
     static let UPDATE_USER_DATA = baseURL + "/api/update_user"
+    static let ADD_USER_ADDRESS = "/api/v1/user-address/add"
+    static let UPDATE_USER_ADDRESS = "/api/v1/user-address/upadte"
+    static let DELETE_USER_ADDRESS = "/api/v1/user-address/delete"
     static let ADD_EMERGENCY_CONTACT = baseURL + "/api/v1/add/emergency-contact"
     static let UPDATE_EMERGENCY_CONTACT = baseURL + "/api/v1/update/emergency-contact"
     static let DELETE_EMERGENCY_CONTACT = "/api/v1/delete/emergency-contact"
@@ -73,4 +76,16 @@ struct APIEndpoints {
     // other services
     static let GET_NEAR_BY_SERVICES = "/api/get/all-service"
     
+    // Fuel Price
+    static let GET_FUEL_PRICE = "/api/v1/fuel/states"
+    
+    // Trending Cars
+    static let GET_TRENDING_CARS = "/api/list/all-car"
+    static let GET_TRENDING_CARS_BY_ID = "/api/user/trending-cars/"
+    
+    // Popular Comparison
+    static let GET_COMPARE_VEHICLE_DATA_SET = "/api/vehicles/compare/get-all-compare"
+    
+    // Tips and Tricks
+    static let GET_TIPS_TRICKS = "/api/v1/tips-tricks"
 }

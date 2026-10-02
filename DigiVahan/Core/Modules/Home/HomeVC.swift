@@ -230,6 +230,7 @@ class HomeVC: UIView, UITextFieldDelegate {
         
         // set myVirtualQRBtn
         myVirtualQRBtn.isUserInteractionEnabled = true
+        downQRLayout?.isUserInteractionEnabled = false
 
             let myVirtualQRBtnTap = UITapGestureRecognizer(
                 target: self,
@@ -263,10 +264,11 @@ class HomeVC: UIView, UITextFieldDelegate {
         
         // set orderQRBtn
         orderQRBtn.isUserInteractionEnabled = true
+        orderQRLayout?.isUserInteractionEnabled = false
 
             let orderQRBtnTap = UITapGestureRecognizer(
                 target: self,
-                action: #selector(commingSoonDialog)
+                action: #selector(onOrderQRBtnClick)
             )
 
         orderQRBtn.addGestureRecognizer(orderQRBtnTap)
@@ -504,7 +506,23 @@ class HomeVC: UIView, UITextFieldDelegate {
             NavigationManager.pushScreen(
                 from: vc,
                 storyboardName: "Main",
-                viewControllerID: "VirtualQRListVC"
+                viewControllerID: "VirtualQRListVC",
+                data: [
+                    "mode": "virtualQR"
+                ]
+            )
+        }
+    }
+
+    @objc private func onOrderQRBtnClick() {
+        if let vc = parentViewController {
+            NavigationManager.pushScreen(
+                from: vc,
+                storyboardName: "Main",
+                viewControllerID: "VirtualQRListVC",
+                data: [
+                    "mode": "orderQR"
+                ]
             )
         }
     }

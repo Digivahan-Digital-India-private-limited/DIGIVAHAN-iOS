@@ -103,12 +103,20 @@ class MainPage: BaseViewController {
         CommonFunctions.checkForAppUpdate(from: self)
         
         profileVC.setupUI()
+        if selectedScreen == "dashBoard" {
+            DashBoardScreen.fetchGarageVehicles()
+            DashBoardScreen.loadUserProfile()
+            DashBoardScreen.fetchTrendingCars()
+            DashBoardScreen.fetchPopularComparisons()
+            DashBoardScreen.fetchTips()
+            DashBoardScreen.startTipsAutoScroll()
+        }
         getNotificationList()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-
+        DashBoardScreen.stopTipsAutoScroll()
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
@@ -146,16 +154,25 @@ class MainPage: BaseViewController {
             DashBoardScreen.isHidden = false
             dashBoardIcon.image = UIImage(named: "dashBoardSelectedIcon")
             dashBoardText.textColor = UIColor(named: "secondIconColor")
-        }
-        else if selectedScreen == "profile" {
-            profileVC.isHidden = false
-            profileIcon.image = UIImage(named: "selectedProfileIcon")
-            profileText.textColor = UIColor(named: "secondIconColor")
+            DashBoardScreen.fetchGarageVehicles()
+            DashBoardScreen.loadUserProfile()
+            DashBoardScreen.fetchTrendingCars()
+            DashBoardScreen.fetchPopularComparisons()
+            DashBoardScreen.fetchTips()
+            DashBoardScreen.startTipsAutoScroll()
         }
         else {
-            homeScreen.isHidden = false
-            homeBtnIcon.image = UIImage(named: "selectedHomeIcon")
-            homeBtnText.textColor = UIColor(named: "secondIconColor")
+            DashBoardScreen.stopTipsAutoScroll()
+            if selectedScreen == "profile" {
+                profileVC.isHidden = false
+                profileIcon.image = UIImage(named: "selectedProfileIcon")
+                profileText.textColor = UIColor(named: "secondIconColor")
+            }
+            else {
+                homeScreen.isHidden = false
+                homeBtnIcon.image = UIImage(named: "selectedHomeIcon")
+                homeBtnText.textColor = UIColor(named: "secondIconColor")
+            }
         }
     }
     

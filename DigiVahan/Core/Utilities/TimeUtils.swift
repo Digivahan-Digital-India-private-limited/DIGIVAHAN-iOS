@@ -43,21 +43,39 @@ class TimeUtils {
 
     static func parseDateSafely(_ dateString: String?) -> Date? {
 
-        guard let dateString = dateString,
-              !dateString.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+        guard let dateString = dateString else {
+            return nil
+        }
+        
+        let trimmed = dateString.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else {
             return nil
         }
 
         for format in knownFormats {
+            let formatter = DateFormatter()
+            formatter.dateFormat = format
+            formatter.locale = Locale(identifier: "en_US_POSIX")
+            formatter.isLenient = false
 
+            if let date = formatter.date(from: trimmed) {
+                return date
+            }
+        }
+        
+        for format in knownFormats {
             let formatter = DateFormatter()
             formatter.dateFormat = format
             formatter.locale = Locale.current
             formatter.isLenient = false
 
-            if let date = formatter.date(from: dateString) {
+            if let date = formatter.date(from: trimmed) {
                 return date
             }
+        }
+        
+        if let isoDate = ISO8601DateFormatter().date(from: trimmed) {
+            return isoDate
         }
 
         return nil

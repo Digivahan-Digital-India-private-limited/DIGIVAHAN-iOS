@@ -783,7 +783,11 @@ class CommonFunctions {
                 return
             }
 
-            if latestVersion != "0" && currentVersion != latestVersion {
+            let isUpdateNeeded = latestVersion != "0" && isVersion(currentVersion, lowerThan: latestVersion)
+
+            print("📱 App Version Check - Current: \(currentVersion), Server: \(latestVersion), Update Needed: \(isUpdateNeeded)")
+
+            if isUpdateNeeded {
 
                 DispatchQueue.main.async {
 
@@ -821,6 +825,30 @@ class CommonFunctions {
                 }
             }
         }
+    }
+    
+    /// Compares two version strings (e.g. "1.0.5" vs "1.0.6").
+    /// Returns true ONLY if `current` is strictly lower than `server`.
+    /// Returns false if `current` is equal to or greater than `server`.
+    static func isVersion(_ current: String, lowerThan server: String) -> Bool {
+        let currentComponents = current.trimmingCharacters(in: .whitespacesAndNewlines)
+            .split(separator: ".")
+            .compactMap { Int($0) }
+        let serverComponents = server.trimmingCharacters(in: .whitespacesAndNewlines)
+            .split(separator: ".")
+            .compactMap { Int($0) }
+        
+        let maxLength = max(currentComponents.count, serverComponents.count)
+        for i in 0..<maxLength {
+            let vCurrent = i < currentComponents.count ? currentComponents[i] : 0
+            let vServer = i < serverComponents.count ? serverComponents[i] : 0
+            if vCurrent < vServer {
+                return true
+            } else if vCurrent > vServer {
+                return false
+            }
+        }
+        return false
     }
     
     static func fetchAppInfo() {
@@ -1004,5 +1032,169 @@ class CommonFunctions {
 
             viewController.present(alert, animated: true)
         }
+    
+    enum VehicleType {
+        case twoWheeler
+        case threeWheeler
+        case fourWheeler
+        case heavy
+        case unknown
+    }
+
+    static func getVehicleType(_ vehicleClass: String?, _ category: String?) -> VehicleType {
+        let cat = (category ?? "").lowercased()
+        if cat.contains("2wn") || cat == "2wn" {
+            return .twoWheeler
+        }
+        
+        let cls = (vehicleClass ?? "").lowercased()
+        if cls.contains("2wn") || cls.contains("m-cycle") || cls.contains("2w") || cls.contains("motorcycle") || cls.contains("scooter") {
+            return .twoWheeler
+        }
+        if cls.contains("3w") || cls.contains("auto") {
+            return .threeWheeler
+        }
+        if cls.contains("lmv") || cls.contains("4w") || cls.contains("lpv") || cls.contains("motor car") || cls.contains("car") {
+            return .fourWheeler
+        }
+        if cls.contains("truck") || cls.contains("bus") || cls.contains("hgv") || cls.contains("lgv") || cls.contains("mgv") {
+            return .heavy
+        }
+        return .unknown
+    }
+
+    static func getVehiclePlaceholder(
+        vehicleClass: String?,
+        vehicleName: String?,
+        makersModel: String?,
+        category: String?
+    ) -> UIImage? {
+        let nameModel = ((vehicleName ?? "") + " " + (makersModel ?? "")).lowercased()
+        let type = getVehicleType(vehicleClass, category)
+        
+        switch type {
+        case .twoWheeler:
+            // Bike keywords
+            if nameModel.contains("splendor")
+                || nameModel.contains("pulsar")
+                || nameModel.contains("apache")
+                || nameModel.contains("r15")
+                || nameModel.contains("bullet")
+                || nameModel.contains("bike")
+                || nameModel.contains("motorcycle")
+                || nameModel.contains("shine")
+                || nameModel.contains("platina")
+                || nameModel.contains("passion")
+                || nameModel.contains("fz")
+                || nameModel.contains("royal enfield")
+                || nameModel.contains("classic 350")
+                || nameModel.contains("hunter")
+                || nameModel.contains("ktm")
+                || nameModel.contains("duke") {
+                return UIImage(named: "ic_vehicle_2w_bike") ?? UIImage(named: "ic_vehicle_default")
+            }
+            
+            // Scooty keywords
+            if nameModel.contains("activa")
+                || nameModel.contains("jupiter")
+                || nameModel.contains("dio")
+                || nameModel.contains("access")
+                || nameModel.contains("pleasure")
+                || nameModel.contains("vespa")
+                || nameModel.contains("scooter")
+                || nameModel.contains("scooty")
+                || nameModel.contains("ola")
+                || nameModel.contains("ather")
+                || nameModel.contains("ntorq")
+                || nameModel.contains("burgman")
+                || nameModel.contains("destini")
+                || nameModel.contains("chetak")
+                || nameModel.contains("iqube") {
+                return UIImage(named: "ic_vehicle_2w_scooty") ?? UIImage(named: "ic_vehicle_default")
+            }
+            
+            // Default 2-wheeler is bike (matches Android R.drawable.ic_vehicle_2w)
+            return UIImage(named: "ic_vehicle_2w_bike") ?? UIImage(named: "ic_vehicle_default")
+            
+        case .fourWheeler:
+            if nameModel.contains("truck") || nameModel.contains("tipper") || nameModel.contains("lorry") {
+                return UIImage(named: "ic_vehicle_heavy") ?? UIImage(named: "ic_vehicle_default")
+            }
+            return UIImage(named: "ic_vehicle_default")
+            
+        case .threeWheeler:
+            return UIImage(named: "ic_vehicle_3w") ?? UIImage(named: "ic_vehicle_default")
+            
+        case .heavy:
+            return UIImage(named: "ic_vehicle_heavy") ?? UIImage(named: "ic_vehicle_default")
+            
+        case .unknown:
+            // Fallback heuristics based on nameModel when class/category are missing or ambiguous
+            if nameModel.contains("activa")
+                || nameModel.contains("jupiter")
+                || nameModel.contains("dio")
+                || nameModel.contains("access")
+                || nameModel.contains("pleasure")
+                || nameModel.contains("vespa")
+                || nameModel.contains("scooter")
+                || nameModel.contains("scooty")
+                || nameModel.contains("ola")
+                || nameModel.contains("ather")
+                || nameModel.contains("ntorq")
+                || nameModel.contains("burgman")
+                || nameModel.contains("destini")
+                || nameModel.contains("chetak")
+                || nameModel.contains("iqube") {
+                return UIImage(named: "ic_vehicle_2w_scooty") ?? UIImage(named: "ic_vehicle_default")
+            }
+            
+            if nameModel.contains("splendor")
+                || nameModel.contains("pulsar")
+                || nameModel.contains("apache")
+                || nameModel.contains("r15")
+                || nameModel.contains("bullet")
+                || nameModel.contains("bike")
+                || nameModel.contains("motorcycle")
+                || nameModel.contains("shine")
+                || nameModel.contains("platina")
+                || nameModel.contains("passion")
+                || nameModel.contains("fz")
+                || nameModel.contains("royal enfield")
+                || nameModel.contains("classic 350")
+                || nameModel.contains("hunter")
+                || nameModel.contains("ktm")
+                || nameModel.contains("duke") {
+                return UIImage(named: "ic_vehicle_2w_bike") ?? UIImage(named: "ic_vehicle_default")
+            }
+            
+            if nameModel.contains("auto") || nameModel.contains("rickshaw") || nameModel.contains("3w") || nameModel.contains("ape") {
+                return UIImage(named: "ic_vehicle_3w") ?? UIImage(named: "ic_vehicle_default")
+            }
+            
+            if nameModel.contains("truck") || nameModel.contains("bus") || nameModel.contains("heavy") || nameModel.contains("tipper") || nameModel.contains("lorry") || nameModel.contains("tractor") || nameModel.contains("trailer") {
+                return UIImage(named: "ic_vehicle_heavy") ?? UIImage(named: "ic_vehicle_default")
+            }
+            
+            return UIImage(named: "ic_vehicle_default")
+        }
+    }
+
+    static func getVehiclePlaceholder(for model: GarageItemModel?) -> UIImage? {
+        return getVehiclePlaceholder(
+            vehicleClass: model?.vehicle_class,
+            vehicleName: model?.vehicle_name,
+            makersModel: model?.makers_model,
+            category: model?.category
+        )
+    }
+
+    static func getVehiclePlaceholder(for vehicleClass: String?) -> UIImage? {
+        return getVehiclePlaceholder(
+            vehicleClass: vehicleClass,
+            vehicleName: nil,
+            makersModel: nil,
+            category: nil
+        )
+    }
     
 }

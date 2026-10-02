@@ -21,14 +21,28 @@ class VirtualQRListCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        vehicleImage.layer.cornerRadius = 25
-        vehicleImage.clipsToBounds = true
+        vehicleImage.clipsToBounds = false
 
         previewBtn.addTarget(
             self,
             action: #selector(previewBtnClick),
             for: .touchUpInside
         )
+    }
+
+    func configureButton(title: String) {
+        if var config = previewBtn.configuration {
+            var container = AttributeContainer()
+            container.font = UIFont(name: "Hind-SemiBold", size: 12) ?? UIFont.systemFont(ofSize: 12, weight: .semibold)
+            container.foregroundColor = .white
+            config.attributedTitle = AttributedString(title, attributes: container)
+            config.baseForegroundColor = .white
+            previewBtn.configuration = config
+        } else {
+            previewBtn.setTitle(title, for: .normal)
+            previewBtn.setTitleColor(.white, for: .normal)
+            previewBtn.titleLabel?.font = UIFont(name: "Hind-SemiBold", size: 12) ?? UIFont.systemFont(ofSize: 12, weight: .semibold)
+        }
     }
 
     @objc private func previewBtnClick() {

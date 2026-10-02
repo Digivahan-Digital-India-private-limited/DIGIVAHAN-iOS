@@ -56,9 +56,11 @@ class GarageListVC: BaseViewController {
         tableView.dataSource = self
 
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 90
+        tableView.estimatedRowHeight = 110
 
         tableView.separatorStyle = .none
+        tableView.backgroundColor = UIColor(named: "bgColor1") ?? UIColor(red: 245/255.0, green: 245/255.0, blue: 245/255.0, alpha: 1.0)
+        tableView.register(GarageListCell.self, forCellReuseIdentifier: "GarageListCell")
                 
         vehicleNumberField.delegate = self
         vehicleNumberField.autocapitalizationType = .allCharacters
@@ -483,15 +485,7 @@ extension GarageListVC: UITableViewDelegate, UITableViewDataSource, UITextFieldD
             for: indexPath
         ) as! GarageListCell
 
-        cell.selectionStyle = .none
-
-        // Vehicle details
-        cell.vehicleName.text = contact.makers_model
-        cell.vehicleClass.text = "\(contact.makers_name ?? "")\n\(contact.vehicle_id ?? "")"
-
-        // Vehicle image
-        cell.vehicleImage.contentMode = .scaleAspectFit
-        cell.vehicleImage.image = UIImage(named: "ic_vehicle_default")
+        cell.configure(with: contact)
 
         // Item click
         cell.itemClickAction = { [weak self] in

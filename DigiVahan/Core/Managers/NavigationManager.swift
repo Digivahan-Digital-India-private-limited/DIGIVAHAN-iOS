@@ -121,6 +121,27 @@ class NavigationManager {
         }
     }
 
+    static func pushScreen(
+        from currentVC: UIViewController,
+        targetVC: UIViewController,
+        closeCurrentScreen: Bool = false
+    ) {
+        if closeCurrentScreen,
+           var viewControllers = currentVC.navigationController?.viewControllers {
+            viewControllers.removeLast()
+            viewControllers.append(targetVC)
+            currentVC.navigationController?.setViewControllers(
+                viewControllers,
+                animated: true
+            )
+        } else {
+            currentVC.navigationController?.pushViewController(
+                targetVC,
+                animated: true
+            )
+        }
+    }
+
 
     // MARK: - Present Navigation
     static func presentScreen(

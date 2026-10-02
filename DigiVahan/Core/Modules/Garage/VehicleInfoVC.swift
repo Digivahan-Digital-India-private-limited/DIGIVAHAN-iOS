@@ -19,6 +19,7 @@ class VehicleInfoVC: BaseViewController {
     @IBOutlet weak var viewImageLayout: UIView!
     @IBOutlet weak var viewImage: UIImageView!
     @IBOutlet weak var viewImageCloseIcon: UIImageView!
+    @IBOutlet weak var vehicleImage: UIImageView!
     
     @IBOutlet weak var ownerName: UILabel!
     @IBOutlet weak var vehicleNumber: UILabel!
@@ -557,6 +558,11 @@ class VehicleInfoVC: BaseViewController {
         self.ownerName.text = CommonFunctions.safeValue(garageModel?.owner_name)
         self.vehicleNumber.text = "\(garageModel?.vehicle_number ?? "") |  \(garageModel?.ownership_details ?? "")"
         self.companyName.text = garageModel?.vehicle_name
+        
+        let placeholder = CommonFunctions.getVehiclePlaceholder(for: garageModel)
+        let imgView = self.vehicleImage ?? (self.view.viewWithTag(8801) as? UIImageView)
+        imgView?.image = placeholder
+        imgView?.contentMode = .scaleAspectFit
         
         self.ownerShipName.text = CommonFunctions.safeValue(garageModel?.owner_name)
         self.ownerShipCount.text = CommonFunctions.getFormattedOwner(CommonFunctions.safeValue(garageModel?.ownership_details))

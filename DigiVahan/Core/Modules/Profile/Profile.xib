@@ -27,6 +27,7 @@
                 <outlet property="garageBtn" destination="6SA-ew-Qql" id="yyF-8k-8Ta"/>
                 <outlet property="logoutBtn" destination="xQb-yN-CIe" id="HsW-1J-keK"/>
                 <outlet property="mainContentView" destination="iN0-l3-epB" id="W9u-uc-Qxm"/>
+                <outlet property="myOrderBtn" destination="ord-Bt-001" id="ord-Ot-018"/>
                 <outlet property="myVirtualQRBtn" destination="lCz-QK-Ptm" id="cr0-QM-9m8"/>
                 <outlet property="privacyPolicyBtn" destination="pZ1-ma-VjE" id="n9w-Nm-e3K"/>
                 <outlet property="profileCompletionPercent" destination="joD-ol-iTQ" id="6N0-lf-pO5"/>
@@ -193,6 +194,44 @@
                                                                         <constraint firstItem="YQs-Mv-KzH" firstAttribute="leading" secondItem="6SA-ew-Qql" secondAttribute="leading" id="avx-do-pKv"/>
                                                                         <constraint firstItem="3s1-Tm-M48" firstAttribute="leading" secondItem="3rM-qp-Zmg" secondAttribute="trailing" constant="15" id="mVK-zh-BLB"/>
                                                                         <constraint firstItem="3rM-qp-Zmg" firstAttribute="leading" secondItem="6SA-ew-Qql" secondAttribute="leading" constant="20" id="rYL-2D-qrE"/>
+                                                                    </constraints>
+                                                                </view>
+                                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ord-Bt-001" userLabel="myOrderBtn">
+                                                                    <rect key="frame" x="0.0" y="100" width="393" height="50"/>
+                                                                    <subviews>
+                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="my_order_icon" translatesAutoresizingMaskIntoConstraints="NO" id="ord-Iv-002">
+                                                                            <rect key="frame" x="20" y="10" width="30" height="30"/>
+                                                                            <constraints>
+                                                                                <constraint firstAttribute="height" constant="30" id="ord-Cn-005"/>
+                                                                                <constraint firstAttribute="width" constant="30" id="ord-Cn-006"/>
+                                                                            </constraints>
+                                                                        </imageView>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Orders" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ord-Lb-003">
+                                                                            <rect key="frame" x="65" y="0.0" width="328" height="50"/>
+                                                                            <fontDescription key="fontDescription" name="Hind-SemiBold" family="Hind" pointSize="18"/>
+                                                                            <nil key="textColor"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ord-Dv-004" userLabel="divider">
+                                                                            <rect key="frame" x="0.0" y="48" width="393" height="2"/>
+                                                                            <color key="backgroundColor" red="0.6000976562" green="0.6000976562" blue="0.6000976562" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                            <constraints>
+                                                                                <constraint firstAttribute="height" constant="2" id="ord-Cn-007"/>
+                                                                            </constraints>
+                                                                        </view>
+                                                                    </subviews>
+                                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                                    <constraints>
+                                                                        <constraint firstItem="ord-Lb-003" firstAttribute="top" secondItem="ord-Bt-001" secondAttribute="top" id="ord-Cn-008"/>
+                                                                        <constraint firstAttribute="trailing" secondItem="ord-Lb-003" secondAttribute="trailing" id="ord-Cn-009"/>
+                                                                        <constraint firstItem="ord-Lb-003" firstAttribute="centerY" secondItem="ord-Bt-001" secondAttribute="centerY" id="ord-Cn-010"/>
+                                                                        <constraint firstItem="ord-Iv-002" firstAttribute="centerY" secondItem="ord-Bt-001" secondAttribute="centerY" id="ord-Cn-011"/>
+                                                                        <constraint firstAttribute="bottom" secondItem="ord-Dv-004" secondAttribute="bottom" id="ord-Cn-012"/>
+                                                                        <constraint firstAttribute="height" constant="50" id="ord-Cn-013"/>
+                                                                        <constraint firstAttribute="trailing" secondItem="ord-Dv-004" secondAttribute="trailing" id="ord-Cn-014"/>
+                                                                        <constraint firstItem="ord-Dv-004" firstAttribute="leading" secondItem="ord-Bt-001" secondAttribute="leading" id="ord-Cn-015"/>
+                                                                        <constraint firstItem="ord-Lb-003" firstAttribute="leading" secondItem="ord-Iv-002" secondAttribute="trailing" constant="15" id="ord-Cn-016"/>
+                                                                        <constraint firstItem="ord-Iv-002" firstAttribute="leading" secondItem="ord-Bt-001" secondAttribute="leading" constant="20" id="ord-Cn-017"/>
                                                                     </constraints>
                                                                 </view>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lCz-QK-Ptm" userLabel="myVirtualQRBtn">
@@ -577,6 +616,7 @@
         <image name="fieldProfileIcon" width="32" height="32"/>
         <image name="garageIcon" width="1066.6666259765625" height="826.66668701171875"/>
         <image name="logout_icon" width="32" height="32"/>
+        <image name="my_order_icon" width="32" height="30"/>
         <image name="myVirtualQRIcon" width="27.333333969116211" height="27.333333969116211"/>
         <image name="privacyPolicyIcon" width="34.333332061767578" height="42.666667938232422"/>
         <image name="share_icon" width="53.333332061767578" height="53.333332061767578"/>
